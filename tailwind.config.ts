@@ -1,0 +1,17 @@
+import type { Config } from "tailwindcss";
+import { kayordPlugin } from "@kayord/tw-plugin";
+import { fontFamily } from "tailwindcss/defaultTheme";
+import tailwindcssAnimate from "tailwindcss-animate";
+
+export default {
+	darkMode: ["class"],
+	content: ["./src/**/*.{html,js,svelte,ts}", "./node_modules/@kayord/ui/**/*.{html,js,svelte,ts}"],
+	theme: {
+		extend: {
+			fontFamily: {
+				sans: [...fontFamily.sans]
+			}
+		}
+	},
+	plugins: [kayordPlugin, tailwindcssAnimate]
+} satisfies Config;
