@@ -1,22 +1,24 @@
 <script lang="ts">
-	import { Button } from "@kayord/ui";
+	import { Button, Card } from "@kayord/ui";
 	import { CheckCircleIcon, CircleXIcon } from "lucide-svelte";
 	import { hub } from "$lib/stores/hub.svelte";
+	import StopWatch from "$lib/components/StopWatch.svelte";
+	import LapsChart from "$lib/components/LapsChart.svelte";
 
 	const sendMessage = () => {
 		// hub.connection.invoke("ReceiveMessage", "Hello");
-		hub.connection.invoke("newMessage", "Hello");
+		hub.connection.invoke("SendMessage", "Hello");
 		// hub.connection.invoke("ReceiveMessage", "Hello");
 	};
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<h1>Lap Time:</h1>
+<StopWatch />
 
-<Button onclick={sendMessage}>It works?</Button>
+<h1>Time Elapsed:</h1>
 
-<!-- {#if hub.state == "Connected"}
-	<CheckCircleIcon class="text-green-400" />
-{:else}
-	<CircleXIcon class="text-red-400" />
-{/if} -->
+<div class="m-2">
+	<Card.Root class="mb-2"></Card.Root>
+
+	<LapsChart />
+</div>
