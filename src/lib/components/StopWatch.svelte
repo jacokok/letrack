@@ -21,9 +21,9 @@
 </script>
 
 <div>
-	<div class="flex gap-2 text-xl">
+	<h1 class="flex gap-2">
 		{timer.minutesFmt}:{timer.secondsFmt}:{timer.msFmt}
-	</div>
+	</h1>
 
-	{timer.lastLap?.toString() ?? "What"}
+	Last lap: {timer.lastLap?.toString()}
 </div>

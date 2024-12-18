@@ -34,6 +34,13 @@
 			time: timeSpanToParts(lap.lapTime).toSeconds
 		}))
 	);
+
+	const chartData2 = $derived(
+		data.trackSummary.laps.map((lap, i) => ({
+			lap: i + 1,
+			time: timeSpanToParts(lap.lapTime).toSeconds
+		}))
+	);
 </script>
 
 <h1>Lap Time:</h1>
@@ -67,7 +74,7 @@
 <h1>Time Elapsed:</h1>
 
 <div class="m-2">
-	<LapsChart data={chartData} />
+	<LapsChart data={chartData} data2={chartData2} />
 </div>
 
 {data.trackSummary.fastestLap?.lapTime}
