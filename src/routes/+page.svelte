@@ -5,10 +5,14 @@
 	import StopWatch from "$lib/components/StopWatch.svelte";
 	import LapsChart from "$lib/components/LapsChart.svelte";
 
-	const sendMessage = () => {
-		// hub.connection.invoke("ReceiveMessage", "Hello");
-		hub.connection.invoke("SendMessage", "Hello");
-		// hub.connection.invoke("ReceiveMessage", "Hello");
+	import type { PageData } from "./$types";
+	import { invalidate, invalidateAll } from "$app/navigation";
+
+	let { data }: { data: PageData } = $props();
+
+	const refresh = () => {
+		invalidate("track:1");
+		// invalidateAll();
 	};
 </script>
 
@@ -22,3 +26,8 @@
 
 	<LapsChart />
 </div>
+
+<div>{JSON.stringify(data)}</div>
+<Button onclick={refresh}>Refresh</Button>
+
+{data.data.fastestLap.lapTime}
