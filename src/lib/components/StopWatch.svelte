@@ -2,27 +2,25 @@
 	import { Button } from "@kayord/ui";
 	import { Timer } from "$lib/stores/timer.svelte";
 	import { hub } from "$lib/stores/hub.svelte";
+	import type { SaveEvent } from "$lib/types";
 
 	const timer = new Timer();
 
-	const receiveMessage = (message: string) => {
-		console.log(message);
+	const receiveEvent = (evt: SaveEvent) => {
 		timer.start();
 	};
 
 	$effect(() => {
 		if (hub.state == "Connected") {
-			hub.on("ReceiveMessage", receiveMessage);
+			hub.on("ReceiveEvent", receiveEvent);
 			return () => {
-				hub.off("ReceiveMessage", receiveMessage);
+				hub.off("ReceiveEvent", receiveEvent);
 			};
 		}
 	});
 </script>
 
 <div>
-	<Button onclick={timer.start}>Start</Button>
-
 	<div class="flex gap-2 text-xl">
 		{timer.minutesFmt}:{timer.secondsFmt}:{timer.msFmt}
 	</div>
