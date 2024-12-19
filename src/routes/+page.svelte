@@ -56,34 +56,15 @@
 	</div>
 </div>
 
-<StopWatch />
+<div class="flex w-full flex-row items-center">
+	<div class="flex w-full">
+		<StopWatch />
+	</div>
+	<div class="mr-2 flex w-full justify-end">
+		<LapsChart data={chartData} />
+	</div>
+</div>
 
 <div class="flex w-full flex-row">
 	<Laps laps={data.trackSummary.last10Laps} fastestLap={data.trackSummary.fastestLap} />
-	<Card.Root class="m-2 flex w-full flex-col gap-2 bg-muted/50 p-2 ">
-		{#each data.trackSummary.last10Laps as lap}
-			{@const diff = timeSpanToParts(lap.lapTimeDifference)}
-			<Card.Root class="flex items-center gap-2 p-2">
-				<Badge variant="secondary">{lap.lapNumber}</Badge>
-				<h1>{timeSpanToParts(lap.lapTime).value}</h1>
-				<div class={`${diff.isMinus ? "text-destructive" : "text-green-300"}`}>
-					{diff.isMinus ? "-" : "+"}{diff.value}
-				</div>
-				{#if lap.id == data.trackSummary.fastestLap?.id}
-					<Badge class="animate-pulse">
-						<FastestIcon class="size-4" />
-					</Badge>
-				{/if}
-				{#if lap.isFlagged}
-					<Badge variant="destructive" class=" animate-caret-blink">
-						<FlagIcon class="size-4" />
-					</Badge>
-				{/if}
-			</Card.Root>
-		{/each}
-	</Card.Root>
-
-	<div class="m-2 w-full">
-		<LapsChart data={chartData} />
-	</div>
 </div>
