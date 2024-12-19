@@ -1,4 +1,10 @@
-const timeSpanToParts = (timeSpan: string) => {
+const timeSpanToParts = (timeSpan?: string) => {
+	if (timeSpan == null) {
+		timeSpan = "00:00:00.000";
+	}
+
+	const isMinus = timeSpan.startsWith("-");
+
 	const [hoursRaw, minutesRaw, secondsAndMs] = timeSpan.split(":");
 
 	const hours = parseInt(hoursRaw);
@@ -17,7 +23,19 @@ const timeSpanToParts = (timeSpan: string) => {
 	const value = `${minutesFmt}:${secondsFmt}:${msFmt}`;
 	const toSeconds = hours * 60 * 60 + minutes * 60 + seconds + Number(ms) / 10000000;
 
-	return { hours, hoursFmt, minutes, minutesFmt, seconds, secondsFmt, ms, msFmt, value, toSeconds };
+	return {
+		hours,
+		hoursFmt,
+		minutes,
+		minutesFmt,
+		seconds,
+		secondsFmt,
+		ms,
+		msFmt,
+		value,
+		toSeconds,
+		isMinus
+	};
 };
 
 export { timeSpanToParts };

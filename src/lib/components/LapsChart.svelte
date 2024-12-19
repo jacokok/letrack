@@ -4,10 +4,9 @@
 
 	interface Props {
 		data: Array<{ lap: number; time: number }>;
-		data2: Array<{ lap: number; time: number }>;
 	}
 
-	let { data, data2 }: Props = $props();
+	let { data }: Props = $props();
 </script>
 
 <div class="h-[200px] rounded-lg border p-4">
@@ -38,7 +37,7 @@
 
 <div class="mt-2 h-[200px] rounded-lg border p-4">
 	<BarChart
-		data={data2}
+		{data}
 		x="lap"
 		y="time"
 		axis={false}
