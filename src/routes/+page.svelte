@@ -21,7 +21,7 @@
 	</h1>
 </div>
 <div class="m-2 flex w-full flex-row flex-wrap justify-center gap-4">
-	{@render item("Practice", "Go to driving range", "/track/1")}
+	{@render item("Practice", "Go to driving range", "/practice")}
 	{@render item("Races", "Show all races or create new race", "/race")}
-	{@render item("Players", "Manage players/racers", "/players")}
+	{@render item("Players", "Manage players/racers", "/player")}
 </div>

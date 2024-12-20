@@ -1,0 +1,417 @@
+{
+  "x-generator": "NSwag v14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))",
+  "openapi": "3.0.0",
+  "info": {
+    "title": "letrack-api",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5021"
+    }
+  ],
+  "paths": {
+    "/track/summary/{trackId}": {
+      "get": {
+        "tags": [
+          "Track"
+        ],
+        "operationId": "TrackSummary",
+        "parameters": [
+          {
+            "name": "trackId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrackSummaryResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test/signal": {
+      "get": {
+        "tags": [
+          "Test"
+        ],
+        "operationId": "TestSignal",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/test": {
+      "get": {
+        "tags": [
+          "Test"
+        ],
+        "operationId": "Test",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/race/summary/{raceId}": {
+      "get": {
+        "tags": [
+          "Race"
+        ],
+        "operationId": "RaceSummary",
+        "parameters": [
+          {
+            "name": "raceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RaceSummaryResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TrackSummaryResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "last10Laps",
+          "totalLaps"
+        ],
+        "properties": {
+          "last10Laps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DTOLapDTO"
+            }
+          },
+          "fastestLap": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DTOLapDTO"
+              }
+            ]
+          },
+          "totalLaps": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "race": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/EntitiesRace"
+              }
+            ]
+          }
+        }
+      },
+      "DTOLapDTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "trackId",
+          "timestamp",
+          "isFlagged",
+          "raceId",
+          "lapNumber"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "lastLapId": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "trackId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lapTime": {
+            "type": "string",
+            "format": "duration",
+            "nullable": true
+          },
+          "lapTimeDifference": {
+            "type": "string",
+            "format": "duration",
+            "nullable": true
+          },
+          "isFlagged": {
+            "type": "boolean"
+          },
+          "raceId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lapNumber": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "EntitiesRace": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "raceTracks",
+          "isActive",
+          "startDateTime"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "raceTracks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EntitiesRaceTrack"
+            }
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "startDateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endLapCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "EntitiesRaceTrack": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "raceId",
+          "trackId",
+          "playerId",
+          "player"
+        ],
+        "properties": {
+          "raceId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "trackId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "playerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "player": {
+            "$ref": "#/components/schemas/EntitiesPlayer"
+          }
+        }
+      },
+      "EntitiesPlayer": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "nickName": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "InternalErrorResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "status",
+          "code",
+          "reason",
+          "note"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "default": "Internal Server Error!"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "default": 500
+          },
+          "reason": {
+            "type": "string",
+            "default": "Something unexpected has happened"
+          },
+          "note": {
+            "type": "string",
+            "default": "See application log for stack trace."
+          }
+        }
+      },
+      "TrackSummaryRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "RaceSummaryResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "laps",
+          "totalLaps",
+          "race"
+        ],
+        "properties": {
+          "laps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DTOLapDTO"
+            }
+          },
+          "fastestLap": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/DTOLapDTO"
+              }
+            ]
+          },
+          "totalLaps": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "race": {
+            "$ref": "#/components/schemas/EntitiesRace"
+          }
+        }
+      },
+      "RaceSummaryRequest": {
+        "type": "object",
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "JWTBearerAuth": {
+        "type": "http",
+        "description": "Enter a JWT token to authorize the requests...",
+        "scheme": "Bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

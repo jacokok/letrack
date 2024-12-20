@@ -7,7 +7,9 @@
 	// } from "@microsoft/signalr";
 	// import { PUBLIC_API_URL } from "$env/static/public";
 	import { hub } from "$lib/stores/hub.svelte";
+	import { QueryClient, QueryClientProvider } from "@tanstack/svelte-query";
 	import "../app.css";
+	import { browser } from "$app/environment";
 	let { children } = $props();
 
 	const receiveMessage = (message: string) => {
@@ -54,6 +56,16 @@
 			};
 		}
 	});
+
+	const queryClient = new QueryClient({
+		defaultOptions: {
+			queries: {
+				enabled: browser
+			}
+		}
+	});
 </script>
 
-{@render children()}
+<QueryClientProvider client={queryClient}>
+	{@render children()}
+</QueryClientProvider>

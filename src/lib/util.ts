@@ -1,5 +1,5 @@
-const timeSpanToParts = (timeSpan?: string) => {
-	if (timeSpan == null) {
+const timeSpanToParts = (timeSpan: string | null | undefined) => {
+	if (timeSpan == null || timeSpan == undefined) {
 		timeSpan = "00:00:00.000";
 	}
 

@@ -9,7 +9,8 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
-		"lint": "prettier --check . && eslint ."
+		"lint": "prettier --check . && eslint .",
+		"api": "curl http://localhost:5021/swagger/v1/swagger.json > swagger.json && orval"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.3",
@@ -19,9 +20,11 @@
 		"@sveltejs/adapter-static": "^3.0.6",
 		"@sveltejs/kit": "^2.13.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.3",
+		"@tanstack/svelte-query": "^5.62.8",
 		"@types/d3-array": "^3.2.1",
 		"@types/d3-scale": "^4.0.8",
 		"@types/d3-shape": "^3.1.6",
+		"@types/qs": "^6.9.17",
 		"autoprefixer": "^10.4.20",
 		"eslint": "^9.17.0",
 		"eslint-config-prettier": "^9.1.0",
@@ -29,9 +32,11 @@
 		"globals": "^15.14.0",
 		"layerchart": "^0.60.2",
 		"lucide-svelte": "^0.468.0",
+		"orval": "^7.3.0",
 		"prettier": "^3.3.2",
 		"prettier-plugin-svelte": "^3.2.6",
 		"prettier-plugin-tailwindcss": "^0.6.5",
+		"qs": "^6.13.1",
 		"svelte": "^5.15.0",
 		"svelte-check": "^4.0.0",
 		"sveltekit-superforms": "^2.22.1",

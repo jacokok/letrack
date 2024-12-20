@@ -1,25 +1,16 @@
 <script lang="ts">
-	import { Avatar, Badge, Button, Card, Table } from "@kayord/ui";
-	import StopWatch from "$lib/components/StopWatch.svelte";
-	import LapsChart from "$lib/components/LapsChart.svelte";
-	import FlagIcon from "lucide-svelte/icons/flag";
-	import FastestIcon from "lucide-svelte/icons/zap";
-
-	import type { PageData } from "../$types";
-	import { invalidate } from "$app/navigation";
-	import { timeSpanToParts } from "$lib/util";
-	import type { DoneEvent } from "$lib/types";
+	import { Button, Label, Popover, Slider } from "@kayord/ui";
+	import SettingsIcon from "lucide-svelte/icons/settings";
+	import Track from "./Track.svelte";
+	import { practice } from "$lib/stores/practice.svelte";
+	import type { DoneEvent, SaveEvent } from "$lib/types";
 	import { hub } from "$lib/stores/hub.svelte";
-	import Laps from "$lib/components/Laps.svelte";
+	import Chart from "$lib/components/Chart.svelte";
 
-	let { data }: { data: PageData } = $props();
-
-	const refresh = () => {
-		invalidate("track:1");
-	};
+	let tracks: Array<Track | undefined> = new Array(4);
 
 	const doneEvent = (evt: DoneEvent) => {
-		refresh();
+		tracks[evt.trackId]?.doneEvent(evt);
 	};
 
 	$effect(() => {
@@ -31,40 +22,45 @@
 		}
 	});
 
-	const chartData = $derived(
-		data.trackSummary.last10Laps.map((lap, i) => ({
-			lap: i + 1,
-			time: timeSpanToParts(lap.lapTime).toSeconds
-		}))
-	);
+	const receiveEvent = (evt: SaveEvent) => {
+		tracks[evt.trackId]?.receiveEvent(evt);
+	};
+
+	$effect(() => {
+		if (hub.state == "Connected") {
+			hub.on("ReceiveEvent", receiveEvent);
+			return () => {
+				hub.off("ReceiveEvent", receiveEvent);
+			};
+		}
+	});
 </script>
 
-<div class="mb-6 flex items-center bg-muted p-2">
-	<div class="flex w-full flex-col items-start pl-2">
-		<h1>{data.trackSummary.race?.raceTracks[0].player.name}</h1>
-		<Card.Root class="flex items-center gap-2 p-2">
-			Fastest Lap: <h1>{timeSpanToParts(data.trackSummary.fastestLap?.lapTime).value}</h1>
-		</Card.Root>
-	</div>
-	<div class="flex w-full flex-col items-end">
-		<Card.Root class="flex items-center gap-2 p-2">
-			Laps: <h1>{data.trackSummary.totalLaps}</h1>
-		</Card.Root>
-		<Card.Root class="flex items-center gap-2 p-2">
-			Time Remaining: <h1>00:30:34</h1>
-		</Card.Root>
-	</div>
+<Popover.Root>
+	<Popover.Trigger class="fixed right-4 top-4 z-10">
+		<Button size="icon" variant="secondary">
+			<SettingsIcon />
+		</Button>
+	</Popover.Trigger>
+	<Popover.Content class="flex flex-col gap-4">
+		<Label>Number of tracks</Label>
+		<Slider
+			bind:value={practice.value.numberOfTracks}
+			min={1}
+			max={2}
+			step={1}
+			class="max-w-[100%]"
+		/>
+	</Popover.Content>
+</Popover.Root>
+
+<div class="m-2 flex flex-row gap-2">
+	{#each { length: practice.value.numberOfTracks[0] }, index}
+		{@const curTrack = index + 1}
+		<Track trackId={curTrack} bind:this={tracks[curTrack]} />
+	{/each}
 </div>
 
-<div class="flex w-full flex-row items-center">
-	<div class="flex w-full">
-		<StopWatch />
-	</div>
-	<div class="mr-2 flex w-full justify-end">
-		<LapsChart data={chartData} />
-	</div>
-</div>
-
-<div class="flex w-full flex-row">
-	<Laps laps={data.trackSummary.last10Laps} fastestLap={data.trackSummary.fastestLap} />
+<div>
+	<Chart />
 </div>
