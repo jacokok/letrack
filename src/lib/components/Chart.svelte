@@ -43,10 +43,10 @@
 		bandPadding={0.5}
 		seriesLayout="group"
 		series={[
-			{ key: "track1", color: "hsl(var(--color-danger))" },
+			{ key: "track1", color: "hsl(var(--color-primary))" },
 			{
 				key: "track2",
-				color: "hsl(var(--color-warning))"
+				color: "hsl(var(--color-danger))"
 			}
 		]}
 		props={{ bars: { radius: 2, strokeWidth: 0, tweened: true } }}
