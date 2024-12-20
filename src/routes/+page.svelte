@@ -1,70 +1,27 @@
 <script lang="ts">
-	import { Avatar, Badge, Button, Card, Table } from "@kayord/ui";
-	import StopWatch from "$lib/components/StopWatch.svelte";
-	import LapsChart from "$lib/components/LapsChart.svelte";
-	import FlagIcon from "lucide-svelte/icons/flag";
-	import FastestIcon from "lucide-svelte/icons/zap";
-
-	import type { PageData } from "./$types";
-	import { invalidate } from "$app/navigation";
-	import { timeSpanToParts } from "$lib/util";
-	import type { DoneEvent } from "$lib/types";
-	import { hub } from "$lib/stores/hub.svelte";
-	import Laps from "$lib/components/Laps.svelte";
-
-	let { data }: { data: PageData } = $props();
-
-	const refresh = () => {
-		invalidate("track:1");
-	};
-
-	const doneEvent = (evt: DoneEvent) => {
-		refresh();
-	};
-
-	$effect(() => {
-		if (hub.state == "Connected") {
-			hub.on("DoneEvent", doneEvent);
-			return () => {
-				hub.off("DoneEvent", doneEvent);
-			};
-		}
-	});
-
-	const chartData = $derived(
-		data.trackSummary.last10Laps.map((lap, i) => ({
-			lap: i + 1,
-			time: timeSpanToParts(lap.lapTime).toSeconds
-		}))
-	);
+	import { Button, Card } from "@kayord/ui";
 </script>
 
-<div class="mb-6 flex items-center bg-muted p-2">
-	<div class="flex w-full flex-col items-start pl-2">
-		<h1>{data.trackSummary.race?.raceTracks[0].player.name}</h1>
-		<Card.Root class="flex items-center gap-2 p-2">
-			Fastest Lap: <h1>{timeSpanToParts(data.trackSummary.fastestLap?.lapTime).value}</h1>
-		</Card.Root>
-	</div>
-	<div class="flex w-full flex-col items-end">
-		<Card.Root class="flex items-center gap-2 p-2">
-			Laps: <h1>{data.trackSummary.totalLaps}</h1>
-		</Card.Root>
-		<Card.Root class="flex items-center gap-2 p-2">
-			Time Remaining: <h1>00:30:34</h1>
-		</Card.Root>
-	</div>
-</div>
+{#snippet item(title: string, description: string, href: string)}
+	<Card.Root class="w-64">
+		<Card.Header class="flex flex-col items-center justify-center">
+			<Card.Title>{title}</Card.Title>
+			<Card.Description>{description}</Card.Description>
+		</Card.Header>
+		<Card.Footer class="mt-2">
+			<Button {href} class="w-full">{title}</Button>
+		</Card.Footer>
+	</Card.Root>
+{/snippet}
 
-<div class="flex w-full flex-row items-center">
-	<div class="flex w-full">
-		<StopWatch />
-	</div>
-	<div class="mr-2 flex w-full justify-end">
-		<LapsChart data={chartData} />
-	</div>
+<div class="my-8 flex justify-center gap-4">
+	<img src="/favicon.svg" alt="LeTrack" class="h-12" />
+	<h1 class="text-5xl tracking-tighter">
+		<span class="text-secondary">Le</span><span class="font-bold text-primary">Track</span>
+	</h1>
 </div>
-
-<div class="flex w-full flex-row">
-	<Laps laps={data.trackSummary.last10Laps} fastestLap={data.trackSummary.fastestLap} />
+<div class="m-2 flex w-full flex-row flex-wrap justify-center gap-4">
+	{@render item("Practice", "Go to driving range", "/track/1")}
+	{@render item("Races", "Show all races or create new race", "/race")}
+	{@render item("Players", "Manage players/racers", "/players")}
 </div>
