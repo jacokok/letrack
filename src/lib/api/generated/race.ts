@@ -4,17 +4,25 @@
  * letrack-api
  * OpenAPI spec version: v1
  */
-import { createQuery } from "@tanstack/svelte-query";
+import { createMutation, createQuery } from "@tanstack/svelte-query";
 import type {
+	CreateMutationOptions,
+	CreateMutationResult,
 	CreateQueryOptions,
 	CreateQueryResult,
 	DataTag,
+	MutationFunction,
 	QueryFunction,
 	QueryKey
 } from "@tanstack/svelte-query";
-import type { InternalErrorResponse, RaceSummaryResponse } from "./api.schemas";
+import type {
+	EntitiesRace,
+	InternalErrorResponse,
+	RaceInsertRequest,
+	RaceSummaryResponse
+} from "./api.schemas";
 import { customInstance } from "../mutator/customInstance.svelte";
-import type { ErrorType } from "../mutator/customInstance.svelte";
+import type { ErrorType, BodyType } from "../mutator/customInstance.svelte";
 
 export const raceSummary = (raceId: number) => {
 	return customInstance<RaceSummaryResponse>({ url: `/race/summary/${raceId}`, method: "GET" });
@@ -68,3 +76,67 @@ export function createRaceSummary<
 
 	return query;
 }
+
+export const raceInsert = (raceInsertRequest: BodyType<RaceInsertRequest>) => {
+	return customInstance<EntitiesRace>({
+		url: `/race`,
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		data: raceInsertRequest
+	});
+};
+
+export const getRaceInsertMutationOptions = <
+	TError = ErrorType<InternalErrorResponse>,
+	TContext = unknown
+>(options?: {
+	mutation?: CreateMutationOptions<
+		Awaited<ReturnType<typeof raceInsert>>,
+		TError,
+		{ data: BodyType<RaceInsertRequest> },
+		TContext
+	>;
+}): CreateMutationOptions<
+	Awaited<ReturnType<typeof raceInsert>>,
+	TError,
+	{ data: BodyType<RaceInsertRequest> },
+	TContext
+> => {
+	const { mutation: mutationOptions } = options ?? {};
+
+	const mutationFn: MutationFunction<
+		Awaited<ReturnType<typeof raceInsert>>,
+		{ data: BodyType<RaceInsertRequest> }
+	> = (props) => {
+		const { data } = props ?? {};
+
+		return raceInsert(data);
+	};
+
+	return { mutationFn, ...mutationOptions };
+};
+
+export type RaceInsertMutationResult = NonNullable<Awaited<ReturnType<typeof raceInsert>>>;
+export type RaceInsertMutationBody = BodyType<RaceInsertRequest>;
+export type RaceInsertMutationError = ErrorType<InternalErrorResponse>;
+
+export const createRaceInsert = <
+	TError = ErrorType<InternalErrorResponse>,
+	TContext = unknown
+>(options?: {
+	mutation?: CreateMutationOptions<
+		Awaited<ReturnType<typeof raceInsert>>,
+		TError,
+		{ data: BodyType<RaceInsertRequest> },
+		TContext
+	>;
+}): CreateMutationResult<
+	Awaited<ReturnType<typeof raceInsert>>,
+	TError,
+	{ data: BodyType<RaceInsertRequest> },
+	TContext
+> => {
+	const mutationOptions = getRaceInsertMutationOptions(options);
+
+	return createMutation(mutationOptions);
+};

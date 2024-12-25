@@ -4,6 +4,29 @@
  * letrack-api
  * OpenAPI spec version: v1
  */
+export interface PlayersInsertRequest {
+	name: string;
+	/** @nullable */
+	nickName?: string | null;
+}
+
+export interface PlayersUpdateRequest {
+	id: number;
+	name: string;
+	/** @nullable */
+	nickName?: string | null;
+}
+
+export interface RaceInsertRequest {
+	/** @nullable */
+	endDateTime?: string | null;
+	/** @nullable */
+	endLapCount?: number | null;
+	isActive: boolean;
+	name: string;
+	startDateTime: string;
+}
+
 export interface RaceSummaryRequest {
 	[key: string]: unknown;
 }

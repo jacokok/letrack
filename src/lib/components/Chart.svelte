@@ -29,11 +29,9 @@
 		}
 		return results;
 	});
-
-	$inspect(data);
 </script>
 
-<div class="mt-2 h-[200px] w-[400px] rounded-lg border p-2">
+<div class="mt-2 h-[200px] w-full rounded-lg border p-2">
 	<BarChart
 		{data}
 		x="lap"

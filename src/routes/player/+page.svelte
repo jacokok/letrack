@@ -1,13 +1,23 @@
 <script lang="ts">
-	import { createTrackSummary } from "$lib/api";
-	import { Button } from "@kayord/ui";
-	import SettingsIcon from "lucide-svelte/icons/settings";
+	import { createPlayersList, type EntitiesPlayer } from "$lib/api";
+	import { Button, Card } from "@kayord/ui";
+	import PlusIcon from "lucide-svelte/icons/plus";
 
-	const query = createTrackSummary(1);
+	const query = createPlayersList();
 </script>
 
-<Button class="fixed right-4 top-4 z-50" size="icon" variant="secondary"><SettingsIcon /></Button>
+{#snippet playerSnippet(player: EntitiesPlayer)}
+	<Card.Root class="m-2 p-2">
+		{player.name}
+	</Card.Root>
+{/snippet}
 
-<div class="bg-secondary text-secondary-foreground">Test</div>
-<div class="bg-accent text-accent-foreground">Test</div>
-<pre>{JSON.stringify($query.data)}</pre>
+<div class="m2">
+	{#if $query.data?.length == 0}
+		<Card.Root class="m-2 p-2">No players</Card.Root>
+	{/if}
+	{#each $query.data ?? [] as player}
+		{@render playerSnippet(player)}
+	{/each}
+	<Button class="w-full"><PlusIcon />Add new Player</Button>
+</div>
