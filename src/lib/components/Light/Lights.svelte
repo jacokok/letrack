@@ -63,8 +63,8 @@
 
 <div class="flex w-full flex-col items-center">
 	<div class="flex w-full items-center">
-		<div class="h-4 w-full bg-black/50"></div>
-		<div class="flex h-52 min-w-[680px] items-center justify-center rounded-xl bg-black/50">
+		<div class="h-4 w-full bg-gray-600"></div>
+		<div class="flex h-52 min-w-[680px] items-center justify-center rounded-xl bg-gray-600">
 			<img src="/favicon.svg" alt="LeTrack" class="h-32" />
 			{#if showConfetti}
 				<Confetti y={[0.25, 0.5]} x={[-4, 4]} />
@@ -73,7 +73,7 @@
 				<span class="text-secondary">Le</span><span class="font-bold text-primary">Track</span>
 			</h1>
 		</div>
-		<div class="h-4 w-full bg-black/50"></div>
+		<div class="h-4 w-full bg-gray-600"></div>
 	</div>
 
 	<div class="flex w-fit items-center gap-4 rounded-md">

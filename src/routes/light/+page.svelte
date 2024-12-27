@@ -11,14 +11,14 @@
 	};
 </script>
 
-<div class="flex items-center justify-center">
+<div class="flex h-screen w-full flex-col items-center justify-center gap-4">
 	<Lights bind:isActive />
-</div>
 
-<Button onclick={toggleActive}>
-	{#if isActive}
-		<StopIcon />
-	{:else}
-		<PlayIcon />
-	{/if}
-</Button>
+	<Button onclick={toggleActive}>
+		{#if isActive}
+			<StopIcon />
+		{:else}
+			<PlayIcon />
+		{/if}
+	</Button>
+</div>
