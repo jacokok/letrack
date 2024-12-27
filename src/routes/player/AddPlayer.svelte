@@ -1,0 +1,110 @@
+<script lang="ts">
+	import { createPlayersInsert, createPlayersUpdate, type EntitiesPlayer } from "$lib/api";
+	import { getError } from "$lib/types";
+	import { Button, Dialog, Form, Input, toast } from "@kayord/ui";
+	import { defaults, superForm } from "sveltekit-superforms";
+	import { zod } from "sveltekit-superforms/adapters";
+	import { z } from "zod";
+
+	interface Props {
+		refetch: () => void;
+		open?: boolean;
+		player?: EntitiesPlayer;
+	}
+
+	let { refetch, open = $bindable(false), player }: Props = $props();
+
+	const isEdit = $derived(player != null);
+
+	const schema = z.object({
+		name: z.string().min(1, { message: "Name is Required" }),
+		nickName: z.string()
+	});
+	type FormSchema = z.infer<typeof schema>;
+
+	const defaultValues = $derived({
+		name: player?.name ?? "",
+		nickName: player?.nickName ?? ""
+	});
+
+	const editMutation = createPlayersUpdate();
+	const createMutation = createPlayersInsert();
+
+	const updateExtra = async (data: FormSchema) => {
+		try {
+			open = false;
+			if (isEdit) {
+				await $editMutation.mutateAsync({
+					data: {
+						id: player?.id ?? 0,
+						name: data.name,
+						nickName: data.nickName
+					}
+				});
+				toast.info("Edited player");
+			} else {
+				await $createMutation.mutateAsync({
+					data: { name: data.name, nickName: data.nickName }
+				});
+				toast.info("Added player");
+			}
+			refetch();
+		} catch (err) {
+			toast.error(getError(err).message);
+		}
+	};
+
+	// svelte-ignore state_referenced_locally
+	const form = superForm(defaults(defaultValues, zod(schema)), {
+		SPA: true,
+		validators: zod(schema),
+		onUpdate({ form }) {
+			if (form.valid) {
+				updateExtra(form.data);
+			}
+		}
+	});
+
+	const { form: formData, enhance, reset } = form;
+
+	$effect(() => {
+		if (open == true) {
+			reset({ data: defaultValues });
+		}
+	});
+</script>
+
+<Dialog.Root bind:open>
+	<Dialog.Content class="max-h-[98%] overflow-scroll">
+		<form method="POST" use:enhance>
+			<Dialog.Header>
+				<Dialog.Title>{isEdit ? "Edit" : "Add"} Player</Dialog.Title>
+				<Dialog.Description>Complete form to {isEdit ? "Edit" : "Add"} Player</Dialog.Description>
+			</Dialog.Header>
+			<div class="flex flex-col gap-4 p-4">
+				<Form.Field {form} name="name">
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Name</Form.Label>
+							<Input {...props} bind:value={$formData.name} />
+						{/snippet}
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+				<Form.Field {form} name="nickName">
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Nick Name</Form.Label>
+							<Input {...props} bind:value={$formData.nickName} />
+						{/snippet}
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+			</div>
+			<Dialog.Footer class="gap-2">
+				<Button type="submit">Submit</Button>
+				<Button variant="outline" onclick={() => (open = false)}>Cancel</Button>
+			</Dialog.Footer>
+		</form>
+	</Dialog.Content>
+</Dialog.Root>

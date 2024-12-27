@@ -197,3 +197,60 @@ export const createPlayersInsert = <
 
 	return createMutation(mutationOptions);
 };
+export const playersDelete = (id: number) => {
+	return customInstance<void>({ url: `/players/${id}`, method: "DELETE" });
+};
+
+export const getPlayersDeleteMutationOptions = <
+	TError = ErrorType<InternalErrorResponse>,
+	TContext = unknown
+>(options?: {
+	mutation?: CreateMutationOptions<
+		Awaited<ReturnType<typeof playersDelete>>,
+		TError,
+		{ id: number },
+		TContext
+	>;
+}): CreateMutationOptions<
+	Awaited<ReturnType<typeof playersDelete>>,
+	TError,
+	{ id: number },
+	TContext
+> => {
+	const { mutation: mutationOptions } = options ?? {};
+
+	const mutationFn: MutationFunction<Awaited<ReturnType<typeof playersDelete>>, { id: number }> = (
+		props
+	) => {
+		const { id } = props ?? {};
+
+		return playersDelete(id);
+	};
+
+	return { mutationFn, ...mutationOptions };
+};
+
+export type PlayersDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof playersDelete>>>;
+
+export type PlayersDeleteMutationError = ErrorType<InternalErrorResponse>;
+
+export const createPlayersDelete = <
+	TError = ErrorType<InternalErrorResponse>,
+	TContext = unknown
+>(options?: {
+	mutation?: CreateMutationOptions<
+		Awaited<ReturnType<typeof playersDelete>>,
+		TError,
+		{ id: number },
+		TContext
+	>;
+}): CreateMutationResult<
+	Awaited<ReturnType<typeof playersDelete>>,
+	TError,
+	{ id: number },
+	TContext
+> => {
+	const mutationOptions = getPlayersDeleteMutationOptions(options);
+
+	return createMutation(mutationOptions);
+};

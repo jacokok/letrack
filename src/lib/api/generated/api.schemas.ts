@@ -4,6 +4,10 @@
  * letrack-api
  * OpenAPI spec version: v1
  */
+export interface PlayersDeleteRequest {
+	[key: string]: unknown;
+}
+
 export interface PlayersInsertRequest {
 	name: string;
 	/** @nullable */
