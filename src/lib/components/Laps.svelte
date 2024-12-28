@@ -5,16 +5,19 @@
 	import { Alert, Badge, Card } from "@kayord/ui";
 	import FlagIcon from "lucide-svelte/icons/flag";
 	import FastestIcon from "lucide-svelte/icons/zap";
+	import type { Snippet } from "svelte";
 
 	interface Props {
 		laps: Array<Lap>;
 		fastestLap?: TrackSummaryResponseFastestLap;
+		children?: Snippet;
 	}
 
-	let { laps, fastestLap }: Props = $props();
+	let { laps, fastestLap, children }: Props = $props();
 </script>
 
-<Card.Root class="m-2 flex w-full flex-col gap-2 bg-muted/50 p-2 ">
+<Card.Root class="flex w-full flex-col gap-2 bg-muted/50 p-2 ">
+	{@render children?.()}
 	{#if laps.length <= 0}
 		<Alert.Root>
 			<Alert.Title>No laps have been recorded yet!</Alert.Title>

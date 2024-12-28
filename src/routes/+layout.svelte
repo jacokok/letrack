@@ -10,6 +10,8 @@
 	import { QueryClient, QueryClientProvider } from "@tanstack/svelte-query";
 	import "../app.css";
 	import { browser } from "$app/environment";
+	import { goto } from "$app/navigation";
+	import { Toaster } from "@kayord/ui";
 	let { children } = $props();
 
 	const receiveMessage = (message: string) => {
@@ -67,5 +69,6 @@
 </script>
 
 <QueryClientProvider client={queryClient}>
+	<Toaster />
 	{@render children()}
 </QueryClientProvider>

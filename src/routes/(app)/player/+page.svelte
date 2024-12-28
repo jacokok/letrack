@@ -11,7 +11,7 @@
 </script>
 
 {#snippet playerSnippet(player: EntitiesPlayer)}
-	<Card.Root class="m-2">
+	<Card.Root>
 		<Card.Header class="mb-6 flex flex-row items-center">
 			<div class="flex w-full flex-col items-start">
 				<Card.Title>{player.name}</Card.Title>
@@ -22,16 +22,22 @@
 	</Card.Root>
 {/snippet}
 
-<div class="m2">
+<div class="m-2">
+	<div class="flex justify-end">
+		<Button class="my-2" onclick={() => (open = true)}>
+			<PlusIcon />Add new Player
+		</Button>
+	</div>
+
 	{#if $query.data?.length == 0}
-		<Card.Root class="m-2 p-2">No players</Card.Root>
+		<Card.Root class="p-2">No players</Card.Root>
 	{/if}
-	{#each $query.data ?? [] as player}
-		{@render playerSnippet(player)}
-	{/each}
-	<Button class="w-full" onclick={() => (open = true)}>
-		<PlusIcon />Add new Player
-	</Button>
+
+	<div class="flex flex-col gap-2">
+		{#each $query.data ?? [] as player}
+			{@render playerSnippet(player)}
+		{/each}
+	</div>
 
 	<AddPlayer bind:open refetch={$query.refetch} />
 </div>

@@ -19,54 +19,119 @@ import type {
 	EntitiesRace,
 	InternalErrorResponse,
 	RaceInsertRequest,
-	RaceSummaryResponse
+	RaceListParams,
+	RaceSummaryResponse,
+	RaceUpdateRequest
 } from "./api.schemas";
 import { customInstance } from "../mutator/customInstance.svelte";
 import type { ErrorType, BodyType } from "../mutator/customInstance.svelte";
 
-export const raceSummary = (raceId: number) => {
-	return customInstance<RaceSummaryResponse>({ url: `/race/summary/${raceId}`, method: "GET" });
+export const raceUpdate = (raceUpdateRequest: BodyType<RaceUpdateRequest>) => {
+	return customInstance<EntitiesRace>({
+		url: `/race`,
+		method: "PUT",
+		headers: { "Content-Type": "application/json" },
+		data: raceUpdateRequest
+	});
 };
 
-export const getRaceSummaryQueryKey = (raceId: number) => {
-	return [`/race/summary/${raceId}`] as const;
+export const getRaceUpdateMutationOptions = <
+	TError = ErrorType<InternalErrorResponse>,
+	TContext = unknown
+>(options?: {
+	mutation?: CreateMutationOptions<
+		Awaited<ReturnType<typeof raceUpdate>>,
+		TError,
+		{ data: BodyType<RaceUpdateRequest> },
+		TContext
+	>;
+}): CreateMutationOptions<
+	Awaited<ReturnType<typeof raceUpdate>>,
+	TError,
+	{ data: BodyType<RaceUpdateRequest> },
+	TContext
+> => {
+	const { mutation: mutationOptions } = options ?? {};
+
+	const mutationFn: MutationFunction<
+		Awaited<ReturnType<typeof raceUpdate>>,
+		{ data: BodyType<RaceUpdateRequest> }
+	> = (props) => {
+		const { data } = props ?? {};
+
+		return raceUpdate(data);
+	};
+
+	return { mutationFn, ...mutationOptions };
 };
 
-export const getRaceSummaryQueryOptions = <
-	TData = Awaited<ReturnType<typeof raceSummary>>,
+export type RaceUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof raceUpdate>>>;
+export type RaceUpdateMutationBody = BodyType<RaceUpdateRequest>;
+export type RaceUpdateMutationError = ErrorType<InternalErrorResponse>;
+
+export const createRaceUpdate = <
+	TError = ErrorType<InternalErrorResponse>,
+	TContext = unknown
+>(options?: {
+	mutation?: CreateMutationOptions<
+		Awaited<ReturnType<typeof raceUpdate>>,
+		TError,
+		{ data: BodyType<RaceUpdateRequest> },
+		TContext
+	>;
+}): CreateMutationResult<
+	Awaited<ReturnType<typeof raceUpdate>>,
+	TError,
+	{ data: BodyType<RaceUpdateRequest> },
+	TContext
+> => {
+	const mutationOptions = getRaceUpdateMutationOptions(options);
+
+	return createMutation(mutationOptions);
+};
+export const raceList = (params: RaceListParams) => {
+	return customInstance<EntitiesRace[]>({ url: `/race`, method: "GET", params });
+};
+
+export const getRaceListQueryKey = (params: RaceListParams) => {
+	return [`/race`, ...(params ? [params] : [])] as const;
+};
+
+export const getRaceListQueryOptions = <
+	TData = Awaited<ReturnType<typeof raceList>>,
 	TError = ErrorType<InternalErrorResponse>
 >(
-	raceId: number,
+	params: RaceListParams,
 	options?: {
-		query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof raceSummary>>, TError, TData>>;
+		query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof raceList>>, TError, TData>>;
 	}
 ) => {
 	const { query: queryOptions } = options ?? {};
 
-	const queryKey = queryOptions?.queryKey ?? getRaceSummaryQueryKey(raceId);
+	const queryKey = queryOptions?.queryKey ?? getRaceListQueryKey(params);
 
-	const queryFn: QueryFunction<Awaited<ReturnType<typeof raceSummary>>> = () => raceSummary(raceId);
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof raceList>>> = () => raceList(params);
 
-	return { queryKey, queryFn, enabled: !!raceId, ...queryOptions } as CreateQueryOptions<
-		Awaited<ReturnType<typeof raceSummary>>,
+	return { queryKey, queryFn, ...queryOptions } as CreateQueryOptions<
+		Awaited<ReturnType<typeof raceList>>,
 		TError,
 		TData
 	> & { queryKey: DataTag<QueryKey, TData> };
 };
 
-export type RaceSummaryQueryResult = NonNullable<Awaited<ReturnType<typeof raceSummary>>>;
-export type RaceSummaryQueryError = ErrorType<InternalErrorResponse>;
+export type RaceListQueryResult = NonNullable<Awaited<ReturnType<typeof raceList>>>;
+export type RaceListQueryError = ErrorType<InternalErrorResponse>;
 
-export function createRaceSummary<
-	TData = Awaited<ReturnType<typeof raceSummary>>,
+export function createRaceList<
+	TData = Awaited<ReturnType<typeof raceList>>,
 	TError = ErrorType<InternalErrorResponse>
 >(
-	raceId: number,
+	params: RaceListParams,
 	options?: {
-		query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof raceSummary>>, TError, TData>>;
+		query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof raceList>>, TError, TData>>;
 	}
 ): CreateQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-	const queryOptions = getRaceSummaryQueryOptions(raceId, options);
+	const queryOptions = getRaceListQueryOptions(params, options);
 
 	const query = createQuery(queryOptions) as CreateQueryResult<TData, TError> & {
 		queryKey: DataTag<QueryKey, TData>;
@@ -137,6 +202,116 @@ export const createRaceInsert = <
 	TContext
 > => {
 	const mutationOptions = getRaceInsertMutationOptions(options);
+
+	return createMutation(mutationOptions);
+};
+export const raceSummary = (raceId: number) => {
+	return customInstance<RaceSummaryResponse>({ url: `/race/summary/${raceId}`, method: "GET" });
+};
+
+export const getRaceSummaryQueryKey = (raceId: number) => {
+	return [`/race/summary/${raceId}`] as const;
+};
+
+export const getRaceSummaryQueryOptions = <
+	TData = Awaited<ReturnType<typeof raceSummary>>,
+	TError = ErrorType<InternalErrorResponse>
+>(
+	raceId: number,
+	options?: {
+		query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof raceSummary>>, TError, TData>>;
+	}
+) => {
+	const { query: queryOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getRaceSummaryQueryKey(raceId);
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof raceSummary>>> = () => raceSummary(raceId);
+
+	return { queryKey, queryFn, enabled: !!raceId, ...queryOptions } as CreateQueryOptions<
+		Awaited<ReturnType<typeof raceSummary>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData> };
+};
+
+export type RaceSummaryQueryResult = NonNullable<Awaited<ReturnType<typeof raceSummary>>>;
+export type RaceSummaryQueryError = ErrorType<InternalErrorResponse>;
+
+export function createRaceSummary<
+	TData = Awaited<ReturnType<typeof raceSummary>>,
+	TError = ErrorType<InternalErrorResponse>
+>(
+	raceId: number,
+	options?: {
+		query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof raceSummary>>, TError, TData>>;
+	}
+): CreateQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+	const queryOptions = getRaceSummaryQueryOptions(raceId, options);
+
+	const query = createQuery(queryOptions) as CreateQueryResult<TData, TError> & {
+		queryKey: DataTag<QueryKey, TData>;
+	};
+
+	query.queryKey = queryOptions.queryKey;
+
+	return query;
+}
+
+export const raceDelete = (id: number) => {
+	return customInstance<void>({ url: `/race/${id}`, method: "DELETE" });
+};
+
+export const getRaceDeleteMutationOptions = <
+	TError = ErrorType<InternalErrorResponse>,
+	TContext = unknown
+>(options?: {
+	mutation?: CreateMutationOptions<
+		Awaited<ReturnType<typeof raceDelete>>,
+		TError,
+		{ id: number },
+		TContext
+	>;
+}): CreateMutationOptions<
+	Awaited<ReturnType<typeof raceDelete>>,
+	TError,
+	{ id: number },
+	TContext
+> => {
+	const { mutation: mutationOptions } = options ?? {};
+
+	const mutationFn: MutationFunction<Awaited<ReturnType<typeof raceDelete>>, { id: number }> = (
+		props
+	) => {
+		const { id } = props ?? {};
+
+		return raceDelete(id);
+	};
+
+	return { mutationFn, ...mutationOptions };
+};
+
+export type RaceDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof raceDelete>>>;
+
+export type RaceDeleteMutationError = ErrorType<InternalErrorResponse>;
+
+export const createRaceDelete = <
+	TError = ErrorType<InternalErrorResponse>,
+	TContext = unknown
+>(options?: {
+	mutation?: CreateMutationOptions<
+		Awaited<ReturnType<typeof raceDelete>>,
+		TError,
+		{ id: number },
+		TContext
+	>;
+}): CreateMutationResult<
+	Awaited<ReturnType<typeof raceDelete>>,
+	TError,
+	{ id: number },
+	TContext
+> => {
+	const mutationOptions = getRaceDeleteMutationOptions(options);
 
 	return createMutation(mutationOptions);
 };

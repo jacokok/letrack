@@ -4,6 +4,10 @@
  * letrack-api
  * OpenAPI spec version: v1
  */
+export type RaceListParams = {
+	isActive: boolean;
+};
+
 export interface PlayersDeleteRequest {
 	[key: string]: unknown;
 }
@@ -21,14 +25,17 @@ export interface PlayersUpdateRequest {
 	nickName?: string | null;
 }
 
+export interface RaceDeleteRequest {
+	[key: string]: unknown;
+}
+
 export interface RaceInsertRequest {
-	/** @nullable */
-	endDateTime?: string | null;
-	/** @nullable */
-	endLapCount?: number | null;
-	isActive: boolean;
 	name: string;
-	startDateTime: string;
+	players: number[];
+}
+
+export interface RaceListRequest {
+	[key: string]: unknown;
 }
 
 export interface RaceSummaryRequest {
@@ -38,7 +45,26 @@ export interface RaceSummaryRequest {
 /**
  * @nullable
  */
+export type RaceSummaryTrackFastestLap = DTOLapDTO | null;
+
+/**
+ * @nullable
+ */
 export type RaceSummaryResponseFastestLap = DTOLapDTO | null;
+
+export interface RaceSummaryResponse {
+	/** @nullable */
+	fastestLap?: RaceSummaryResponseFastestLap;
+	race: EntitiesRace;
+	totalLaps: number;
+	tracks: RaceSummaryTrack[];
+}
+
+export interface RaceUpdateRequest {
+	id: number;
+	name: string;
+	players: number[];
+}
 
 export interface TrackSummaryRequest {
 	[key: string]: unknown;
@@ -58,6 +84,15 @@ export interface EntitiesPlayer {
 	nickName?: string | null;
 }
 
+export interface RaceSummaryTrack {
+	/** @nullable */
+	fastestLap?: RaceSummaryTrackFastestLap;
+	laps: DTOLapDTO[];
+	player: EntitiesPlayer;
+	totalLaps: number;
+	trackId: number;
+}
+
 export interface EntitiesRaceTrack {
 	player: EntitiesPlayer;
 	playerId: number;
@@ -66,6 +101,7 @@ export interface EntitiesRaceTrack {
 }
 
 export interface EntitiesRace {
+	createdDateTime: string;
 	/** @nullable */
 	endDateTime?: string | null;
 	/** @nullable */
@@ -74,7 +110,8 @@ export interface EntitiesRace {
 	isActive: boolean;
 	name: string;
 	raceTracks: EntitiesRaceTrack[];
-	startDateTime: string;
+	/** @nullable */
+	startDateTime?: string | null;
 }
 
 export interface DTOLapDTO {
@@ -90,14 +127,6 @@ export interface DTOLapDTO {
 	raceId: number;
 	timestamp: string;
 	trackId: number;
-}
-
-export interface RaceSummaryResponse {
-	/** @nullable */
-	fastestLap?: RaceSummaryResponseFastestLap;
-	laps: DTOLapDTO[];
-	race: EntitiesRace;
-	totalLaps: number;
 }
 
 /**

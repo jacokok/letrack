@@ -6,6 +6,7 @@
 	import type { DoneEvent, SaveEvent } from "$lib/types";
 	import { hub } from "$lib/stores/hub.svelte";
 	import Chart from "$lib/components/Chart.svelte";
+	import Header from "$lib/components/Header.svelte";
 
 	let tracks: Array<Track | undefined> = new Array(4);
 
@@ -36,23 +37,27 @@
 	});
 </script>
 
-<Popover.Root>
-	<Popover.Trigger class="fixed right-4 top-4 z-10">
-		<Button size="icon" variant="secondary">
-			<SettingsIcon />
-		</Button>
-	</Popover.Trigger>
-	<Popover.Content class="flex flex-col gap-4">
-		<Label>Number of tracks</Label>
-		<Slider
-			bind:value={practice.value.numberOfTracks}
-			min={1}
-			max={2}
-			step={1}
-			class="max-w-[100%]"
-		/>
-	</Popover.Content>
-</Popover.Root>
+{#snippet right()}
+	<Popover.Root>
+		<Popover.Trigger class="">
+			<Button size="icon" variant="ghost">
+				<SettingsIcon />
+			</Button>
+		</Popover.Trigger>
+		<Popover.Content class="flex flex-col gap-4">
+			<Label>Number of tracks</Label>
+			<Slider
+				bind:value={practice.value.numberOfTracks}
+				min={1}
+				max={2}
+				step={1}
+				class="max-w-[100%]"
+			/>
+		</Popover.Content>
+	</Popover.Root>
+{/snippet}
+
+<Header {right} />
 
 <div class="m-2 flex flex-row gap-2">
 	{#each { length: practice.value.numberOfTracks[0] }, index}

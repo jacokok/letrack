@@ -11,7 +11,7 @@
 	};
 </script>
 
-<Card.Root class="m-2 flex w-72 items-center gap-2 p-2">
+<Card.Root class="flex w-72 items-center gap-2 p-2">
 	<TimerIcon class="size-10" />
 	<h1 class="flex gap-2 text-5xl font-bold">
 		{timer.minutesFmt}:{timer.secondsFmt}:{timer.msFmt}
