@@ -33,6 +33,21 @@
 		}
 	});
 
+	$effect(() => {
+		if (hub.state == "Connected") {
+			hub.on("RaceComplete", raceComplete);
+			return () => {
+				hub.off("RaceComplete", raceComplete);
+			};
+		}
+	});
+
+	const raceComplete = (raceId: number) => {
+		console.log(raceComplete);
+		stopEvent();
+		$query.refetch();
+	};
+
 	const receiveEvent = (evt: SaveEvent) => {
 		if ($query.data?.race.isActive) {
 			tracks[evt.trackId]?.receiveEvent(evt);
@@ -108,9 +123,7 @@
 		startRaceLogic();
 	};
 
-	const hideOptions = $derived(
-		$query.data?.race.timeRemaining != undefined || $query.data?.race.endLapCount != undefined
-	);
+	const hideOptions = $derived($query.data?.race.timeRemaining != undefined);
 </script>
 
 {#snippet right()}

@@ -20,7 +20,7 @@
 
 	type FormSchema = z.infer<typeof schema>;
 
-	const form = superForm(defaults({ duration: 30, laps: 0, showCountdown: true }, zod(schema)), {
+	const form = superForm(defaults({ duration: 0, laps: 0, showCountdown: true }, zod(schema)), {
 		SPA: true,
 		validators: zod(schema),
 		onUpdate({ form }) {
