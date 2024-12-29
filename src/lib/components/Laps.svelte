@@ -2,7 +2,7 @@
 	import type { TrackSummaryResponseFastestLap } from "$lib/api";
 	import type { Lap } from "$lib/types";
 	import { timeSpanToParts } from "$lib/util";
-	import { Alert, Badge, Card } from "@kayord/ui";
+	import { Alert, Badge, Card, Tooltip } from "@kayord/ui";
 	import FlagIcon from "lucide-svelte/icons/flag";
 	import FastestIcon from "lucide-svelte/icons/zap";
 	import type { Snippet } from "svelte";
@@ -33,14 +33,23 @@
 				{diff.isMinus ? "-" : "+"}{diff.value}
 			</div>
 			{#if lap.id == fastestLap?.id}
-				<Badge class="animate-pulse">
+				<Badge class="animate-caret-blink">
 					<FastestIcon class="size-4" />
 				</Badge>
 			{/if}
 			{#if lap.isFlagged}
-				<Badge variant="destructive" class=" animate-caret-blink">
-					<FlagIcon class="size-4" />
-				</Badge>
+				<Tooltip.Provider>
+					<Tooltip.Root>
+						<Tooltip.Trigger>
+							<Badge variant="destructive" class=" animate-pulse">
+								<FlagIcon class="size-4" />
+							</Badge>
+						</Tooltip.Trigger>
+						<Tooltip.Content>
+							<p>{lap.flagReason}</p>
+						</Tooltip.Content>
+					</Tooltip.Root>
+				</Tooltip.Provider>
 			{/if}
 		</Card.Root>
 	{/each}

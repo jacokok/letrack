@@ -64,4 +64,8 @@ export class Timer {
 		this.#lastLap = new Date(this.timer?.getTime() ?? 0);
 		this.#start = new Date();
 	};
+
+	stop = () => {
+		this.#start = undefined;
+	};
 }

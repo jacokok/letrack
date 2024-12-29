@@ -5,9 +5,12 @@
 
 	interface Props {
 		isActive?: boolean;
+		onComplete?: () => void;
+		onPreComplete?: () => void;
+		onPostComplete?: () => void;
 	}
 
-	let { isActive = $bindable(false) }: Props = $props();
+	let { isActive = $bindable(false), onComplete, onPreComplete, onPostComplete }: Props = $props();
 
 	let lights = $state([false, false, false, false, false]);
 
@@ -33,12 +36,19 @@
 			const go = () => {
 				// Random value between 300 and 3000
 				const randomInterval = Math.floor(Math.random() * 2700) + 300;
+				setTimeout(() => {
+					onPreComplete?.();
+				}, randomInterval - 100);
 				clearInterval(timer);
 				setTimeout(() => {
 					turnOffAllLights();
 					startConfetti();
 					isActive = false;
+					onComplete?.();
 				}, randomInterval);
+				setTimeout(() => {
+					onPostComplete?.();
+				}, randomInterval + 400);
 			};
 
 			turnOffAllLights();
@@ -63,8 +73,8 @@
 
 <div class="flex w-full flex-col items-center">
 	<div class="flex w-full items-center">
-		<div class="h-4 w-full bg-gray-600"></div>
-		<div class="flex h-52 min-w-[680px] items-center justify-center rounded-xl bg-gray-600">
+		<div class="h-4 w-full bg-black/70"></div>
+		<div class="flex h-52 min-w-[680px] items-center justify-center rounded-xl bg-black/70">
 			<img src="/favicon.svg" alt="LeTrack" class="h-32" />
 			{#if showConfetti}
 				<Confetti y={[0.25, 0.5]} x={[-4, 4]} />
@@ -73,7 +83,7 @@
 				<span class="text-secondary">Le</span><span class="font-bold text-primary">Track</span>
 			</h1>
 		</div>
-		<div class="h-4 w-full bg-gray-600"></div>
+		<div class="h-4 w-full bg-black/70"></div>
 	</div>
 
 	<div class="flex w-fit items-center gap-4 rounded-md">

@@ -18,8 +18,11 @@ import type {
 import type {
 	EntitiesRace,
 	InternalErrorResponse,
+	ModelsPaginatedListOfRace,
 	RaceInsertRequest,
 	RaceListParams,
+	RaceStartRequest,
+	RaceStopRequest,
 	RaceSummaryResponse,
 	RaceUpdateRequest
 } from "./api.schemas";
@@ -89,11 +92,11 @@ export const createRaceUpdate = <
 
 	return createMutation(mutationOptions);
 };
-export const raceList = (params: RaceListParams) => {
-	return customInstance<EntitiesRace[]>({ url: `/race`, method: "GET", params });
+export const raceList = (params?: RaceListParams) => {
+	return customInstance<ModelsPaginatedListOfRace>({ url: `/race`, method: "GET", params });
 };
 
-export const getRaceListQueryKey = (params: RaceListParams) => {
+export const getRaceListQueryKey = (params?: RaceListParams) => {
 	return [`/race`, ...(params ? [params] : [])] as const;
 };
 
@@ -101,7 +104,7 @@ export const getRaceListQueryOptions = <
 	TData = Awaited<ReturnType<typeof raceList>>,
 	TError = ErrorType<InternalErrorResponse>
 >(
-	params: RaceListParams,
+	params?: RaceListParams,
 	options?: {
 		query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof raceList>>, TError, TData>>;
 	}
@@ -126,7 +129,7 @@ export function createRaceList<
 	TData = Awaited<ReturnType<typeof raceList>>,
 	TError = ErrorType<InternalErrorResponse>
 >(
-	params: RaceListParams,
+	params?: RaceListParams,
 	options?: {
 		query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof raceList>>, TError, TData>>;
 	}
@@ -258,6 +261,132 @@ export function createRaceSummary<
 	return query;
 }
 
+export const raceStop = (raceStopRequest: BodyType<RaceStopRequest>) => {
+	return customInstance<EntitiesRace>({
+		url: `/race/stop`,
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		data: raceStopRequest
+	});
+};
+
+export const getRaceStopMutationOptions = <
+	TError = ErrorType<InternalErrorResponse>,
+	TContext = unknown
+>(options?: {
+	mutation?: CreateMutationOptions<
+		Awaited<ReturnType<typeof raceStop>>,
+		TError,
+		{ data: BodyType<RaceStopRequest> },
+		TContext
+	>;
+}): CreateMutationOptions<
+	Awaited<ReturnType<typeof raceStop>>,
+	TError,
+	{ data: BodyType<RaceStopRequest> },
+	TContext
+> => {
+	const { mutation: mutationOptions } = options ?? {};
+
+	const mutationFn: MutationFunction<
+		Awaited<ReturnType<typeof raceStop>>,
+		{ data: BodyType<RaceStopRequest> }
+	> = (props) => {
+		const { data } = props ?? {};
+
+		return raceStop(data);
+	};
+
+	return { mutationFn, ...mutationOptions };
+};
+
+export type RaceStopMutationResult = NonNullable<Awaited<ReturnType<typeof raceStop>>>;
+export type RaceStopMutationBody = BodyType<RaceStopRequest>;
+export type RaceStopMutationError = ErrorType<InternalErrorResponse>;
+
+export const createRaceStop = <
+	TError = ErrorType<InternalErrorResponse>,
+	TContext = unknown
+>(options?: {
+	mutation?: CreateMutationOptions<
+		Awaited<ReturnType<typeof raceStop>>,
+		TError,
+		{ data: BodyType<RaceStopRequest> },
+		TContext
+	>;
+}): CreateMutationResult<
+	Awaited<ReturnType<typeof raceStop>>,
+	TError,
+	{ data: BodyType<RaceStopRequest> },
+	TContext
+> => {
+	const mutationOptions = getRaceStopMutationOptions(options);
+
+	return createMutation(mutationOptions);
+};
+export const raceStart = (raceStartRequest: BodyType<RaceStartRequest>) => {
+	return customInstance<EntitiesRace>({
+		url: `/race/start`,
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		data: raceStartRequest
+	});
+};
+
+export const getRaceStartMutationOptions = <
+	TError = ErrorType<InternalErrorResponse>,
+	TContext = unknown
+>(options?: {
+	mutation?: CreateMutationOptions<
+		Awaited<ReturnType<typeof raceStart>>,
+		TError,
+		{ data: BodyType<RaceStartRequest> },
+		TContext
+	>;
+}): CreateMutationOptions<
+	Awaited<ReturnType<typeof raceStart>>,
+	TError,
+	{ data: BodyType<RaceStartRequest> },
+	TContext
+> => {
+	const { mutation: mutationOptions } = options ?? {};
+
+	const mutationFn: MutationFunction<
+		Awaited<ReturnType<typeof raceStart>>,
+		{ data: BodyType<RaceStartRequest> }
+	> = (props) => {
+		const { data } = props ?? {};
+
+		return raceStart(data);
+	};
+
+	return { mutationFn, ...mutationOptions };
+};
+
+export type RaceStartMutationResult = NonNullable<Awaited<ReturnType<typeof raceStart>>>;
+export type RaceStartMutationBody = BodyType<RaceStartRequest>;
+export type RaceStartMutationError = ErrorType<InternalErrorResponse>;
+
+export const createRaceStart = <
+	TError = ErrorType<InternalErrorResponse>,
+	TContext = unknown
+>(options?: {
+	mutation?: CreateMutationOptions<
+		Awaited<ReturnType<typeof raceStart>>,
+		TError,
+		{ data: BodyType<RaceStartRequest> },
+		TContext
+	>;
+}): CreateMutationResult<
+	Awaited<ReturnType<typeof raceStart>>,
+	TError,
+	{ data: BodyType<RaceStartRequest> },
+	TContext
+> => {
+	const mutationOptions = getRaceStartMutationOptions(options);
+
+	return createMutation(mutationOptions);
+};
 export const raceDelete = (id: number) => {
 	return customInstance<void>({ url: `/race/${id}`, method: "DELETE" });
 };

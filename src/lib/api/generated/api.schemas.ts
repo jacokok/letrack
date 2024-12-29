@@ -5,7 +5,10 @@
  * OpenAPI spec version: v1
  */
 export type RaceListParams = {
-	isActive: boolean;
+	sorts?: string | null;
+	filters?: string | null;
+	page?: number | null;
+	pageSize?: number | null;
 };
 
 export interface PlayersDeleteRequest {
@@ -34,8 +37,31 @@ export interface RaceInsertRequest {
 	players: number[];
 }
 
-export interface RaceListRequest {
+export interface ModelsQueryModel {
 	[key: string]: unknown;
+}
+
+export type RaceListRequestAllOf = { [key: string]: unknown };
+
+export type RaceListRequest = ModelsQueryModel & RaceListRequestAllOf;
+
+export interface ModelsPaginatedListOfRace {
+	hasNextPage: boolean;
+	hasPreviousPage: boolean;
+	items: EntitiesRace[];
+	pageNumber: number;
+	totalCount: number;
+	totalPages: number;
+}
+
+export interface RaceStartRequest {
+	duration: number;
+	id: number;
+	laps: number;
+}
+
+export interface RaceStopRequest {
+	id: number;
 }
 
 export interface RaceSummaryRequest {
@@ -111,10 +137,16 @@ export interface EntitiesRace {
 	name: string;
 	raceTracks: EntitiesRaceTrack[];
 	/** @nullable */
+	restartDateTime?: string | null;
+	/** @nullable */
 	startDateTime?: string | null;
+	/** @nullable */
+	timeRemaining?: string | null;
 }
 
 export interface DTOLapDTO {
+	/** @nullable */
+	flagReason?: string | null;
 	id: string;
 	isFlagged: boolean;
 	lapNumber: number;

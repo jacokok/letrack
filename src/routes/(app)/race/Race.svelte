@@ -13,9 +13,12 @@
 
 <Card.Root>
 	<Card.Header class="flex flex-row items-center">
-		<div class="flex w-full flex-col items-start">
+		<div class="flex w-full flex-col items-start gap-1">
 			<Card.Title>{race.name}</Card.Title>
 			<Card.Description>{race.createdDateTime}</Card.Description>
+			{#if race.isActive}
+				<Badge class="animate-pulse">Active</Badge>
+			{/if}
 		</div>
 		<Actions {race} {refetch} />
 	</Card.Header>

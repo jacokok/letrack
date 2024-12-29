@@ -1,18 +1,24 @@
 <script lang="ts">
 	import { page } from "$app/state";
-	import { createRaceSummary, type RaceSummaryTrack } from "$lib/api";
-	import Laps from "$lib/components/Laps.svelte";
-	import { Alert, Card, Loader } from "@kayord/ui";
+	import { createRaceStart, createRaceStop, createRaceSummary } from "$lib/api";
+	import { Alert, Button, Loader, Sheet } from "@kayord/ui";
 	import RaceSummary from "./RaceSummary.svelte";
-	import TrackSummary from "./TrackSummary.svelte";
-	import StopWatch from "$lib/components/StopWatch.svelte";
 	import type { DoneEvent, SaveEvent } from "$lib/types";
 	import Track from "./Track.svelte";
 	import { hub } from "$lib/stores/hub.svelte";
+	import PlayIcon from "lucide-svelte/icons/play";
+	import StopIcon from "lucide-svelte/icons/square";
+	import Header from "$lib/components/Header.svelte";
+	import StartRace from "./StartRace.svelte";
+	import Lights from "$lib/components/Light/Lights.svelte";
 
 	const query = createRaceSummary(Number(page.params.Id));
 
 	let tracks: Array<Track | undefined> = new Array(4);
+	let startRaceOpen = $state(false);
+	let startRaceIsActive = $state(false);
+	let startRaceSheetOpen = $state(false);
+	let startState: { duration: number; laps: number; showCountdown: boolean };
 
 	const doneEvent = (evt: DoneEvent) => {
 		tracks[evt.trackId]?.doneEvent(evt);
@@ -28,7 +34,15 @@
 	});
 
 	const receiveEvent = (evt: SaveEvent) => {
-		tracks[evt.trackId]?.receiveEvent(evt);
+		if ($query.data?.race.isActive) {
+			tracks[evt.trackId]?.receiveEvent(evt);
+		}
+	};
+
+	const stopEvent = () => {
+		for (const track of $query.data?.tracks ?? []) {
+			tracks[track.trackId]?.stopEvent();
+		}
 	};
 
 	$effect(() => {
@@ -39,9 +53,100 @@
 			};
 		}
 	});
+
+	const stopMutation = createRaceStop();
+	const startMutation = createRaceStart();
+
+	const stopStart = async () => {
+		if ($query.data?.race.isActive) {
+			await $stopMutation.mutateAsync({ data: { id: Number(page.params.Id) } });
+			stopEvent();
+			$query.refetch();
+		} else {
+			startRaceOpen = true;
+		}
+	};
+
+	const startTimers = () => {
+		for (const track of $query.data?.tracks ?? []) {
+			tracks[track.trackId]?.receiveEvent({
+				trackId: track.trackId,
+				id: "",
+				timestamp: new Date().toISOString()
+			});
+		}
+	};
+
+	const startRaceLogic = async () => {
+		await $startMutation.mutateAsync({
+			data: { id: Number(page.params.Id), duration: startState.duration, laps: startState.laps }
+		});
+		startTimers();
+		$query.refetch();
+	};
+
+	const startRace = async (data: { duration: number; laps: number; showCountdown: boolean }) => {
+		startState = data;
+		if (!data.showCountdown) {
+			startRaceLogic();
+		} else {
+			startRaceSheetOpen = true;
+			setTimeout(() => {
+				startRaceIsActive = true;
+			}, 1500);
+		}
+		startRaceOpen = false;
+	};
+
+	const onStartRaceComplete = () => {
+		startRaceLogic();
+	};
+	const onStartRacePostComplete = () => {
+		startRaceSheetOpen = false;
+	};
+	const onStartRacePreComplete = () => {
+		startRaceLogic();
+	};
+
+	const hideOptions = $derived(
+		$query.data?.race.timeRemaining != undefined || $query.data?.race.endLapCount != undefined
+	);
 </script>
 
+{#snippet right()}
+	{#if $query.data}
+		<Button size="icon" onclick={stopStart}>
+			{#if $query.data?.race.isActive}
+				<StopIcon />
+			{:else}
+				<PlayIcon />
+			{/if}
+		</Button>
+	{/if}
+{/snippet}
+
+<Header {right} />
+
+<Sheet.Root bind:open={startRaceSheetOpen} class="w-full p-0">
+	<Sheet.Content
+		side="top"
+		interactOutsideBehavior="ignore"
+		escapeKeydownBehavior="ignore"
+		class="px-0 [&>button]:hidden"
+	>
+		<div>
+			<Lights
+				isActive={startRaceIsActive}
+				onComplete={onStartRaceComplete}
+				onPreComplete={onStartRacePreComplete}
+				onPostComplete={onStartRacePostComplete}
+			/>
+		</div>
+	</Sheet.Content>
+</Sheet.Root>
+
 <div class="flex w-full flex-col">
+	<StartRace bind:open={startRaceOpen} cb={startRace} {hideOptions} />
 	{#if $query.error}
 		<Alert.Root>
 			<Alert.Title>An Error Occurred!</Alert.Title>

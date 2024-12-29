@@ -9,6 +9,10 @@
 	export const receiveEvent = (evt: SaveEvent) => {
 		timer.start();
 	};
+
+	export const stopEvent = () => {
+		timer.stop();
+	};
 </script>
 
 <Card.Root class="flex w-72 items-center gap-2 p-2">
