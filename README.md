@@ -78,10 +78,10 @@ ls /pyboard
 
 rshell repl
 # sync src with pyboard
-rshell rsync src /pyboard
+rshell rsync sensor /pyboard
 
 # run specific file in repl
-exec(open('file.py').read())
+exec(open('test.py').read())
 ```
 
 ### Install Packages

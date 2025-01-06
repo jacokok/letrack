@@ -3,6 +3,8 @@ from machine import Pin
 from track import BreakBeam
 from umqtt.robust import MQTTClient
 import config
+import ntptime
+import time
 
 
 async def beam_handler(beam: BreakBeam, mqtt: MQTTClient):
@@ -12,6 +14,15 @@ async def beam_handler(beam: BreakBeam, mqtt: MQTTClient):
 
 
 async def main():
+
+    try:
+        # ntptime.host = "1.europe.pool.ntp.org"
+        ntptime.host = "192.168.1.29"
+        ntptime.settime()
+        print("Local time after synchronization：%s" % str(time.localtime()))
+    except:
+        print("Error syncing time")
+
     mqtt = MQTTClient(
         "letrack",
         config.MQTT_SERVER,
