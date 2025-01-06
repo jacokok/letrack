@@ -23,40 +23,34 @@ public class EventSubscriber : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        try
-        {
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                try
-                {
-                    if (!_mqttService.GetMqttClient().IsConnected)
-                    {
-                        if (!await _mqttService.GetMqttClient().TryPingAsync())
-                        {
-                            _logger.LogInformation("Reconnecting.");
-                            await _mqttService.ConnectMqttAsync(stoppingToken);
-                            _logger.LogInformation("The MQTT client is connected.");
 
-                            _mqttService.GetMqttClient().ApplicationMessageReceivedAsync += ReceiveMessage;
-                            var mqttSubscribeOptions = _mqttService.GetMqttFactory().CreateSubscribeOptionsBuilder().WithTopicFilter("event/#").Build();
-                            await _mqttService.GetMqttClient().SubscribeAsync(mqttSubscribeOptions, stoppingToken);
-                            _logger.LogInformation("Doooooonnnneeee -----------------.");
-                        }
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            try
+            {
+                if (!_mqttService.GetMqttClient().IsConnected)
+                {
+                    if (!await _mqttService.GetMqttClient().TryPingAsync())
+                    {
+                        _logger.LogInformation("Reconnecting.");
+                        await _mqttService.ConnectMqttAsync(stoppingToken);
+                        _logger.LogInformation("The MQTT client is connected.");
+
+                        _mqttService.GetMqttClient().ApplicationMessageReceivedAsync += ReceiveMessage;
+                        var mqttSubscribeOptions = _mqttService.GetMqttFactory().CreateSubscribeOptionsBuilder().WithTopicFilter("event/#").Build();
+                        await _mqttService.GetMqttClient().SubscribeAsync(mqttSubscribeOptions, stoppingToken);
+                        _logger.LogInformation("Doooooonnnneeee -----------------.");
                     }
                 }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "MQTT connection error");
-                }
-                finally
-                {
-                    await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
-                }
             }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "MQTT connection error");
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "MQTT connection error");
+            }
+            finally
+            {
+                await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+            }
         }
     }
 

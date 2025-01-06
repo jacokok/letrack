@@ -18,7 +18,15 @@ const createHub = () => {
 	const init = async () => {
 		connection = new HubConnectionBuilder()
 			.withUrl(`${PUBLIC_API_URL}/hub`)
-			.withAutomaticReconnect()
+			.withAutomaticReconnect({
+				nextRetryDelayInMilliseconds: (retryContext) => {
+					if (retryContext.elapsedMilliseconds < 120000) {
+						return 1000;
+					} else {
+						return 15000;
+					}
+				}
+			})
 			.configureLogging(LogLevel.None)
 			.build();
 
