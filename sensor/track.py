@@ -4,6 +4,7 @@ from utime import ticks_ms, time_ns, gmtime
 from event import Event
 from umqtt.robust import MQTTClient
 import json
+from buzzer import Buzzer
 
 
 class BreakBeam:
@@ -15,7 +16,7 @@ class BreakBeam:
         self.prev_event = event
         self.trackId = trackId
         self.led = Pin("LED", Pin.OUT)
-        self.buzzer = Pin(11, Pin.OUT)
+        self.buzzer = Buzzer()
 
         self.beam.irq(
             handler=self.break_handler,
@@ -33,11 +34,6 @@ class BreakBeam:
             self.prev_event = self.event
             uasyncio.create_task(self.publish_event(self.event, mqtt))
 
-    async def buzz(self):
-        self.buzzer.on()
-        await uasyncio.sleep_ms(120)
-        self.buzzer.off()
-
     async def publish_event(self, event: Event, mqtt: MQTTClient):
         current_ns = time_ns()
         utc_string = utc_from_ns(current_ns)
@@ -49,7 +45,7 @@ class BreakBeam:
             }
         )
         mqtt.publish("event", event_json)
-        uasyncio.create_task(self.buzz())
+        self.buzzer.lap()
 
 
 def utc_from_ns(ns):
