@@ -1,41 +1,51 @@
 services:
   api:
-    image: letrack-api:latest
+    image: doink/letrack-api:latest
     ports:
       - 5021:5021
     restart: unless-stopped
     environment:
-      Config__MqttBroker: host.docker.internal
-      ConnectionStrings__DefaultConnection: host=host.docker.internal;database=letrack;username=letrack;password=letrack
+      Config__MqttBroker: mqtt
+      ConnectionStrings__DefaultConnection: host=db;database=letrack;username=letrack;password=letrack
     extra_hosts:
       - host.docker.internal:host-gateway
+    depends_on:
+      - db
+      - mqtt
 
-  # fe:
-  #   image: letrack:latest
-  #   ports:
-  #     - 5173:5173
+  fe:
+    image: doink/letrack:latest
+    ports:
+      - 5173:80
+    restart: unless-stopped
+    environment:
+      PUBLIC_API_URL: http://api:5021
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    depends_on:
+      - api
 
-  # postgres:
-  #   image: postgres:17
-  #   ports:
-  #     - 5432:5432
-  #   restart: unless-stopped
-  #   environment:
-  #     POSTGRES_DB: letrack
-  #     POSTGRES_USER: letrack
-  #     POSTGRES_PASSWORD: letrack
-  #   volumes:
-  #     - pg-data:/var/lib/postgresql/data
+  db:
+    image: postgres:17
+    ports:
+      - 5432:5432
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: letrack
+      POSTGRES_USER: letrack
+      POSTGRES_PASSWORD: letrack
+    volumes:
+      - pg-data:/var/lib/postgresql/data
 
-  # mosquitto:
-  #   container_name: mosquitto
-  #   image: eclipse-mosquitto:latest
-  #   ports:
-  #     - 1883:1883
-  #   volumes:
-  #     - ./conf/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
-  #     - mosquitto:/mosquitto/data
-  #   restart: unless-stopped
-# volumes:
-#   pg-data:
-#   mosquitto:
+  mqtt:
+    image: eclipse-mosquitto:latest
+    ports:
+      - 1883:1883
+    volumes:
+      - ./api/conf/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mosquitto:/mosquitto/data
+    restart: unless-stopped
+
+volumes:
+  pg-data:
+  mosquitto:
