@@ -9,6 +9,7 @@
     ],
     "cSpell.words": [
         "rshell",
+        "letrack"
     ],
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter",
