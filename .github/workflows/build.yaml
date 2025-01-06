@@ -45,10 +45,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: LS
+        run: ls -al
+        working-directory: ./fe
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: "{{defaultContext}}:fe"
+          context: ./fe
           push: true
           platforms: linux/amd64,linux/arm64
           tags: doink/letrack:latest, doink/letrack:${{ github.sha }}
