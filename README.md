@@ -29,6 +29,8 @@ pm dev
 
 ## Assets
 
+![model](./assets/screenshot.png)
+
 This consist of two parts. The front and the back. It has slots for all required components to go in.
 
 - ![Back](./assets/LeTrack-Back.stl)
