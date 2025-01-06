@@ -26,8 +26,4 @@ app.UseCorsLeTrack();
 app.UseApi();
 app.MapHub<LeTrackHub>("/hub");
 
-var serviceProvider = app.Services;
-var mqttService = serviceProvider.GetRequiredService<MqttService>();
-await mqttService.ConnectMqttAsync();
-
 app.Run();

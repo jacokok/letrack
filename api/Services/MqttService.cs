@@ -14,7 +14,7 @@ public class MqttService
         _config = config;
     }
 
-    public async Task ConnectMqttAsync()
+    public async Task ConnectMqttAsync(CancellationToken cancellationToken)
     {
         if (_mqttClient.IsConnected) return;
 
@@ -22,7 +22,7 @@ public class MqttService
             .WithTcpServer(_config["Config:MqttBroker"])
             .Build();
 
-        await _mqttClient.ConnectAsync(options, CancellationToken.None);
+        await _mqttClient.ConnectAsync(options, cancellationToken);
     }
     public MqttFactory GetMqttFactory()
     {

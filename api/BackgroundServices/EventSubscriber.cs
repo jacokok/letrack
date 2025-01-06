@@ -10,25 +10,54 @@ namespace LeTrack.BackgroundServices;
 
 public class EventSubscriber : BackgroundService
 {
-    private readonly MqttService _mqttService;
     private readonly IServiceScopeFactory _serviceScopeFactory;
     private readonly ILogger<EventSubscriber> _logger;
+    private readonly MqttService _mqttService;
 
-    public EventSubscriber(MqttService mqttService, ILogger<EventSubscriber> logger, IServiceScopeFactory serviceScopeFactory)
+    public EventSubscriber(ILogger<EventSubscriber> logger, IServiceScopeFactory serviceScopeFactory, MqttService mqttService)
     {
-        _mqttService = mqttService;
         _logger = logger;
         _serviceScopeFactory = serviceScopeFactory;
+        _mqttService = mqttService;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _mqttService.GetMqttClient().ApplicationMessageReceivedAsync += ReceiveMessage;
+        try
+        {
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                try
+                {
+                    if (!_mqttService.GetMqttClient().IsConnected)
+                    {
+                        if (!await _mqttService.GetMqttClient().TryPingAsync())
+                        {
+                            _logger.LogInformation("Reconnecting.");
+                            await _mqttService.ConnectMqttAsync(stoppingToken);
+                            _logger.LogInformation("The MQTT client is connected.");
 
-        var mqttSubscribeOptions = _mqttService.GetMqttFactory().CreateSubscribeOptionsBuilder().WithTopicFilter("event/#").Build();
-
-        var result = await _mqttService.GetMqttClient().SubscribeAsync(mqttSubscribeOptions, stoppingToken);
-        _logger.LogInformation("Done");
+                            _mqttService.GetMqttClient().ApplicationMessageReceivedAsync += ReceiveMessage;
+                            var mqttSubscribeOptions = _mqttService.GetMqttFactory().CreateSubscribeOptionsBuilder().WithTopicFilter("event/#").Build();
+                            await _mqttService.GetMqttClient().SubscribeAsync(mqttSubscribeOptions, stoppingToken);
+                            _logger.LogInformation("Doooooonnnneeee -----------------.");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "MQTT connection error");
+                }
+                finally
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "MQTT connection error");
+        }
     }
 
     private async Task ReceiveMessage(MqttApplicationMessageReceivedEventArgs e)
@@ -68,14 +97,6 @@ public class EventSubscriber : BackgroundService
             Timestamp = eventModel.Timestamp
         }.PublishAsync(Mode.WaitForNone);
 
-
-
-        // This should check if event exists. If not save to event table.
-        // This should then trigger multiple fire and forget jobs.
-        // SignalR send notify event to client
-        // Get lap counts
-        // Check what session this is part of
-        // Send Summary to client
         return;
     }
 }
