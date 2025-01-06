@@ -21,14 +21,17 @@ jobs:
         with:
           node-version: latest
           cache: pnpm
+          cache-dependency-path: fe/pnpm-lock.yaml
 
       - name: Install Dependencies
         run: pnpm i
+        working-directory: ./fe
 
       - name: Build
         env:
           NODE_OPTIONS: "--max_old_space_size=4096"
         run: pnpm build
+        working-directory: ./fe
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -49,6 +52,7 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: doink/letrack:latest, doink/letrack:${{ github.sha }}
+
   api:
     runs-on: ubuntu-latest
     steps:
