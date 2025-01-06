@@ -1,22 +1,33 @@
-# LeTrack Sensor
+# LeTrack
 
-This is the hardware part for LeTrack. This includes micropython code to detect lap events.
+LeTrack is a race tracking system that uses IR break beam sensors to detect lap events.
 
-![model](./assets/screenshot.png)
+This project consist of 3 parts.
 
-This project consist of 3 parts and 3 separate repositories.
+- Dotnet Back end (api)
+- Svelte Front end (fe)
+- Hardware sensors (sensor)
 
-- <https://github.com/jacokok/letrack-api> (Back End)
-- <https://github.com/jacokok/letrack> (Front End)
-- <https://github.com/jacokok/letrack-sensor> (Hardware)
+## Back End
 
-## Hardware
+### Run Back End
 
-- IR break beam sensors
-- Active Buzzer
-- Raspberry Pi Pico W
+```bash
+# Start back end containers first
+docker compose up -d
+dotnet run
+```
 
-## 3D Model Bridge
+## Front End
+
+### Run Front End
+
+```bash
+# Run back end first
+pm dev
+```
+
+## Assets
 
 This consist of two parts. The front and the back. It has slots for all required components to go in.
 
@@ -28,7 +39,15 @@ This consist of two parts. The front and the back. It has slots for all required
 - 6x M2 screws to fit the raspberry pi and the speaker.
 - 4x M3 Screws for the corners
 
-## DEV Setup
+## Hardware / Sensor
+
+This is a micropython project that needs the below components:
+
+- IR break beam sensors
+- Active Buzzer
+- Raspberry Pi Pico W
+
+### DEV Setup
 
 1. Install micropython on raspberry pi
 2. Setup virtual environment for python and install requirements
@@ -36,7 +55,7 @@ This consist of two parts. The front and the back. It has slots for all required
 4. Install packages using mip
 5. Create config.py based on example-config.py
 
-## Setup Virtual Environment
+### Setup Virtual Environment
 
 ```bash
 # Setup venv
@@ -46,7 +65,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## shell
+### shell
 
 ```bash
 rshell
@@ -63,7 +82,7 @@ rshell rsync src /pyboard
 exec(open('file.py').read())
 ```
 
-## Install Packages
+### Install Packages
 
 ```bash
 # Install mip packages
