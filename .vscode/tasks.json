@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/letrack-api.sln",
+                "${workspaceFolder}/api/letrack-api.sln",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary;ForceNoAlign"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/letrack-api.sln",
+                "${workspaceFolder}/api/letrack-api.sln",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary;ForceNoAlign"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/letrack-api.sln"
+                "${workspaceFolder}/api/letrack-api.sln"
             ],
             "problemMatcher": "$msCompile"
         },

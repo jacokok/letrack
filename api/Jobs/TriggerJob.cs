@@ -38,7 +38,6 @@ public class TriggerJob : IJob
                 }
                 else
                 {
-                    _logger.LogDebug("Job Trigger not good all shiet");
                     await scheduler.DeleteJob(jobKey, context.CancellationToken);
                 }
             }

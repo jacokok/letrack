@@ -31,7 +31,15 @@ public class Endpoint : Endpoint<Request, Entities.Race>
 
         if (race.EndDateTime != null)
         {
-            race.TimeRemaining = race.EndDateTime - DateTime.UtcNow;
+            var timeRemaining = race.EndDateTime - DateTime.UtcNow;
+            if (timeRemaining > TimeSpan.Zero)
+            {
+                race.TimeRemaining = timeRemaining;
+            }
+            else
+            {
+                timeRemaining = null;
+            }
         }
 
         await _dbContext.SaveChangesAsync();

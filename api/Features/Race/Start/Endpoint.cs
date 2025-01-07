@@ -1,16 +1,20 @@
 using LeTrack.Data;
 using LeTrack.Entities;
+using LeTrack.Jobs;
 using Microsoft.EntityFrameworkCore;
+using Quartz;
 
 namespace LeTrack.Features.Race.Start;
 
 public class Endpoint : Endpoint<Request, Entities.Race>
 {
     private readonly AppDbContext _dbContext;
+    private readonly ISchedulerFactory _schedulerFactory;
 
-    public Endpoint(AppDbContext dbContext)
+    public Endpoint(AppDbContext dbContext, ISchedulerFactory schedulerFactory)
     {
         _dbContext = dbContext;
+        _schedulerFactory = schedulerFactory;
     }
 
     public override void Configure()
@@ -61,6 +65,15 @@ public class Endpoint : Endpoint<Request, Entities.Race>
         race.RestartDateTime = now;
 
         await _dbContext.SaveChangesAsync();
+
+        // TriggerJob
+        IScheduler? scheduler = await _schedulerFactory.GetScheduler(ct);
+        if (scheduler is not null)
+        {
+            JobKey jobKey = new("TriggerJob", "Trigger");
+            await scheduler.TriggerJob(jobKey, ct);
+        }
+
         await SendAsync(race);
     }
 }
