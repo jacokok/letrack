@@ -32,14 +32,11 @@ public class EventSubscriber : BackgroundService
                 {
                     if (!await _mqttService.GetMqttClient().TryPingAsync())
                     {
-                        _logger.LogInformation("Reconnecting.");
                         await _mqttService.ConnectMqttAsync(stoppingToken);
                         _logger.LogInformation("The MQTT client is connected.");
-
                         _mqttService.GetMqttClient().ApplicationMessageReceivedAsync += ReceiveMessage;
                         var mqttSubscribeOptions = _mqttService.GetMqttFactory().CreateSubscribeOptionsBuilder().WithTopicFilter("event/#").Build();
                         await _mqttService.GetMqttClient().SubscribeAsync(mqttSubscribeOptions, stoppingToken);
-                        _logger.LogInformation("Doooooonnnneeee -----------------.");
                     }
                 }
             }
