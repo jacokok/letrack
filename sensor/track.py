@@ -2,7 +2,7 @@ import uasyncio
 from machine import Pin
 from utime import ticks_ms, time_ns, gmtime
 from event import Event
-from umqtt.robust import MQTTClient
+from mqtt_as import MQTTClient
 import json
 from buzzer import Buzzer
 
@@ -44,7 +44,8 @@ class BreakBeam:
                 "Timestamp": utc_string,
             }
         )
-        mqtt.publish("event", event_json)
+        await mqtt.publish("event", event_json)
+        # mqtt.publish("event", event_json)
         self.buzzer.lap()
 
 
