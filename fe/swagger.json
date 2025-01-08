@@ -569,6 +569,59 @@
           }
         }
       }
+    },
+    "/laps": {
+      "get": {
+        "tags": [
+          "Laps"
+        ],
+        "operationId": "Laps",
+        "parameters": [
+          {
+            "name": "raceId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "trackId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DTOLapDTO"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1053,6 +1106,10 @@
         }
       },
       "PlayersDeleteRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "LapsRequest": {
         "type": "object",
         "additionalProperties": false
       }

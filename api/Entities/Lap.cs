@@ -11,4 +11,6 @@ public class Lap
     public bool IsFlagged { get; set; }
     public string? FlagReason { get; set; }
     public int RaceId { get; set; }
+    public int PlayerId { get; set; }
+    public bool IsValid { get; set; } = true;
 }

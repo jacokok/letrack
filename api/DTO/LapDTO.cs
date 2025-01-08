@@ -12,4 +12,6 @@ public class LapDTO
     public string? FlagReason { get; set; }
     public int RaceId { get; set; }
     public int LapNumber { get; set; }
+    public int PlayerId { get; set; }
+    public bool IsValid { get; set; } = true;
 }

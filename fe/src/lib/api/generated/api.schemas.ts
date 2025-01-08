@@ -4,12 +4,21 @@
  * letrack-api
  * OpenAPI spec version: v1
  */
+export type LapsParams = {
+	raceId: number;
+	trackId: number;
+};
+
 export type RaceListParams = {
 	sorts?: string | null;
 	filters?: string | null;
 	page?: number | null;
 	pageSize?: number | null;
 };
+
+export interface LapsRequest {
+	[key: string]: unknown;
+}
 
 export interface PlayersDeleteRequest {
 	[key: string]: unknown;

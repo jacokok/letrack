@@ -50,7 +50,9 @@
                 "Data/Migrations"
             ],
             "problemMatcher": "$msCompile",
-            "options": {}
+            "options": {
+                "cwd": "${workspaceFolder}/api"
+            }
         },
         {
             "label": "EF Migration Remove",
@@ -65,6 +67,7 @@
             ],
             "problemMatcher": "$msCompile",
             "options": {
+                "cwd": "${workspaceFolder}/api",
                 "env": {
                     "ASPNETCORE_ENVIRONMENT": "Development"
                 }
@@ -84,6 +87,7 @@
             ],
             "problemMatcher": "$msCompile",
             "options": {
+                "cwd": "${workspaceFolder}/api",
                 "env": {
                     "ASPNETCORE_ENVIRONMENT": "Development"
                 }

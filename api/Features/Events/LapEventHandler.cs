@@ -28,8 +28,7 @@ public class LapEventHandler : IEventHandler<LapEvent>
             throw new Exception("Dependency injection failed");
         }
 
-        var race = await _dbContext.Race.FirstOrDefaultAsync(x => x.IsActive && x.RaceTracks.Any(x => x.TrackId == eventModel.TrackId), ct);
-
+        var race = await _dbContext.Race.Include(x => x.RaceTracks).FirstOrDefaultAsync(x => x.IsActive && x.RaceTracks.Any(x => x.TrackId == eventModel.TrackId), ct);
 
         TimeSpan? lapTimeSpan = null;
         TimeSpan? lapDifference = null;
@@ -92,7 +91,8 @@ public class LapEventHandler : IEventHandler<LapEvent>
             LapTimeDifference = lapDifference,
             IsFlagged = isFlagged,
             RaceId = race?.Id ?? 0,
-            FlagReason = flagReason
+            FlagReason = flagReason,
+            PlayerId = (race != null) ? race.RaceTracks.Where(x => x.TrackId == eventModel.TrackId).Select(x => x.PlayerId).FirstOrDefault() : 0
         };
         await _dbContext.Lap.AddAsync(lap);
         await _dbContext.SaveChangesAsync(ct);
