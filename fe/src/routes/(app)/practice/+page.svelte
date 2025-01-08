@@ -47,6 +47,7 @@
 		<Popover.Content class="flex flex-col gap-4">
 			<Label>Number of tracks</Label>
 			<Slider
+				type="single"
 				bind:value={practice.value.numberOfTracks}
 				min={1}
 				max={2}
@@ -60,7 +61,7 @@
 <Header {right} />
 
 <div class="m-2 flex flex-row gap-2">
-	{#each { length: practice.value.numberOfTracks[0] }, index}
+	{#each { length: practice.value.numberOfTracks }, index}
 		{@const curTrack = index + 1}
 		<Track trackId={curTrack} bind:this={tracks[curTrack]} />
 	{/each}
