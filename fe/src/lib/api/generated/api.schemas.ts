@@ -16,6 +16,10 @@ export type RaceListParams = {
 	pageSize?: number | null;
 };
 
+export interface LapsValidRequest {
+	ids: string[];
+}
+
 export interface LapsRequest {
 	[key: string]: unknown;
 }
@@ -168,6 +172,8 @@ export interface DTOLapDTO {
 	flagReason?: string | null;
 	raceId: number;
 	lapNumber: number;
+	playerId: number;
+	isValid: boolean;
 }
 
 /**

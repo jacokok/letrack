@@ -4,17 +4,20 @@
  * letrack-api
  * OpenAPI spec version: v1
  */
-import { createQuery } from "@tanstack/svelte-query";
+import { createMutation, createQuery } from "@tanstack/svelte-query";
 import type {
+	CreateMutationOptions,
+	CreateMutationResult,
 	CreateQueryOptions,
 	CreateQueryResult,
 	DataTag,
+	MutationFunction,
 	QueryFunction,
 	QueryKey
 } from "@tanstack/svelte-query";
-import type { DTOLapDTO, InternalErrorResponse, LapsParams } from "./api.schemas";
+import type { DTOLapDTO, InternalErrorResponse, LapsParams, LapsValidRequest } from "./api.schemas";
 import { customInstance } from "../mutator/customInstance.svelte";
-import type { ErrorType } from "../mutator/customInstance.svelte";
+import type { ErrorType, BodyType } from "../mutator/customInstance.svelte";
 
 export const laps = (params: LapsParams) => {
 	return customInstance<DTOLapDTO[]>({ url: `/laps`, method: "GET", params });
@@ -62,3 +65,59 @@ export function createLaps<
 
 	return query;
 }
+
+export const lapsValid = (lapsValidRequest: BodyType<LapsValidRequest>) => {
+	return customInstance<boolean>({
+		url: `/laps/valid`,
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		data: lapsValidRequest
+	});
+};
+
+export const getLapsValidMutationOptions = <
+	TData = Awaited<ReturnType<typeof lapsValid>>,
+	TError = ErrorType<InternalErrorResponse>,
+	TContext = unknown
+>(options?: {
+	mutation?: CreateMutationOptions<TData, TError, { data: BodyType<LapsValidRequest> }, TContext>;
+}) => {
+	const mutationKey = ["lapsValid"];
+	const { mutation: mutationOptions } = options
+		? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+			? options
+			: { ...options, mutation: { ...options.mutation, mutationKey } }
+		: { mutation: { mutationKey } };
+
+	const mutationFn: MutationFunction<
+		Awaited<ReturnType<typeof lapsValid>>,
+		{ data: BodyType<LapsValidRequest> }
+	> = (props) => {
+		const { data } = props ?? {};
+
+		return lapsValid(data);
+	};
+
+	return { mutationFn, ...mutationOptions } as CreateMutationOptions<
+		TData,
+		TError,
+		{ data: BodyType<LapsValidRequest> },
+		TContext
+	>;
+};
+
+export type LapsValidMutationResult = NonNullable<Awaited<ReturnType<typeof lapsValid>>>;
+export type LapsValidMutationBody = BodyType<LapsValidRequest>;
+export type LapsValidMutationError = ErrorType<InternalErrorResponse>;
+
+export const createLapsValid = <
+	TData = Awaited<ReturnType<typeof lapsValid>>,
+	TError = ErrorType<InternalErrorResponse>,
+	TContext = unknown
+>(options?: {
+	mutation?: CreateMutationOptions<TData, TError, { data: BodyType<LapsValidRequest> }, TContext>;
+}): CreateMutationResult<TData, TError, { data: BodyType<LapsValidRequest> }, TContext> => {
+	const mutationOptions = getLapsValidMutationOptions(options);
+
+	return createMutation(mutationOptions);
+};

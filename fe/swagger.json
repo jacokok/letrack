@@ -622,6 +622,49 @@
           }
         }
       }
+    },
+    "/laps/valid": {
+      "post": {
+        "tags": [
+          "Laps"
+        ],
+        "operationId": "LapsValid",
+        "requestBody": {
+          "x-name": "Request",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LapsValidRequest"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -671,7 +714,9 @@
           "timestamp",
           "isFlagged",
           "raceId",
-          "lapNumber"
+          "lapNumber",
+          "playerId",
+          "isValid"
         ],
         "properties": {
           "id": {
@@ -715,6 +760,13 @@
           "lapNumber": {
             "type": "integer",
             "format": "int32"
+          },
+          "playerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isValid": {
+            "type": "boolean"
           }
         }
       },
@@ -1112,6 +1164,22 @@
       "LapsRequest": {
         "type": "object",
         "additionalProperties": false
+      },
+      "LapsValidRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ids"
+        ],
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "guid"
+            }
+          }
+        }
       }
     },
     "securitySchemes": {

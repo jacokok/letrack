@@ -11,6 +11,7 @@
 	import Header from "$lib/components/Header.svelte";
 	import StartRace from "./StartRace.svelte";
 	import Lights from "$lib/components/Light/Lights.svelte";
+	import { FlagIcon } from "lucide-svelte";
 
 	const query = createRaceSummary(Number(page.params.Id));
 
@@ -128,13 +129,18 @@
 
 {#snippet right()}
 	{#if $query.data}
-		<Button size="icon" onclick={stopStart}>
-			{#if $query.data?.race.isActive}
-				<StopIcon />
-			{:else}
-				<PlayIcon />
+		<div class="flex items-center gap-2">
+			{#if !$query.data?.race.isActive}
+				<Button variant="ghost" href="/race/post/{page.params.Id}"><FlagIcon /> Post Race</Button>
 			{/if}
-		</Button>
+			<Button size="icon" onclick={stopStart}>
+				{#if $query.data?.race.isActive}
+					<StopIcon />
+				{:else}
+					<PlayIcon />
+				{/if}
+			</Button>
+		</div>
 	{/if}
 {/snippet}
 
