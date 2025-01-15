@@ -14,16 +14,21 @@
 	</Card.Root>
 {/snippet}
 
+{#snippet section()}
+	<div>Race</div>
+{/snippet}
+
 <div class="my-8 flex justify-center gap-4">
 	<img src="/favicon.svg" alt="LeTrack" class="h-12" />
 	<h1 class="text-5xl tracking-tighter">
 		<span class="text-secondary">Le</span><span class="text-primary font-bold">Track</span>
 	</h1>
 </div>
+
 <div class="m-2 flex w-full flex-row flex-wrap justify-center gap-4">
 	{@render item("Practice", "Go to driving range", "/practice")}
 	{@render item("Races", "Show all races or create new race", "/race")}
-	{@render item("Scoreboard", "scoreboard", "/scoreboard")}
+	{@render item("Leaderboard", "Who is winning", "/leaderboard")}
 	{@render item("Players", "Manage players/racers", "/player")}
 	{@render item("Team", "Manage team", "/team")}
 </div>

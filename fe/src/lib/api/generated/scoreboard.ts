@@ -12,12 +12,12 @@ import type {
 	QueryFunction,
 	QueryKey
 } from "@tanstack/svelte-query";
-import type { EntitiesLap, InternalErrorResponse } from "./api.schemas";
+import type { InternalErrorResponse, ScoreboardResponse } from "./api.schemas";
 import { customInstance } from "../mutator/customInstance.svelte";
 import type { ErrorType } from "../mutator/customInstance.svelte";
 
 export const scoreboard = () => {
-	return customInstance<EntitiesLap[]>({ url: `/scoreboard`, method: "GET" });
+	return customInstance<ScoreboardResponse>({ url: `/scoreboard`, method: "GET" });
 };
 
 export const getScoreboardQueryKey = () => {

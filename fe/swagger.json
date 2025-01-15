@@ -273,10 +273,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/EntitiesLap"
-                  }
+                  "$ref": "#/components/schemas/ScoreboardResponse"
                 }
               }
             }
@@ -895,10 +892,7 @@
           "trackId",
           "timestamp",
           "isFlagged",
-          "raceId",
           "lapNumber",
-          "playerId",
-          "teamId",
           "isValid"
         ],
         "properties": {
@@ -938,7 +932,8 @@
           },
           "raceId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "lapNumber": {
             "type": "integer",
@@ -946,11 +941,13 @@
           },
           "playerId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "teamId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "isValid": {
             "type": "boolean"
@@ -1166,92 +1163,67 @@
         "type": "object",
         "additionalProperties": false
       },
-      "EntitiesLap": {
+      "ScoreboardResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "playerSummary": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ScoreboardPlayerSummary"
+            }
+          },
+          "teamSummary": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ScoreboardTeamSummary"
+            }
+          }
+        }
+      },
+      "ScoreboardPlayerSummary": {
         "type": "object",
         "additionalProperties": false,
         "required": [
           "id",
-          "trackId",
-          "timestamp",
-          "isFlagged",
-          "raceId",
-          "playerId",
-          "teamId",
-          "isValid"
+          "name",
+          "laps"
         ],
         "properties": {
           "id": {
-            "type": "string",
-            "format": "guid"
-          },
-          "lastLapId": {
-            "type": "string",
-            "format": "guid",
-            "nullable": true
-          },
-          "trackId": {
             "type": "integer",
             "format": "int32"
           },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
+          "name": {
+            "type": "string"
           },
-          "lapTime": {
-            "type": "string",
-            "format": "duration",
-            "nullable": true
-          },
-          "lapTimeDifference": {
-            "type": "string",
-            "format": "duration",
-            "nullable": true
-          },
-          "isFlagged": {
-            "type": "boolean"
-          },
-          "flagReason": {
-            "type": "string",
-            "nullable": true
-          },
-          "raceId": {
+          "laps": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ScoreboardTeamSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "laps"
+        ],
+        "properties": {
+          "id": {
             "type": "integer",
             "format": "int32"
           },
-          "race": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/EntitiesRace"
-              }
-            ]
+          "name": {
+            "type": "string"
           },
-          "playerId": {
+          "laps": {
             "type": "integer",
             "format": "int32"
-          },
-          "player": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/EntitiesPlayer"
-              }
-            ]
-          },
-          "teamId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "team": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/EntitiesTeam"
-              }
-            ]
-          },
-          "isValid": {
-            "type": "boolean"
           }
         }
       },

@@ -116,39 +116,23 @@ export interface RaceUpdateRequest {
 	players: number[];
 }
 
-/**
- * @nullable
- */
-export type EntitiesLapTeam = EntitiesTeam | null;
+export interface ScoreboardTeamSummary {
+	id: number;
+	name: string;
+	laps: number;
+}
 
-/**
- * @nullable
- */
-export type EntitiesLapRace = EntitiesRace | null;
+export interface ScoreboardPlayerSummary {
+	id: number;
+	name: string;
+	laps: number;
+}
 
-export interface EntitiesLap {
-	id: string;
+export interface ScoreboardResponse {
 	/** @nullable */
-	lastLapId?: string | null;
-	trackId: number;
-	timestamp: string;
+	playerSummary?: ScoreboardPlayerSummary[] | null;
 	/** @nullable */
-	lapTime?: string | null;
-	/** @nullable */
-	lapTimeDifference?: string | null;
-	isFlagged: boolean;
-	/** @nullable */
-	flagReason?: string | null;
-	raceId: number;
-	/** @nullable */
-	race?: EntitiesLapRace;
-	playerId: number;
-	/** @nullable */
-	player?: EntitiesLapPlayer;
-	teamId: number;
-	/** @nullable */
-	team?: EntitiesLapTeam;
-	isValid: boolean;
+	teamSummary?: ScoreboardTeamSummary[] | null;
 }
 
 export interface TeamsDeleteRequest {
@@ -190,11 +174,6 @@ export interface EntitiesPlayer {
 	/** @nullable */
 	team?: EntitiesPlayerTeam;
 }
-
-/**
- * @nullable
- */
-export type EntitiesLapPlayer = EntitiesPlayer | null;
 
 export interface EntitiesTeam {
 	players: EntitiesPlayer[];
@@ -240,10 +219,13 @@ export interface DTOLapDTO {
 	isFlagged: boolean;
 	/** @nullable */
 	flagReason?: string | null;
-	raceId: number;
+	/** @nullable */
+	raceId?: number | null;
 	lapNumber: number;
-	playerId: number;
-	teamId: number;
+	/** @nullable */
+	playerId?: number | null;
+	/** @nullable */
+	teamId?: number | null;
 	isValid: boolean;
 }
 
