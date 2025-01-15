@@ -1,9 +1,9 @@
 using LeTrack.Data;
 using LeTrack.Entities;
 
-namespace LeTrack.Features.Players.Insert;
+namespace LeTrack.Features.Teams.Insert;
 
-public class Endpoint : Endpoint<Request, Player>
+public class Endpoint : Endpoint<Request, Team>
 {
     private readonly AppDbContext _dbContext;
 
@@ -14,14 +14,14 @@ public class Endpoint : Endpoint<Request, Player>
 
     public override void Configure()
     {
-        Post("/players");
+        Post("/teams");
         AllowAnonymous();
     }
     public override async Task HandleAsync(Request req, CancellationToken ct)
     {
-        Player player = new() { Name = req.Name, NickName = req.NickName, TeamId = req.TeamId };
-        await _dbContext.Player.AddAsync(player);
+        Team team = new() { Name = req.Name };
+        await _dbContext.Team.AddAsync(team);
         await _dbContext.SaveChangesAsync();
-        await SendAsync(player);
+        await SendAsync(team);
     }
 }

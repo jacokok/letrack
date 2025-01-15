@@ -14,6 +14,7 @@ public class AppDbContext : DbContext
     public DbSet<Event> Event => Set<Event>();
     public DbSet<Lap> Lap => Set<Lap>();
     public DbSet<Player> Player => Set<Player>();
+    public DbSet<Team> Team => Set<Team>();
     public DbSet<Race> Race => Set<Race>();
     public DbSet<RaceTrack> RaceTrack => Set<RaceTrack>();
 

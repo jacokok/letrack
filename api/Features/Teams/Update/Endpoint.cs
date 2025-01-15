@@ -2,9 +2,9 @@ using LeTrack.Data;
 using LeTrack.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace LeTrack.Features.Players.Update;
+namespace LeTrack.Features.Teams.Update;
 
-public class Endpoint : Endpoint<Request, Player>
+public class Endpoint : Endpoint<Request, Team>
 {
     private readonly AppDbContext _dbContext;
 
@@ -15,23 +15,20 @@ public class Endpoint : Endpoint<Request, Player>
 
     public override void Configure()
     {
-        Put("/players");
+        Put("/teams");
         AllowAnonymous();
     }
     public override async Task HandleAsync(Request req, CancellationToken ct)
     {
-        var player = await _dbContext.Player.FirstOrDefaultAsync(x => x.Id == req.Id, ct);
-        if (player == null)
+        var team = await _dbContext.Team.FirstOrDefaultAsync(x => x.Id == req.Id, ct);
+        if (team == null)
         {
-            throw new Exception("Player not found");
+            throw new Exception("Team not found");
         }
 
-
-        player.NickName = req.NickName;
-        player.Name = req.Name;
-        player.TeamId = req.TeamId;
+        team.Name = req.Name;
 
         await _dbContext.SaveChangesAsync();
-        await SendAsync(player);
+        await SendAsync(team);
     }
 }

@@ -10,8 +10,9 @@ public class LapDTO
     public TimeSpan? LapTimeDifference { get; set; }
     public bool IsFlagged { get; set; }
     public string? FlagReason { get; set; }
-    public int RaceId { get; set; }
+    public int? RaceId { get; set; }
     public int LapNumber { get; set; }
-    public int PlayerId { get; set; }
+    public int? PlayerId { get; set; }
+    public int? TeamId { get; set; }
     public bool IsValid { get; set; } = true;
 }

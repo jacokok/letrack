@@ -3,6 +3,7 @@ using System;
 using LeTrack.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LeTrack.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250115132701_LapRelations")]
+    partial class LapRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,15 +77,15 @@ namespace LeTrack.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("last_lap_id");
 
-                    b.Property<int?>("PlayerId")
+                    b.Property<int>("PlayerId")
                         .HasColumnType("integer")
                         .HasColumnName("player_id");
 
-                    b.Property<int?>("RaceId")
+                    b.Property<int>("RaceId")
                         .HasColumnType("integer")
                         .HasColumnName("race_id");
 
-                    b.Property<int?>("TeamId")
+                    b.Property<int>("TeamId")
                         .HasColumnType("integer")
                         .HasColumnName("team_id");
 
@@ -236,16 +239,22 @@ namespace LeTrack.Data.Migrations
                     b.HasOne("LeTrack.Entities.Player", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_lap_player_player_id");
 
                     b.HasOne("LeTrack.Entities.Race", "Race")
                         .WithMany()
                         .HasForeignKey("RaceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_lap_race_race_id");
 
                     b.HasOne("LeTrack.Entities.Team", "Team")
                         .WithMany()
                         .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_lap_team_team_id");
 
                     b.Navigation("Player");

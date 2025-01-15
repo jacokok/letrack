@@ -3,6 +3,7 @@ using System;
 using LeTrack.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LeTrack.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250115125200_AddTeam")]
+    partial class AddTeam
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,17 +77,13 @@ namespace LeTrack.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("last_lap_id");
 
-                    b.Property<int?>("PlayerId")
+                    b.Property<int>("PlayerId")
                         .HasColumnType("integer")
                         .HasColumnName("player_id");
 
-                    b.Property<int?>("RaceId")
+                    b.Property<int>("RaceId")
                         .HasColumnType("integer")
                         .HasColumnName("race_id");
-
-                    b.Property<int?>("TeamId")
-                        .HasColumnType("integer")
-                        .HasColumnName("team_id");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("timestamp with time zone")
@@ -96,15 +95,6 @@ namespace LeTrack.Data.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_lap");
-
-                    b.HasIndex("PlayerId")
-                        .HasDatabaseName("ix_lap_player_id");
-
-                    b.HasIndex("RaceId")
-                        .HasDatabaseName("ix_lap_race_id");
-
-                    b.HasIndex("TeamId")
-                        .HasDatabaseName("ix_lap_team_id");
 
                     b.ToTable("lap", (string)null);
                 });
@@ -229,30 +219,6 @@ namespace LeTrack.Data.Migrations
                         .HasName("pk_team");
 
                     b.ToTable("team", (string)null);
-                });
-
-            modelBuilder.Entity("LeTrack.Entities.Lap", b =>
-                {
-                    b.HasOne("LeTrack.Entities.Player", "Player")
-                        .WithMany()
-                        .HasForeignKey("PlayerId")
-                        .HasConstraintName("fk_lap_player_player_id");
-
-                    b.HasOne("LeTrack.Entities.Race", "Race")
-                        .WithMany()
-                        .HasForeignKey("RaceId")
-                        .HasConstraintName("fk_lap_race_race_id");
-
-                    b.HasOne("LeTrack.Entities.Team", "Team")
-                        .WithMany()
-                        .HasForeignKey("TeamId")
-                        .HasConstraintName("fk_lap_team_team_id");
-
-                    b.Navigation("Player");
-
-                    b.Navigation("Race");
-
-                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("LeTrack.Entities.Player", b =>

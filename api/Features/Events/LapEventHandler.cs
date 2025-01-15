@@ -28,14 +28,17 @@ public class LapEventHandler : IEventHandler<LapEvent>
             throw new Exception("Dependency injection failed");
         }
 
-        var race = await _dbContext.Race.Include(x => x.RaceTracks).FirstOrDefaultAsync(x => x.IsActive && x.RaceTracks.Any(x => x.TrackId == eventModel.TrackId), ct);
+        var race = await _dbContext.Race
+            .Include(x => x.RaceTracks)
+                .ThenInclude(x => x.Player)
+            .FirstOrDefaultAsync(x => x.IsActive && x.RaceTracks.Any(x => x.TrackId == eventModel.TrackId), ct);
 
         TimeSpan? lapTimeSpan = null;
         TimeSpan? lapDifference = null;
         bool isFlagged = false;
         string? flagReason = null;
 
-        int raceId = race?.Id ?? 0;
+        int? raceId = race?.Id;
 
         var lastLap = await _dbContext.Lap
             .Where(x => x.TrackId == eventModel.TrackId && x.Timestamp < eventModel.Timestamp && x.RaceId == raceId)
@@ -90,9 +93,10 @@ public class LapEventHandler : IEventHandler<LapEvent>
             LapTime = lapTimeSpan,
             LapTimeDifference = lapDifference,
             IsFlagged = isFlagged,
-            RaceId = race?.Id ?? 0,
+            RaceId = race?.Id,
             FlagReason = flagReason,
-            PlayerId = (race != null) ? race.RaceTracks.Where(x => x.TrackId == eventModel.TrackId).Select(x => x.PlayerId).FirstOrDefault() : 0
+            PlayerId = (race != null) ? race.RaceTracks.Where(x => x.TrackId == eventModel.TrackId).Select(x => x.PlayerId).FirstOrDefault() : null,
+            TeamId = (race != null) ? race.RaceTracks.Where(x => x.TrackId == eventModel.TrackId).Select(x => x.Player).Select(x => x.TeamId).FirstOrDefault() : null
         };
         await _dbContext.Lap.AddAsync(lap);
         await _dbContext.SaveChangesAsync(ct);

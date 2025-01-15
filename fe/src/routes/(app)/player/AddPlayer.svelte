@@ -1,7 +1,12 @@
 <script lang="ts">
-	import { createPlayersInsert, createPlayersUpdate, type EntitiesPlayer } from "$lib/api";
+	import {
+		createPlayersInsert,
+		createPlayersUpdate,
+		type EntitiesPlayer,
+		createTeamsList
+	} from "$lib/api";
 	import { getError } from "$lib/types";
-	import { Button, Dialog, Form, Input, toast } from "@kayord/ui";
+	import { Button, Dialog, Form, Input, Select, toast } from "@kayord/ui";
 	import { defaults, superForm } from "sveltekit-superforms";
 	import { zod } from "sveltekit-superforms/adapters";
 	import { z } from "zod";
@@ -18,14 +23,18 @@
 
 	const schema = z.object({
 		name: z.string().min(1, { message: "Name is Required" }),
-		nickName: z.string()
+		nickName: z.string(),
+		teamId: z.number()
 	});
 	type FormSchema = z.infer<typeof schema>;
 
 	const defaultValues = $derived({
 		name: player?.name ?? "",
-		nickName: player?.nickName ?? ""
+		nickName: player?.nickName ?? "",
+		teamId: player?.teamId ?? 0
 	});
+
+	const teamsQuery = createTeamsList();
 
 	const editMutation = createPlayersUpdate();
 	const createMutation = createPlayersInsert();
@@ -38,13 +47,14 @@
 					data: {
 						id: player?.id ?? 0,
 						name: data.name,
-						nickName: data.nickName
+						nickName: data.nickName,
+						teamId: data.teamId
 					}
 				});
 				toast.info("Edited player");
 			} else {
 				await $createMutation.mutateAsync({
-					data: { name: data.name, nickName: data.nickName }
+					data: { name: data.name, nickName: data.nickName, teamId: data.teamId }
 				});
 				toast.info("Added player");
 			}
@@ -72,6 +82,8 @@
 			reset({ data: defaultValues });
 		}
 	});
+
+	const selectedTeam = $derived($teamsQuery.data?.find((x) => x.id == $formData.teamId));
 </script>
 
 <Dialog.Root bind:open>
@@ -96,6 +108,24 @@
 						{#snippet children({ props })}
 							<Form.Label>Nick Name</Form.Label>
 							<Input {...props} bind:value={$formData.nickName} />
+						{/snippet}
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+				<Form.Field {form} name="teamId">
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Team</Form.Label>
+							<Select.Root type="single" bind:value={$formData.teamId} name={props.name}>
+								<Select.Trigger {...props}>
+									{selectedTeam ? selectedTeam.name : "Select a Team"}
+								</Select.Trigger>
+								<Select.Content>
+									{#each $teamsQuery.data ?? [] as team}
+										<Select.Item value={team.id} label={team.name} />
+									{/each}
+								</Select.Content>
+							</Select.Root>
 						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />
