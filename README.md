@@ -49,6 +49,8 @@ This is a micropython project that needs the below components:
 - Active Buzzer
 - Raspberry Pi Pico W
 
+![schematics](./assets/letrack_bb.svg)
+
 ### DEV Setup
 
 1. Install micropython on raspberry pi
