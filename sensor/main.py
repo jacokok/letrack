@@ -9,6 +9,8 @@ from mqtt_local import config as mqtt_config
 import config
 import ntptime
 
+light = Pin(5, Pin.OUT)
+
 
 async def beam_handler(beam: BreakBeam, mqtt: MQTTClient):
     while True:
@@ -38,6 +40,8 @@ async def up(client):
 
 async def main():
     try:
+        led = Pin("LED", Pin.OUT)
+        led.on()
         buzzer = Buzzer()
         ntptime.host = config.NTP_HOST
         ntptime.settime()
@@ -47,6 +51,8 @@ async def main():
 
         client = MQTTClient(mqtt_config)
         await client.connect()
+
+        light.on()
 
         for task in (up, down):
             uasyncio.create_task(task(client))
@@ -66,6 +72,7 @@ async def main():
 
     except Exception as e:
         print("Error occurred", e)
+        light.off()
         buzzer.error()
 
 
