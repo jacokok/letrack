@@ -3,17 +3,27 @@
 	import { Badge, Button, Card, Table } from "@kayord/ui";
 	import UsersIcon from "lucide-svelte/icons/users";
 	import UserIcon from "lucide-svelte/icons/user";
+	import FileIcon from "lucide-svelte/icons/file";
 	import RefreshIcon from "lucide-svelte/icons/refresh-cw";
 	import Header from "$lib/components/Header.svelte";
+	import { PUBLIC_API_URL } from "$env/static/public";
 	const query = createLeaderboard();
-
 	$inspect($query.data);
+
+	const exportToCSV = () => {
+		window.location.assign(`${PUBLIC_API_URL}/export`);
+	};
 </script>
 
 {#snippet refreshSnippet()}
-	<Button size="icon" onclick={$query.refetch} variant="ghost">
-		<RefreshIcon />
-	</Button>
+	<div>
+		<Button size="icon" onclick={exportToCSV} variant="ghost">
+			<FileIcon />
+		</Button>
+		<Button size="icon" onclick={$query.refetch} variant="ghost">
+			<RefreshIcon />
+		</Button>
+	</div>
 {/snippet}
 
 <Header right={refreshSnippet} />
@@ -26,10 +36,10 @@
 			</div>
 			{#each $query.data?.teamSummary ?? [] as team, i}
 				{@const position = i + 1}
-				<Card.Root class="flex items-center justify-between gap-2 bg-background p-2">
+				<Card.Root class="bg-background flex items-center justify-between gap-2 p-2">
 					<div class="flex items-center gap-2">
 						<div
-							class="flex h-8 w-8 items-center justify-center rounded-sm bg-muted text-xl font-bold text-muted-foreground"
+							class="bg-muted text-muted-foreground flex h-8 w-8 items-center justify-center rounded-sm text-xl font-bold"
 						>
 							{position}
 						</div>
@@ -49,7 +59,7 @@
 				<Card.Root class="bg-mu flex items-center justify-between gap-2 p-2">
 					<div class="flex items-center gap-2">
 						<div
-							class="flex h-8 w-8 items-center justify-center rounded-sm bg-muted text-xl font-bold text-muted-foreground"
+							class="bg-muted text-muted-foreground flex h-8 w-8 items-center justify-center rounded-sm text-xl font-bold"
 						>
 							{position}
 						</div>

@@ -1,22 +1,12 @@
 <script lang="ts">
-	import { Button, Card } from "@kayord/ui";
+	import Item from "./Item.svelte";
+	import RaceIcon from "lucide-svelte/icons/circle-off";
+	import ClipboardIcon from "lucide-svelte/icons/clipboard";
+	import UserIcon from "lucide-svelte/icons/user";
+	import UsersIcon from "lucide-svelte/icons/users";
+	import AdminIcon from "lucide-svelte/icons/shield-ellipsis";
+	import PracticeIcon from "lucide-svelte/icons/flag-triangle-right";
 </script>
-
-{#snippet item(title: string, description: string, href: string)}
-	<Card.Root class="w-64">
-		<Card.Header class="flex flex-col items-center justify-center">
-			<Card.Title>{title}</Card.Title>
-			<Card.Description>{description}</Card.Description>
-		</Card.Header>
-		<Card.Footer class="mt-2">
-			<Button {href} class="w-full">{title}</Button>
-		</Card.Footer>
-	</Card.Root>
-{/snippet}
-
-{#snippet section()}
-	<div>Race</div>
-{/snippet}
 
 <div class="my-8 flex justify-center gap-4">
 	<img src="/favicon.svg" alt="LeTrack" class="h-12" />
@@ -26,9 +16,37 @@
 </div>
 
 <div class="m-2 flex w-full flex-row flex-wrap justify-center gap-4">
-	{@render item("Practice", "Go to driving range", "/practice")}
-	{@render item("Races", "Show all races or create new race", "/race")}
-	{@render item("Leaderboard", "Who is winning", "/leaderboard")}
-	{@render item("Players", "Manage players/racers", "/player")}
-	{@render item("Team", "Manage team", "/team")}
+	<Item title="Practice" description="Go to driving range" href="/practice">
+		{#snippet icon()}
+			<PracticeIcon />
+		{/snippet}
+	</Item>
+	<Item title="Races" description="Show all races or create new race" href="/race">
+		{#snippet icon()}
+			<RaceIcon />
+		{/snippet}
+	</Item>
+	<Item title="Leaderboard" description="Who is winning" href="/leaderboard">
+		{#snippet icon()}
+			<ClipboardIcon />
+		{/snippet}
+	</Item>
+</div>
+
+<div class="m-2 mt-8 flex w-full flex-row flex-wrap justify-center gap-4">
+	<Item title="Players" description="Manage players/racers" href="/player">
+		{#snippet icon()}
+			<UserIcon />
+		{/snippet}
+	</Item>
+	<Item title="Team" description="Manage team" href="/team">
+		{#snippet icon()}
+			<UsersIcon />
+		{/snippet}
+	</Item>
+	<Item title="Admin" description="Advanced Settings" href="/admin">
+		{#snippet icon()}
+			<AdminIcon />
+		{/snippet}
+	</Item>
 </div>

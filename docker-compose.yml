@@ -6,6 +6,7 @@ services:
     restart: unless-stopped
     environment:
       Config__MqttBroker: mqtt
+      Config__MinLapTime: 3
       ConnectionStrings__DefaultConnection: host=db;database=letrack;username=letrack;password=letrack
     depends_on:
       - db

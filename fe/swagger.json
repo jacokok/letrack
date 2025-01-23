@@ -844,6 +844,189 @@
           }
         }
       }
+    },
+    "/export": {
+      "get": {
+        "tags": [
+          "Export"
+        ],
+        "operationId": "Export",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DTOLapExportDTO"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/clear-race": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "AdminClearRaces",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/clear-laps": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "AdminClearLaps",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/clear-invalid-laps": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "AdminClearInvalidLaps",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/clear-events": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "AdminClearEvents",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/clear-all": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "AdminClearAll",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1506,6 +1689,97 @@
               "type": "string",
               "format": "guid"
             }
+          }
+        }
+      },
+      "DTOLapExportDTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "trackId",
+          "timestamp",
+          "isFlagged",
+          "isValid"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "trackId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lapTime": {
+            "type": "string",
+            "format": "duration",
+            "nullable": true
+          },
+          "isFlagged": {
+            "type": "boolean"
+          },
+          "lastLapId": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "raceId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "raceName": {
+            "type": "string",
+            "nullable": true
+          },
+          "raceStartDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "raceEndDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "lapTimeDifference": {
+            "type": "string",
+            "format": "duration",
+            "nullable": true
+          },
+          "flagReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "playerId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "playerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "playerNickName": {
+            "type": "string",
+            "nullable": true
+          },
+          "isValid": {
+            "type": "boolean"
+          },
+          "teamId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "teamName": {
+            "type": "string",
+            "nullable": true
           }
         }
       }

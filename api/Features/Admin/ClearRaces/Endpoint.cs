@@ -1,0 +1,33 @@
+using LeTrack.Data;
+using LeTrack.DTO;
+using Microsoft.EntityFrameworkCore;
+
+namespace LeTrack.Features.Admin.ClearRaces;
+
+public class Endpoint : EndpointWithoutRequest<bool>
+{
+    private readonly AppDbContext _dbContext;
+
+    public Endpoint(AppDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
+    public override void Configure()
+    {
+        Post("/admin/clear-race");
+        AllowAnonymous();
+    }
+    public override async Task HandleAsync(CancellationToken ct)
+    {
+
+        await _dbContext.Database.ExecuteSqlAsync(
+        $"""
+            TRUNCATE TABLE race_track;
+            DELETE FROM race;         
+        """
+        );
+
+        await SendAsync(true);
+    }
+}

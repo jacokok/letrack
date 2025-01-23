@@ -9,13 +9,15 @@ namespace LeTrack.Features.Events;
 public class LapEventHandler : IEventHandler<LapEvent>
 {
     private readonly IServiceScopeFactory _scopeFactory;
+    private readonly IConfiguration _config;
 
     private readonly IHubContext<LeTrackHub, ILeTrackHub> _hub;
 
-    public LapEventHandler(IServiceScopeFactory scopeFactory, IHubContext<LeTrackHub, ILeTrackHub> hub)
+    public LapEventHandler(IServiceScopeFactory scopeFactory, IHubContext<LeTrackHub, ILeTrackHub> hub, IConfiguration config)
     {
         _scopeFactory = scopeFactory;
         _hub = hub;
+        _config = config;
     }
 
     public async Task HandleAsync(LapEvent eventModel, CancellationToken ct)
@@ -78,7 +80,8 @@ public class LapEventHandler : IEventHandler<LapEvent>
             isFlagged = true;
             flagReason = "No time span";
         }
-        if (!isFlagged && lapTimeSpan < TimeSpan.FromSeconds(6))
+
+        if (!isFlagged && lapTimeSpan < TimeSpan.FromSeconds(int.Parse(_config["Config:MinLapTime"] ?? "3")))
         {
             isFlagged = true;
             flagReason = "Suspicious lap time";
