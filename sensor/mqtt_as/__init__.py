@@ -4,8 +4,8 @@
 
 # Pyboard D support added also RP2/default
 # Various improvements contributed by Kevin Köck.
-# type: ignore
 
+# type: ignore
 import gc
 import usocket as socket
 import ustruct as struct

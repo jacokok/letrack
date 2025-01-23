@@ -12,45 +12,45 @@ import type {
 	QueryFunction,
 	QueryKey
 } from "@tanstack/svelte-query";
-import type { InternalErrorResponse, ScoreboardResponse } from "./api.schemas";
+import type { InternalErrorResponse, LeaderboardResponse } from "./api.schemas";
 import { customInstance } from "../mutator/customInstance.svelte";
 import type { ErrorType } from "../mutator/customInstance.svelte";
 
-export const scoreboard = () => {
-	return customInstance<ScoreboardResponse>({ url: `/scoreboard`, method: "GET" });
+export const leaderboard = () => {
+	return customInstance<LeaderboardResponse>({ url: `/leaderboard`, method: "GET" });
 };
 
-export const getScoreboardQueryKey = () => {
-	return [`/scoreboard`] as const;
+export const getLeaderboardQueryKey = () => {
+	return [`/leaderboard`] as const;
 };
 
-export const getScoreboardQueryOptions = <
-	TData = Awaited<ReturnType<typeof scoreboard>>,
+export const getLeaderboardQueryOptions = <
+	TData = Awaited<ReturnType<typeof leaderboard>>,
 	TError = ErrorType<InternalErrorResponse>
 >(options?: {
 	query?: Partial<CreateQueryOptions<TData, TError, TData>>;
 }) => {
 	const { query: queryOptions } = options ?? {};
 
-	const queryKey = queryOptions?.queryKey ?? getScoreboardQueryKey();
+	const queryKey = queryOptions?.queryKey ?? getLeaderboardQueryKey();
 
-	const queryFn: QueryFunction<Awaited<ReturnType<typeof scoreboard>>> = () => scoreboard();
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof leaderboard>>> = () => leaderboard();
 
 	return { queryKey, queryFn, ...queryOptions } as CreateQueryOptions<TData, TError, TData> & {
 		queryKey: DataTag<QueryKey, TData>;
 	};
 };
 
-export type ScoreboardQueryResult = NonNullable<Awaited<ReturnType<typeof scoreboard>>>;
-export type ScoreboardQueryError = ErrorType<InternalErrorResponse>;
+export type LeaderboardQueryResult = NonNullable<Awaited<ReturnType<typeof leaderboard>>>;
+export type LeaderboardQueryError = ErrorType<InternalErrorResponse>;
 
-export function createScoreboard<
-	TData = Awaited<ReturnType<typeof scoreboard>>,
+export function createLeaderboard<
+	TData = Awaited<ReturnType<typeof leaderboard>>,
 	TError = ErrorType<InternalErrorResponse>
 >(options?: {
 	query?: Partial<CreateQueryOptions<TData, TError, TData>>;
 }): CreateQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
-	const queryOptions = getScoreboardQueryOptions(options);
+	const queryOptions = getLeaderboardQueryOptions(options);
 
 	const query = createQuery(queryOptions) as CreateQueryResult<TData, TError> & {
 		queryKey: DataTag<QueryKey, TData>;

@@ -24,6 +24,25 @@ export interface LapsRequest {
 	[key: string]: unknown;
 }
 
+export interface LeaderboardTeamSummary {
+	id: number;
+	name: string;
+	laps: number;
+}
+
+export interface LeaderboardPlayerSummary {
+	id: number;
+	name: string;
+	laps: number;
+}
+
+export interface LeaderboardResponse {
+	/** @nullable */
+	playerSummary?: LeaderboardPlayerSummary[] | null;
+	/** @nullable */
+	teamSummary?: LeaderboardTeamSummary[] | null;
+}
+
 export interface PlayersDeleteRequest {
 	[key: string]: unknown;
 }
@@ -114,25 +133,6 @@ export interface RaceUpdateRequest {
 	id: number;
 	name: string;
 	players: number[];
-}
-
-export interface ScoreboardTeamSummary {
-	id: number;
-	name: string;
-	laps: number;
-}
-
-export interface ScoreboardPlayerSummary {
-	id: number;
-	name: string;
-	laps: number;
-}
-
-export interface ScoreboardResponse {
-	/** @nullable */
-	playerSummary?: ScoreboardPlayerSummary[] | null;
-	/** @nullable */
-	teamSummary?: ScoreboardTeamSummary[] | null;
 }
 
 export interface TeamsDeleteRequest {

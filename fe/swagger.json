@@ -261,36 +261,6 @@
         }
       }
     },
-    "/scoreboard": {
-      "get": {
-        "tags": [
-          "Scoreboard"
-        ],
-        "operationId": "Scoreboard",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ScoreboardResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/race": {
       "put": {
         "tags": [
@@ -749,6 +719,36 @@
         }
       }
     },
+    "/leaderboard": {
+      "get": {
+        "tags": [
+          "Leaderboard"
+        ],
+        "operationId": "Leaderboard",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaderboardResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/laps": {
       "get": {
         "tags": [
@@ -1163,70 +1163,6 @@
         "type": "object",
         "additionalProperties": false
       },
-      "ScoreboardResponse": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "playerSummary": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/ScoreboardPlayerSummary"
-            }
-          },
-          "teamSummary": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/ScoreboardTeamSummary"
-            }
-          }
-        }
-      },
-      "ScoreboardPlayerSummary": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "id",
-          "name",
-          "laps"
-        ],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string"
-          },
-          "laps": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "ScoreboardTeamSummary": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "id",
-          "name",
-          "laps"
-        ],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string"
-          },
-          "laps": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
       "RaceUpdateRequest": {
         "type": "object",
         "additionalProperties": false,
@@ -1488,6 +1424,70 @@
       "PlayersDeleteRequest": {
         "type": "object",
         "additionalProperties": false
+      },
+      "LeaderboardResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "playerSummary": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/LeaderboardPlayerSummary"
+            }
+          },
+          "teamSummary": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/LeaderboardTeamSummary"
+            }
+          }
+        }
+      },
+      "LeaderboardPlayerSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "laps"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "laps": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "LeaderboardTeamSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "laps"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "laps": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
       },
       "LapsRequest": {
         "type": "object",

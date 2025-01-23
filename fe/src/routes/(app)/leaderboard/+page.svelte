@@ -1,11 +1,13 @@
 <script lang="ts">
-	import { createScoreboard } from "$lib/api";
+	import { createLeaderboard } from "$lib/api";
 	import { Badge, Button, Card, Table } from "@kayord/ui";
 	import UsersIcon from "lucide-svelte/icons/users";
 	import UserIcon from "lucide-svelte/icons/user";
 	import RefreshIcon from "lucide-svelte/icons/refresh-cw";
 	import Header from "$lib/components/Header.svelte";
-	const query = createScoreboard();
+	const query = createLeaderboard();
+
+	$inspect($query.data);
 </script>
 
 {#snippet refreshSnippet()}
@@ -24,10 +26,10 @@
 			</div>
 			{#each $query.data?.teamSummary ?? [] as team, i}
 				{@const position = i + 1}
-				<Card.Root class="bg-background flex items-center justify-between gap-2 p-2">
+				<Card.Root class="flex items-center justify-between gap-2 bg-background p-2">
 					<div class="flex items-center gap-2">
 						<div
-							class="bg-muted text-muted-foreground flex h-8 w-8 items-center justify-center rounded-sm text-xl font-bold"
+							class="flex h-8 w-8 items-center justify-center rounded-sm bg-muted text-xl font-bold text-muted-foreground"
 						>
 							{position}
 						</div>
@@ -47,7 +49,7 @@
 				<Card.Root class="bg-mu flex items-center justify-between gap-2 p-2">
 					<div class="flex items-center gap-2">
 						<div
-							class="bg-muted text-muted-foreground flex h-8 w-8 items-center justify-center rounded-sm text-xl font-bold"
+							class="flex h-8 w-8 items-center justify-center rounded-sm bg-muted text-xl font-bold text-muted-foreground"
 						>
 							{position}
 						</div>
