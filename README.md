@@ -96,10 +96,3 @@ import mip
 mip.install('umqtt.simple')
 ```
 
-## TODO
-
-- Export to excel
-- Clean up
-- Truncate events table option
-- Clear laps table option
-- Clear all option
