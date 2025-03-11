@@ -7,6 +7,11 @@ interface ChartData {
 	data: Array<ChartRow>;
 }
 
-const chartData = $state<Array<ChartData>>([{ data: [] }, { data: [] }]);
+const chartData = $state<Array<ChartData>>([
+	{ data: [] },
+	{ data: [] },
+	{ data: [] },
+	{ data: [] }
+]);
 
 export { chartData };

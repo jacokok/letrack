@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Label, Popover, Slider } from "@kayord/ui";
+	import { Button, Label, Popover, Switch } from "@kayord/ui";
 	import SettingsIcon from "lucide-svelte/icons/settings";
 	import Track from "./Track.svelte";
 	import { practice } from "$lib/stores/practice.svelte";
@@ -44,16 +44,23 @@
 				<SettingsIcon />
 			</Button>
 		</Popover.Trigger>
-		<Popover.Content class="flex flex-col gap-4">
-			<Label>Number of tracks</Label>
-			<Slider
-				type="single"
-				bind:value={practice.value.numberOfTracks}
-				min={1}
-				max={2}
-				step={1}
-				class="max-w-[100%]"
-			/>
+		<Popover.Content class="flex w-40 flex-col gap-4">
+			<div class="flex items-center justify-start gap-2">
+				<Label for="track1">Track 1</Label>
+				<Switch id="track1" bind:checked={practice.value.track1} />
+			</div>
+			<div class="flex items-center justify-start gap-2">
+				<Label for="track2">Track 2</Label>
+				<Switch id="track2" bind:checked={practice.value.track2} />
+			</div>
+			<div class="flex items-center justify-start gap-2">
+				<Label for="track3">Track 3</Label>
+				<Switch id="track3" bind:checked={practice.value.track3} />
+			</div>
+			<div class="flex items-center justify-start gap-2">
+				<Label for="track4">Track 4</Label>
+				<Switch id="track4" bind:checked={practice.value.track4} />
+			</div>
 		</Popover.Content>
 	</Popover.Root>
 {/snippet}
@@ -61,10 +68,18 @@
 <Header {right} />
 
 <div class="m-2 flex flex-row gap-2">
-	{#each { length: practice.value.numberOfTracks }, index}
-		{@const curTrack = index + 1}
-		<Track trackId={curTrack} bind:this={tracks[curTrack]} />
-	{/each}
+	{#if practice.value.track1 == true}
+		<Track trackId={1} bind:this={tracks[1]} />
+	{/if}
+	{#if practice.value.track2 == true}
+		<Track trackId={2} bind:this={tracks[2]} />
+	{/if}
+	{#if practice.value.track3 == true}
+		<Track trackId={3} bind:this={tracks[3]} />
+	{/if}
+	{#if practice.value.track4 == true}
+		<Track trackId={4} bind:this={tracks[4]} />
+	{/if}
 </div>
 
 <div>

@@ -1,11 +1,10 @@
 using MQTTnet;
-using MQTTnet.Client;
 
 namespace LeTrack.Services;
 
 public class MqttService
 {
-    private static readonly MqttFactory Factory = new();
+    private static readonly MqttClientFactory Factory = new();
     private readonly IMqttClient _mqttClient = Factory.CreateMqttClient();
     private readonly IConfiguration _config;
 
@@ -24,7 +23,7 @@ public class MqttService
 
         await _mqttClient.ConnectAsync(options, cancellationToken);
     }
-    public MqttFactory GetMqttFactory()
+    public MqttClientFactory GetMqttFactory()
     {
         return Factory;
     }

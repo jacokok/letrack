@@ -4,7 +4,6 @@ using LeTrack.Entities;
 using LeTrack.Features.Events;
 using LeTrack.Services;
 using MQTTnet;
-using MQTTnet.Client;
 
 namespace LeTrack.BackgroundServices;
 
