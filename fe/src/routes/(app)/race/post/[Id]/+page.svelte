@@ -161,10 +161,14 @@
 {/snippet}
 
 <div class="m-2">
-	<Tabs.Root value={tab} class="flex w-full flex-col" onValueChange={(v: number) => (tab = v)}>
+	<Tabs.Root
+		value={tab.toString()}
+		class="flex w-full flex-col"
+		onValueChange={(v: string) => (tab = Number(v))}
+	>
 		<Tabs.List class="items-center justify-center text-center">
 			{#each tracks as trackId}
-				<Tabs.Trigger value={trackId}>Track {trackId}</Tabs.Trigger>
+				<Tabs.Trigger value={trackId.toString()}>Track {trackId}</Tabs.Trigger>
 			{/each}
 		</Tabs.List>
 	</Tabs.Root>

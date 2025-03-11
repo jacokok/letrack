@@ -146,7 +146,7 @@
 
 <Header {right} />
 
-<Sheet.Root bind:open={startRaceSheetOpen} class="w-full p-0">
+<Sheet.Root bind:open={startRaceSheetOpen}>
 	<Sheet.Content
 		side="top"
 		interactOutsideBehavior="ignore"

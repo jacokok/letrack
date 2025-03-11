@@ -34,7 +34,7 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger>
-		<Button size="icon" variant="primary">
+		<Button size="icon" variant="default">
 			<EllipsisVerticalIcon class="size-5" />
 		</Button>
 	</DropdownMenu.Trigger>

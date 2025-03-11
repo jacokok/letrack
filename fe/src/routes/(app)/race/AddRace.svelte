@@ -125,13 +125,19 @@
 					<Form.Control>
 						{#snippet children({ props })}
 							<Form.Label>Track {$formData.isFirstTracks ? 1 : 3}</Form.Label>
-							<Select.Root type="single" bind:value={$formData.players[0]} name={props.name}>
+							<Select.Root
+								type="single"
+								bind:value={
+									() => $formData.players[0].toString(), (v) => ($formData.players[0] = Number(v))
+								}
+								name={props.name}
+							>
 								<Select.Trigger {...props}>
 									{players.find((i) => i.id === $formData.players[0])?.name ?? "Select a Player"}
 								</Select.Trigger>
 								<Select.Content>
 									{#each players as player}
-										<Select.Item value={player.id} label={player.name}>
+										<Select.Item value={player.id.toString()} label={player.name}>
 											{player.name}
 										</Select.Item>
 									{/each}
@@ -146,13 +152,19 @@
 					<Form.Control>
 						{#snippet children({ props })}
 							<Form.Label>Track {$formData.isFirstTracks ? 2 : 4}</Form.Label>
-							<Select.Root type="single" bind:value={$formData.players[1]} name={props.name}>
+							<Select.Root
+								type="single"
+								bind:value={
+									() => $formData.players[1].toString(), (v) => ($formData.players[1] = Number(v))
+								}
+								name={props.name}
+							>
 								<Select.Trigger {...props}>
 									{players.find((i) => i.id === $formData.players[1])?.name ?? "Select a Player"}
 								</Select.Trigger>
 								<Select.Content>
 									{#each players as player}
-										<Select.Item value={player.id} label={player.name}>
+										<Select.Item value={player.id.toString()} label={player.name}>
 											{player.name}
 										</Select.Item>
 									{/each}

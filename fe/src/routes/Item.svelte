@@ -15,7 +15,7 @@
 	<Card.Header class="flex flex-col items-center justify-center">
 		{@render icon?.()}
 		<Card.Title>{title}</Card.Title>
-		<Card.Description>{description}</Card.Description>
+		<Card.Description class="h-10 line-clamp-2">{description}</Card.Description>
 	</Card.Header>
 	<Card.Footer class="mt-2">
 		<Button {href} class="w-full">{title}</Button>

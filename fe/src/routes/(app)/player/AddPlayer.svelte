@@ -116,13 +116,19 @@
 					<Form.Control>
 						{#snippet children({ props })}
 							<Form.Label>Team</Form.Label>
-							<Select.Root type="single" bind:value={$formData.teamId} name={props.name}>
+							<Select.Root
+								type="single"
+								bind:value={
+									() => $formData.teamId.toString(), (v) => ($formData.teamId = Number(v))
+								}
+								name={props.name}
+							>
 								<Select.Trigger {...props}>
 									{selectedTeam ? selectedTeam.name : "Select a Team"}
 								</Select.Trigger>
 								<Select.Content>
 									{#each $teamsQuery.data ?? [] as team}
-										<Select.Item value={team.id} label={team.name} />
+										<Select.Item value={team.id.toString()} label={team.name} />
 									{/each}
 								</Select.Content>
 							</Select.Root>
