@@ -73,8 +73,8 @@ async def main(client: MQTTClient):
 
     beam1 = Pin(10, Pin.IN, Pin.PULL_UP)
     beam2 = Pin(12, Pin.IN, Pin.PULL_UP)
-    bb1 = BreakBeam(beam1, 1)
-    bb2 = BreakBeam(beam2, 2)
+    bb1 = BreakBeam(beam1, config.BEAM1)
+    bb2 = BreakBeam(beam2, config.BEAM2)
 
     uasyncio.run(beam_handler(bb1, bb2, client))
 
