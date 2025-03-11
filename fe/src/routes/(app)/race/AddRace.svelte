@@ -6,7 +6,7 @@
 		createPlayersList
 	} from "$lib/api";
 	import { getError } from "$lib/types";
-	import { Button, Dialog, Form, Input, Select, toast } from "@kayord/ui";
+	import { Button, Dialog, Form, Input, Select, Switch, toast } from "@kayord/ui";
 	import { defaults, superForm } from "sveltekit-superforms";
 	import { zod } from "sveltekit-superforms/adapters";
 	import { z } from "zod";
@@ -23,15 +23,19 @@
 
 	const schema = z.object({
 		name: z.string().min(1, { message: "Name is Required" }),
+		isFirstTracks: z.boolean(),
 		players: z
 			.array(z.coerce.number().min(1, { message: "Please select player" }))
 			.min(2, { message: "Please add one player" })
 	});
 	type FormSchema = z.infer<typeof schema>;
 
+	const isFirstTracks = $derived((race?.raceTracks.filter((c) => c.trackId > 2).length ?? 0) == 0);
+
 	const defaultValues = $derived({
 		name: race?.name ?? "",
-		players: race?.raceTracks.map((t) => t.playerId) ?? [0, 0]
+		players: race?.raceTracks.map((t) => t.playerId) ?? [0, 0],
+		isFirstTracks
 	});
 
 	const editMutation = createRaceUpdate();
@@ -45,12 +49,17 @@
 			open = false;
 			if (isEdit) {
 				await $editMutation.mutateAsync({
-					data: { name: data.name, players: data.players, id: race?.id ?? 0 }
+					data: {
+						name: data.name,
+						players: data.players,
+						id: race?.id ?? 0,
+						isFirstTracks: data.isFirstTracks
+					}
 				});
 				toast.info("Edited race");
 			} else {
 				await $createMutation.mutateAsync({
-					data: { name: data.name, players: data.players }
+					data: { name: data.name, players: data.players, isFirstTracks: data.isFirstTracks }
 				});
 				toast.info("Added race");
 			}
@@ -100,10 +109,22 @@
 					<Form.FieldErrors />
 				</Form.Field>
 
+				<Form.Field {form} name="isFirstTracks">
+					<Form.Control>
+						{#snippet children({ props })}
+							<div class="flex items-center justify-start gap-2">
+								<Switch {...props} bind:checked={$formData.isFirstTracks} />
+								<Form.Label>First Tracks</Form.Label>
+							</div>
+						{/snippet}
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+
 				<Form.Field {form} name="players[0]">
 					<Form.Control>
 						{#snippet children({ props })}
-							<Form.Label>Track 1</Form.Label>
+							<Form.Label>Track {$formData.isFirstTracks ? 1 : 3}</Form.Label>
 							<Select.Root type="single" bind:value={$formData.players[0]} name={props.name}>
 								<Select.Trigger {...props}>
 									{players.find((i) => i.id === $formData.players[0])?.name ?? "Select a Player"}
@@ -124,7 +145,7 @@
 				<Form.Field {form} name="players[1]">
 					<Form.Control>
 						{#snippet children({ props })}
-							<Form.Label>Track 2</Form.Label>
+							<Form.Label>Track {$formData.isFirstTracks ? 2 : 4}</Form.Label>
 							<Select.Root type="single" bind:value={$formData.players[1]} name={props.name}>
 								<Select.Trigger {...props}>
 									{players.find((i) => i.id === $formData.players[1])?.name ?? "Select a Player"}

@@ -40,7 +40,7 @@ public class Endpoint : Endpoint<Request, Entities.Race>
         _dbContext.RaceTrack.RemoveRange(prevRaceTracks);
 
 
-        List<RaceTrack> raceTracks = req.Players.Select((x, i) => new RaceTrack { PlayerId = x, TrackId = i + 1 }).ToList();
+        List<RaceTrack> raceTracks = [.. req.Players.Select((x, i) => new RaceTrack { PlayerId = x, TrackId = i + 1 + (req.IsFirstTracks == true ? 0 : 2) })];
 
         race.RaceTracks = raceTracks;
         race.Name = req.Name;

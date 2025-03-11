@@ -16,7 +16,7 @@
 	let { laps, fastestLap, children }: Props = $props();
 </script>
 
-<Card.Root class="flex w-full flex-col gap-2 bg-muted/50 p-2 ">
+<Card.Root class="bg-muted/50 flex w-full flex-col gap-2 p-2">
 	{@render children?.()}
 	{#if laps.length <= 0}
 		<Alert.Root>

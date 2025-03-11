@@ -103,6 +103,7 @@ export interface RaceDeleteRequest {
 export interface RaceInsertRequest {
 	name: string;
 	players: number[];
+	isFirstTracks: boolean;
 }
 
 export interface ModelsQueryModel {
@@ -167,6 +168,7 @@ export interface RaceUpdateRequest {
 	id: number;
 	name: string;
 	players: number[];
+	isFirstTracks: boolean;
 }
 
 export interface TeamsDeleteRequest {

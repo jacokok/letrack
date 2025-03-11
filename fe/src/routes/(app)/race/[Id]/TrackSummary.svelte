@@ -11,12 +11,17 @@
 </script>
 
 <Card.Root class="flex items-center justify-between p-2">
-	<Badge class="bg-muted text-muted-foreground">Laps: {track.totalLaps}</Badge>
+	<div class="flex flex-col gap-1">
+		<Badge variant="outline">Track {track.trackId}</Badge>
+		<Badge class="bg-muted text-muted-foreground">Laps: {track.totalLaps}</Badge>
+	</div>
+
 	<h1 class="flex items-center gap-1">
-		{track.player.name}<span class="text-sm text-muted-foreground"
+		{track.player.name}<span class="text-muted-foreground text-sm"
 			>{track.player.nickName ? ` (${track.player.nickName})` : ""}</span
 		>
 	</h1>
+
 	<Badge class="bg-muted text-muted-foreground">
 		<FastestIcon class="mr-1 size-3" />
 		{timeSpanToParts(track.fastestLap?.lapTime).value}

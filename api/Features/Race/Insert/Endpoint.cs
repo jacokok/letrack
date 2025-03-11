@@ -29,7 +29,7 @@ public class Endpoint : Endpoint<Request, Entities.Race>
             throw new Exception("Only two lanes supported for now");
         }
 
-        List<RaceTrack> raceTracks = req.Players.Select((x, i) => new RaceTrack { PlayerId = x, TrackId = i + 1 }).ToList();
+        List<RaceTrack> raceTracks = [.. req.Players.Select((x, i) => new RaceTrack { PlayerId = x, TrackId = i + 1 + (req.IsFirstTracks == true ? 0 : 2) })];
 
         Entities.Race race = new()
         {

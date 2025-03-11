@@ -1352,7 +1352,8 @@
         "required": [
           "id",
           "name",
-          "players"
+          "players",
+          "isFirstTracks"
         ],
         "properties": {
           "id": {
@@ -1368,6 +1369,9 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          "isFirstTracks": {
+            "type": "boolean"
           }
         }
       },
@@ -1538,7 +1542,8 @@
         "additionalProperties": false,
         "required": [
           "name",
-          "players"
+          "players",
+          "isFirstTracks"
         ],
         "properties": {
           "name": {
@@ -1550,6 +1555,9 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          "isFirstTracks": {
+            "type": "boolean"
           }
         }
       },

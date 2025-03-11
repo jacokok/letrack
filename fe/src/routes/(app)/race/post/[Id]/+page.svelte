@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from "$app/state";
-	import { createLaps, type DTOLapDTO, createLapsValid } from "$lib/api";
+	import { createLaps, type DTOLapDTO, createLapsValid, createRaceSummary } from "$lib/api";
 	import { timeSpanToParts } from "$lib/util";
 	import {
 		DataTable,
@@ -40,7 +40,16 @@
 		} else pagination = updater;
 	};
 
-	let tab = $state(1);
+	const querySummary = createRaceSummary(Number(page.params.Id));
+	const tracks = $derived($querySummary.data?.tracks.map((x) => x.trackId) ?? []);
+
+	let tab = $state(0);
+
+	$effect(() => {
+		if (tab == 0) {
+			tab = tracks.length > 0 ? tracks[0] : 0;
+		}
+	});
 	const query = $derived(
 		createLaps({
 			raceId: Number(page.params.Id),
@@ -152,10 +161,11 @@
 {/snippet}
 
 <div class="m-2">
-	<Tabs.Root value={1} class="flex w-full flex-col" onValueChange={(v: number) => (tab = v)}>
+	<Tabs.Root value={tab} class="flex w-full flex-col" onValueChange={(v: number) => (tab = v)}>
 		<Tabs.List class="items-center justify-center text-center">
-			<Tabs.Trigger value={1}>Track 1</Tabs.Trigger>
-			<Tabs.Trigger value={2}>Track 2</Tabs.Trigger>
+			{#each tracks as trackId}
+				<Tabs.Trigger value={trackId}>Track {trackId}</Tabs.Trigger>
+			{/each}
 		</Tabs.List>
 	</Tabs.Root>
 	{@render header()}
