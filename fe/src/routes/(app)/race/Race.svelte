@@ -20,9 +20,15 @@
 			return "bg-accent text-accent-foreground hover:bg-accent/80";
 		} else return "bg-secondary text-secondary-foreground hover:bg-secondary/80";
 	};
+
+	const isFinished = $derived(
+		race.isActive == false && (race.endDateTime != null || race.endLapCount != null)
+	);
 </script>
 
-<Card.Root>
+<Card.Root
+	class={`border-2 ${race.isActive ? "border-primary" : "border-muted"} ${isFinished ? "grayscale" : ""}`}
+>
 	<Card.Header class="flex flex-row items-center">
 		<div class="flex w-full flex-col items-start gap-1">
 			<Card.Title>{race.name}</Card.Title>
