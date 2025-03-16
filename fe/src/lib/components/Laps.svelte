@@ -3,8 +3,8 @@
 	import type { Lap } from "$lib/types";
 	import { timeSpanToParts } from "$lib/util";
 	import { Alert, Badge, Card, Tooltip } from "@kayord/ui";
-	import FlagIcon from "lucide-svelte/icons/flag";
-	import FastestIcon from "lucide-svelte/icons/zap";
+	import FlagIcon from "@lucide/svelte/icons/flag";
+	import FastestIcon from "@lucide/svelte/icons/zap";
 	import type { Snippet } from "svelte";
 
 	interface Props {

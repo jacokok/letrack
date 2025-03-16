@@ -3,7 +3,7 @@
 	import CountDownTimer from "$lib/components/CountDownTimer.svelte";
 	import { timeSpanToParts } from "$lib/util";
 	import { Badge, Card } from "@kayord/ui";
-	import TimerIcon from "lucide-svelte/icons/hourglass";
+	import TimerIcon from "@lucide/svelte/icons/hourglass";
 
 	interface Props {
 		data: RaceSummaryResponse;

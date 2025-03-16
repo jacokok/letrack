@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Card } from "@kayord/ui";
-	import TimerIcon from "lucide-svelte/icons/hourglass";
+	import TimerIcon from "@lucide/svelte/icons/hourglass";
 
 	interface Props {
 		endDateTime: string;

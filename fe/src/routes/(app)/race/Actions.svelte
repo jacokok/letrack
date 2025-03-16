@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { createRaceDelete, type EntitiesPlayer, type EntitiesRace } from "$lib/api";
 	import { AlertDialog, Button, DropdownMenu, toast } from "@kayord/ui";
-	import PencilIcon from "lucide-svelte/icons/pencil";
-	import ViewIcon from "lucide-svelte/icons/view";
-	import Trash2Icon from "lucide-svelte/icons/trash-2";
-	import EllipsisVerticalIcon from "lucide-svelte/icons/ellipsis-vertical";
+	import PencilIcon from "@lucide/svelte/icons/pencil";
+	import ViewIcon from "@lucide/svelte/icons/view";
+	import Trash2Icon from "@lucide/svelte/icons/trash-2";
+	import EllipsisVerticalIcon from "@lucide/svelte/icons/ellipsis-vertical";
 	import { getError } from "$lib/types";
 	import AddRace from "./AddRace.svelte";
 	import { goto } from "$app/navigation";

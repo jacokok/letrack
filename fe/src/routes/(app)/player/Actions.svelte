@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { createPlayersDelete, type EntitiesPlayer } from "$lib/api";
 	import { AlertDialog, Button, DropdownMenu, toast } from "@kayord/ui";
-	import PencilIcon from "lucide-svelte/icons/pencil";
-	import Trash2Icon from "lucide-svelte/icons/trash-2";
-	import EllipsisVerticalIcon from "lucide-svelte/icons/ellipsis-vertical";
+	import PencilIcon from "@lucide/svelte/icons/pencil";
+	import Trash2Icon from "@lucide/svelte/icons/trash-2";
+	import EllipsisVerticalIcon from "@lucide/svelte/icons/ellipsis-vertical";
 	import { getError } from "$lib/types";
 	import AddPlayer from "./AddPlayer.svelte";
 

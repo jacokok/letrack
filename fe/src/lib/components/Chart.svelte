@@ -52,7 +52,7 @@
 	const series = $derived.by(() => {
 		const results = Array<{ key: string; color: string }>();
 		if (practice.value.track1 == true) {
-			results.push({ key: "track1", color: "hsl(var(--color-primary))" });
+			results.push({ key: "track1", color: "var(--color-primary)" });
 		}
 		if (practice.value.track2 == true) {
 			results.push({ key: "track2", color: "hsl(var(--color-danger))" });

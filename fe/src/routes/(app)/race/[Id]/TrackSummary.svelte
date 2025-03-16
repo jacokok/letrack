@@ -2,7 +2,7 @@
 	import type { RaceSummaryTrack } from "$lib/api";
 	import { timeSpanToParts } from "$lib/util";
 	import { Badge, Card } from "@kayord/ui";
-	import FastestIcon from "lucide-svelte/icons/zap";
+	import FastestIcon from "@lucide/svelte/icons/zap";
 
 	interface Props {
 		track: RaceSummaryTrack;

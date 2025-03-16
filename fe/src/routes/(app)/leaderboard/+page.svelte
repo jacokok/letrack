@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { createLeaderboard } from "$lib/api";
 	import { Badge, Button, Card, Table } from "@kayord/ui";
-	import UsersIcon from "lucide-svelte/icons/users";
-	import UserIcon from "lucide-svelte/icons/user";
-	import FileIcon from "lucide-svelte/icons/file";
-	import RefreshIcon from "lucide-svelte/icons/refresh-cw";
+	import UsersIcon from "@lucide/svelte/icons/users";
+	import UserIcon from "@lucide/svelte/icons/user";
+	import FileIcon from "@lucide/svelte/icons/file";
+	import RefreshIcon from "@lucide/svelte/icons/refresh-cw";
 	import Header from "$lib/components/Header.svelte";
 	import { PUBLIC_API_URL } from "$env/static/public";
 	const query = createLeaderboard();

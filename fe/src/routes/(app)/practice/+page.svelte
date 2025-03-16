@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button, Label, Popover, Switch } from "@kayord/ui";
-	import SettingsIcon from "lucide-svelte/icons/settings";
+	import SettingsIcon from "@lucide/svelte/icons/settings";
 	import Track from "./Track.svelte";
 	import { practice } from "$lib/stores/practice.svelte";
 	import type { DoneEvent, SaveEvent } from "$lib/types";

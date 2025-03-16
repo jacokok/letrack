@@ -1,11 +1,11 @@
 <script lang="ts">
 	import Item from "./Item.svelte";
-	import RaceIcon from "lucide-svelte/icons/circle-off";
-	import ClipboardIcon from "lucide-svelte/icons/clipboard";
-	import UserIcon from "lucide-svelte/icons/user";
-	import UsersIcon from "lucide-svelte/icons/users";
-	import AdminIcon from "lucide-svelte/icons/shield-ellipsis";
-	import PracticeIcon from "lucide-svelte/icons/flag-triangle-right";
+	import RaceIcon from "@lucide/svelte/icons/circle-off";
+	import ClipboardIcon from "@lucide/svelte/icons/clipboard";
+	import UserIcon from "@lucide/svelte/icons/user";
+	import UsersIcon from "@lucide/svelte/icons/users";
+	import AdminIcon from "@lucide/svelte/icons/shield-ellipsis";
+	import PracticeIcon from "@lucide/svelte/icons/flag-triangle-right";
 </script>
 
 <div class="my-8 flex justify-center gap-4">

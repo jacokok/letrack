@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button, Card, Pagination } from "@kayord/ui";
-	import PlusIcon from "lucide-svelte/icons/plus";
+	import PlusIcon from "@lucide/svelte/icons/plus";
 	import { createRaceList } from "$lib/api";
 	import Race from "./Race.svelte";
 	import AddRace from "./AddRace.svelte";

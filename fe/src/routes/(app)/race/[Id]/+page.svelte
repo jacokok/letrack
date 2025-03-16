@@ -6,12 +6,12 @@
 	import type { DoneEvent, SaveEvent } from "$lib/types";
 	import Track from "./Track.svelte";
 	import { hub } from "$lib/stores/hub.svelte";
-	import PlayIcon from "lucide-svelte/icons/play";
-	import StopIcon from "lucide-svelte/icons/square";
+	import PlayIcon from "@lucide/svelte/icons/play";
+	import StopIcon from "@lucide/svelte/icons/square";
 	import Header from "$lib/components/Header.svelte";
 	import StartRace from "./StartRace.svelte";
 	import Lights from "$lib/components/Light/Lights.svelte";
-	import { FlagIcon } from "lucide-svelte";
+	import { FlagIcon } from "@lucide/svelte";
 
 	const query = createRaceSummary(Number(page.params.Id));
 

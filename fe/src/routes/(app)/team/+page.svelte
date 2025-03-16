@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createTeamsList, type EntitiesTeam } from "$lib/api";
 	import { Button, Card } from "@kayord/ui";
-	import PlusIcon from "lucide-svelte/icons/plus";
+	import PlusIcon from "@lucide/svelte/icons/plus";
 	import Actions from "./Actions.svelte";
 	import AddTeam from "./AddTeam.svelte";
 

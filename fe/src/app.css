@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @source "../node_modules/@kayord/ui";
+@source '../node_modules/layerchart/**/*.{svelte,js}';
 @import "tw-animate-css";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -43,7 +44,6 @@
 	--sidebar-primary: 266 85.04672646522522% 58.03921818733215%;
 	--sidebar-ring: 234 16.022099554538727% 35.49019694328308%;
 
-	--color-primary: 47.9 95.8% 53.1%;
 	--color-secondary: 60 4.8% 95.9%;
 	--color-info: 60 4.8% 95.9%;
 	--color-success: 47.9 95.8% 53.1%;
@@ -80,7 +80,6 @@
 	--sidebar-primary: 267 83.50515365600586% 80.98039031028748%;
 	--sidebar-ring: 226 63.93442749977112% 88.03921341896057%;
 
-	--color-primary: 170 57.35294222831726% 73.33333492279053%;
 	--color-secondary: 217 91.86992049217224% 75.88235139846802%;
 	--color-info: 217 91.86992049217224% 75.88235139846802%;
 	--color-success: 170 57.35294222831726% 73.33333492279053%;
@@ -88,11 +87,17 @@
 	--color-danger: 343 81.25% 74.90196228027344%;
 }
 
+@theme {
+	--color-surface-content: hsl(227 35.29411852359772% 80.0000011920929%);
+}
+
 @theme inline {
 	/* Fonts */
-	--font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-		"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-	--font-mono: "Source Code Pro Variable", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+	--font-sans:
+		"Inter Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+		"Segoe UI Symbol", "Noto Color Emoji";
+	--font-mono:
+		"Source Code Pro Variable", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
 		"Liberation Mono", "Courier New", monospace;
 
 	/* Colors */

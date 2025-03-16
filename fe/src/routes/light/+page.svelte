@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Lights from "$lib/components/Light/Lights.svelte";
 	import { Button } from "@kayord/ui";
-	import PlayIcon from "lucide-svelte/icons/play";
-	import StopIcon from "lucide-svelte/icons/square";
+	import PlayIcon from "@lucide/svelte/icons/play";
+	import StopIcon from "@lucide/svelte/icons/square";
 
 	let isActive = $state(false);
 

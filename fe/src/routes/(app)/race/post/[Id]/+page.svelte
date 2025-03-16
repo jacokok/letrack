@@ -12,7 +12,7 @@
 		Tabs,
 		Button
 	} from "@kayord/ui";
-	import FlagIcon from "lucide-svelte/icons/flag";
+	import FlagIcon from "@lucide/svelte/icons/flag";
 
 	import {
 		type ColumnDef,
@@ -22,7 +22,7 @@
 		getPaginationRowModel,
 		type RowSelectionState
 	} from "@tanstack/table-core";
-	import { CheckIcon, XIcon } from "lucide-svelte";
+	import { CheckIcon, XIcon } from "@lucide/svelte";
 
 	let showAll = $state<boolean>(false);
 

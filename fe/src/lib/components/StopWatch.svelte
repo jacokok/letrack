@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Timer } from "$lib/stores/timer.svelte";
 	import type { SaveEvent } from "$lib/types";
-	import TimerIcon from "lucide-svelte/icons/timer";
+	import TimerIcon from "@lucide/svelte/icons/timer";
 	import { Card } from "@kayord/ui";
 
 	const timer = new Timer();
