@@ -8,7 +8,6 @@
 	import Header from "$lib/components/Header.svelte";
 	import { PUBLIC_API_URL } from "$env/static/public";
 	const query = createLeaderboard();
-	$inspect($query.data);
 
 	const exportToCSV = () => {
 		window.location.assign(`${PUBLIC_API_URL}/export`);

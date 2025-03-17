@@ -12,6 +12,7 @@
 	import StartRace from "./StartRace.svelte";
 	import Lights from "$lib/components/Light/Lights.svelte";
 	import { FlagIcon } from "@lucide/svelte";
+	import LineChart from "./LineChart.svelte";
 
 	const query = createRaceSummary(Number(page.params.Id));
 

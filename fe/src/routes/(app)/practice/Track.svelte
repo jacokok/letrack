@@ -38,7 +38,7 @@
 	});
 </script>
 
-<div class="flex w-full flex-col">
+<div class="flex w-full flex-col gap-1">
 	<StopWatch bind:this={stopWatch} />
 	{#if $query.error}
 		<Alert.Root>

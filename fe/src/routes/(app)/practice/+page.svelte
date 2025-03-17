@@ -82,6 +82,6 @@
 	{/if}
 </div>
 
-<div>
+<div class="m-2">
 	<Chart />
 </div>
