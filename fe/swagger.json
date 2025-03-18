@@ -878,6 +878,36 @@
         }
       }
     },
+    "/admin/snapshot": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "AdminSnapshot",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/admin/clear-race": {
       "post": {
         "tags": [

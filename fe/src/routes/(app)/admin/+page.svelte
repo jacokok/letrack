@@ -10,22 +10,31 @@
 		createAdminClearAll,
 		createAdminClearLaps,
 		createAdminClearRaces,
-		createAdminClearInvalidLaps
+		createAdminClearInvalidLaps,
+		createAdminSnapshot
 	} from "$lib/api";
+	import { ArchiveIcon } from "@lucide/svelte";
 
 	const clearEventMutation = createAdminClearEvents();
 	const clearInvalidLapsMutation = createAdminClearInvalidLaps();
 	const clearRacesMutation = createAdminClearRaces();
 	const clearLapsMutation = createAdminClearLaps();
 	const clearAllMutation = createAdminClearAll();
+	const snapshot = createAdminSnapshot();
 
 	let isOpen = $state(false);
-	let eventType = $state<"event" | "race" | "lap-invalid" | "lap" | "all" | "none">("none");
+	let eventType = $state<"event" | "race" | "snapshot" | "lap-invalid" | "lap" | "all" | "none">(
+		"none"
+	);
 
 	const action = async () => {
 		isOpen = false;
 		if (eventType == "none") {
 			return;
+		} else if (eventType == "snapshot") {
+			toast.info("Disconnect active connections from database and creating snapshot.");
+			await $snapshot.mutateAsync();
+			toast.info("Creating Snapshot");
 		} else if (eventType == "race") {
 			await $clearRacesMutation.mutateAsync();
 			toast.info("Deleted all races");
@@ -52,6 +61,16 @@
 			<Card.Description>Advanced option for admin which is very dangerous</Card.Description>
 		</Card.Header>
 		<Card.Content class="flex flex-col gap-4">
+			<Button
+				class="w-full"
+				variant="secondary"
+				onclick={() => {
+					isOpen = true;
+					eventType = "snapshot";
+				}}
+			>
+				<ArchiveIcon />Create Snapshot
+			</Button>
 			<Button
 				class="w-full"
 				onclick={() => {

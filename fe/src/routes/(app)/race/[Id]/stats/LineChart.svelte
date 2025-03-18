@@ -7,8 +7,12 @@
 	}
 	let { data }: Props = $props();
 
-	const firstTrack = $derived.by(() => (data.length > 0 ? data[0].laps[0].trackId : 0));
-	const secondTrack = $derived.by(() => (data.length > 0 ? data[1].laps[0].trackId : 0));
+	const firstTrack = $derived.by(() =>
+		data.length > 0 && data[0].laps.length > 0 ? data[0].laps[0].trackId : 0
+	);
+	const secondTrack = $derived.by(() =>
+		data.length > 1 && data[1].laps.length > 0 ? data[1].laps[0].trackId : 0
+	);
 	const firstTrackColor = $derived(
 		firstTrack == 1 ? "hsl(var(--color-success))" : "hsl(var(--color-warning))"
 	);

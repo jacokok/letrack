@@ -8,6 +8,7 @@
 	import { getError } from "$lib/types";
 	import AddRace from "./AddRace.svelte";
 	import { goto } from "$app/navigation";
+	import { ChartNoAxesCombinedIcon } from "@lucide/svelte";
 
 	interface Props {
 		refetch: () => void;
@@ -41,6 +42,9 @@
 	<DropdownMenu.Content>
 		<DropdownMenu.Item onclick={() => goto(`/race/${race.id}`)}>
 			<ViewIcon /> View
+		</DropdownMenu.Item>
+		<DropdownMenu.Item onclick={() => goto(`/race/${race.id}/stats`)}>
+			<ChartNoAxesCombinedIcon /> Stats
 		</DropdownMenu.Item>
 		<DropdownMenu.Item onclick={() => (editOpen = true)}><PencilIcon /> Edit</DropdownMenu.Item>
 		<DropdownMenu.Item onclick={() => (deleteOpen = true)}><Trash2Icon /> Delete</DropdownMenu.Item>
