@@ -34,7 +34,7 @@
 		} else if (eventType == "snapshot") {
 			toast.info("Disconnect active connections from database and creating snapshot.");
 			await $snapshot.mutateAsync();
-			toast.info("Creating Snapshot");
+			toast.info("Created Snapshot");
 		} else if (eventType == "race") {
 			await $clearRacesMutation.mutateAsync();
 			toast.info("Deleted all races");
