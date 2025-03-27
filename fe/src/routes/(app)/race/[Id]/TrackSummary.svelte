@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { RaceSummaryTrack } from "$lib/api";
+	import PlayerAvatar from "$lib/components/PlayerAvatar.svelte";
 	import { timeSpanToParts } from "$lib/util";
 	import { Badge, Card } from "@kayord/ui";
 	import FastestIcon from "@lucide/svelte/icons/zap";
@@ -17,9 +18,15 @@
 	</div>
 
 	<h1 class="flex items-center gap-1">
-		{track.player.name}<span class="text-muted-foreground text-sm"
-			>{track.player.nickName ? ` (${track.player.nickName})` : ""}</span
-		>
+		<PlayerAvatar name={track.player.name} isSmall />
+		<div class="flex flex-col">
+			<div class="leading-4">
+				{track.player.name}
+			</div>
+			<div class="text-muted-foreground text-xs leading-3">
+				{track.player.nickName ? ` ${track.player.nickName}` : ""}
+			</div>
+		</div>
 	</h1>
 
 	<Badge class="bg-muted text-muted-foreground">

@@ -221,6 +221,7 @@ export interface LeaderboardResponse {
 export interface LeaderboardPlayerSummary {
 	id: number;
 	name: string;
+	nickName: string;
 	laps: number;
 }
 

@@ -3,6 +3,7 @@
 	import { Badge, Card } from "@kayord/ui";
 	import Actions from "./Actions.svelte";
 	import { cn } from "@kayord/ui/utils";
+	import PlayerAvatar from "$lib/components/PlayerAvatar.svelte";
 
 	interface Props {
 		race: EntitiesRace;
@@ -44,8 +45,9 @@
 			{#each race.raceTracks as track}
 				<Card.Root class="p-2">
 					<div class="flex items-center gap-2">
-						<Badge class={cn(getVariant(track.trackId))}>Track {track.trackId}</Badge>
+						<PlayerAvatar name={track.player.name} isSmall />
 						{track.player.name} ({track.player.nickName})
+						<Badge class={cn(getVariant(track.trackId))}>Track {track.trackId}</Badge>
 					</div>
 				</Card.Root>
 			{/each}

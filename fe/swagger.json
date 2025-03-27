@@ -1672,6 +1672,7 @@
         "required": [
           "id",
           "name",
+          "nickName",
           "laps"
         ],
         "properties": {
@@ -1680,6 +1681,9 @@
             "format": "int32"
           },
           "name": {
+            "type": "string"
+          },
+          "nickName": {
             "type": "string"
           },
           "laps": {

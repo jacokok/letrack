@@ -21,11 +21,14 @@ public class Endpoint : EndpointWithoutRequest<Response>
     {
         var players = await _dbContext.Database.SqlQuery<PlayerSummary>(
         $"""
-            SELECT p.id, p.name, count(*) laps
+            SELECT 
+                p.id, 
+                p.name, 
+                p.nick_name, 
+                sum(case when l.is_valid then 1 else 0 end) laps
             FROM player p
-            JOIN lap l
-            ON p.id = l.player_id
-            WHERE l.is_valid = true
+            LEFT JOIN lap l
+                ON p.id = l.player_id
             GROUP BY p.id 
             ORDER BY laps DESC;
         """

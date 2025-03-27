@@ -7,6 +7,7 @@
 	import RefreshIcon from "@lucide/svelte/icons/refresh-cw";
 	import Header from "$lib/components/Header.svelte";
 	import { PUBLIC_API_URL } from "$env/static/public";
+	import PlayerAvatar from "$lib/components/PlayerAvatar.svelte";
 	const query = createLeaderboard();
 
 	const exportToCSV = () => {
@@ -62,7 +63,15 @@
 						>
 							{position}
 						</div>
-						<div class="text-xl">{player.name}</div>
+						<PlayerAvatar name={player.name} isSmall />
+						<div class="flex flex-col">
+							<div class="leading-4">
+								{player.name}
+							</div>
+							<div class="text-muted-foreground text-xs leading-3">
+								{player.nickName ? ` ${player.nickName}` : ""}
+							</div>
+						</div>
 					</div>
 					<Badge>{player.laps}</Badge>
 				</Card.Root>
