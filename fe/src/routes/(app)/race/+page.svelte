@@ -1,9 +1,20 @@
 <script lang="ts">
-	import { Button, Card, Pagination } from "@kayord/ui";
+	import {
+		Badge,
+		Button,
+		DataTable,
+		renderComponent,
+		renderSnippet,
+		ShadTable,
+		Tooltip
+	} from "@kayord/ui";
 	import PlusIcon from "@lucide/svelte/icons/plus";
-	import { createRaceList } from "$lib/api";
-	import Race from "./Race.svelte";
+	import { createRaceList, type EntitiesRace, type EntitiesRaceTrack } from "$lib/api";
 	import AddRace from "./AddRace.svelte";
+	import type { ColumnDef } from "@tanstack/table-core";
+	import Actions from "./Actions.svelte";
+	import PlayerAvatar from "$lib/components/PlayerAvatar.svelte";
+	import { cn } from "@kayord/ui/utils";
 
 	let open = $state(false);
 
@@ -11,52 +22,121 @@
 	const pageSize = 20;
 
 	const query = $derived(createRaceList({ page: page, pageSize: pageSize }));
+	const data = $derived($query.data?.items ?? []);
+
+	const getVariant = (track: number) => {
+		if (track <= 1) {
+			return "bg-primary text-primary-foreground";
+		} else if (track == 2) {
+			return "bg-destructive text-destructive-foreground hover:bg-destructive/80";
+		} else if (track == 3) {
+			return "bg-accent text-accent-foreground hover:bg-accent/80";
+		} else return "bg-secondary text-secondary-foreground hover:bg-secondary/80";
+	};
+
+	const columns: ColumnDef<EntitiesRace>[] = [
+		{
+			header: "Race",
+			accessorKey: "name",
+			size: 1000
+		},
+		{
+			header: "Slot 1",
+			accessorKey: "raceTracks[0]",
+			cell: (item) => renderSnippet(track, item.cell.row.original.raceTracks[0]),
+			size: 1000
+		},
+		{
+			header: "Slot 2",
+			accessorKey: "raceTracks[1]",
+			cell: (item) => renderSnippet(track, item.cell.row.original.raceTracks[1]),
+			size: 1000
+		},
+		{
+			header: "Status",
+			accessorKey: "endDateTime",
+			cell: (item) => renderSnippet(dates, item.cell.row.original),
+			size: 1000
+		},
+		{
+			header: "",
+			accessorKey: "id",
+			size: 10,
+			cell: (item) =>
+				renderComponent(Actions, { race: item.cell.row.original, refetch: $query.refetch })
+		}
+	];
+
+	const tableState = new ShadTable({
+		columns,
+		get data() {
+			return data;
+		},
+		enableRowSelection: false
+	});
 </script>
 
-<div class="m-2">
-	<div class="flex items-center justify-end gap-2">
+{#snippet track(track: EntitiesRaceTrack)}
+	<div class="flex items-center gap-2">
+		<PlayerAvatar name={track.player.name} isSmall />
+		{track.player.name} ({track.player.nickName})
+		<Badge class={cn(getVariant(track.trackId))}>Track {track.trackId}</Badge>
+	</div>
+{/snippet}
+
+{#snippet dates(race: EntitiesRace)}
+	<div class="flex items-center gap-2">
+		<Tooltip.Provider>
+			<Tooltip.Root>
+				<Tooltip.Trigger>
+					{#if race.isActive}
+						<Badge>Active</Badge>
+					{:else if race.endDateTime}
+						<Badge variant="destructive">Ended</Badge>
+					{:else}
+						<Badge variant="outline">Not Started</Badge>
+					{/if}
+				</Tooltip.Trigger>
+				<Tooltip.Content class="flex flex-col gap-1">
+					<p class="flex justify-between gap-2">
+						Created:
+						<Badge variant="outline">
+							{new Date(race.createdDateTime).toLocaleString()}
+						</Badge>
+					</p>
+					{#if race.startDateTime}
+						<p class="flex justify-between gap-2">
+							Started:
+							<Badge variant="outline">
+								{new Date(race.startDateTime).toLocaleString()}
+							</Badge>
+						</p>
+					{/if}
+					{#if race.endDateTime}
+						<p class="flex justify-between gap-2">
+							Ended:
+							<Badge variant="outline">
+								{new Date(race.endDateTime).toLocaleString()}
+							</Badge>
+						</p>
+					{/if}
+				</Tooltip.Content>
+			</Tooltip.Root>
+		</Tooltip.Provider>
+	</div>
+{/snippet}
+
+{#snippet header()}
+	<div class="flex items-center justify-between gap-2">
+		<h1 class="text-2xl">Races</h1>
 		<Button class="my-2" onclick={() => (open = true)}>
 			<PlusIcon />Add Race
 		</Button>
 	</div>
+{/snippet}
 
-	{#if $query.data?.items?.length == 0}
-		<Card.Root class="p-2">No Races</Card.Root>
-	{/if}
-
-	<div class="flex flex-col gap-2">
-		{#each $query.data?.items ?? [] as race}
-			<Race {race} refetch={$query.refetch} />
-		{/each}
-	</div>
+<div class="m-2">
+	<DataTable {header} headerClass="pb-2" {tableState} noDataMessage="No Races" />
 
 	<AddRace bind:open refetch={$query.refetch} />
-
-	{#if ($query.data?.totalPages ?? 0) > 1}
-		<Pagination.Root count={$query.data?.totalCount ?? 0} perPage={pageSize} bind:page class="mt-2">
-			{#snippet children({ pages, currentPage })}
-				<Pagination.Content>
-					<Pagination.Item>
-						<Pagination.PrevButton />
-					</Pagination.Item>
-					{#each pages as page (page.key)}
-						{#if page.type === "ellipsis"}
-							<Pagination.Item>
-								<Pagination.Ellipsis />
-							</Pagination.Item>
-						{:else}
-							<Pagination.Item>
-								<Pagination.Link {page} isActive={currentPage === page.value}>
-									{page.value}
-								</Pagination.Link>
-							</Pagination.Item>
-						{/if}
-					{/each}
-					<Pagination.Item>
-						<Pagination.NextButton />
-					</Pagination.Item>
-				</Pagination.Content>
-			{/snippet}
-		</Pagination.Root>
-	{/if}
 </div>

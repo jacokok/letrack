@@ -10,7 +10,8 @@
 		renderSnippet,
 		Badge,
 		Tabs,
-		Button
+		Button,
+		Card
 	} from "@kayord/ui";
 	import FlagIcon from "@lucide/svelte/icons/flag";
 
@@ -22,7 +23,9 @@
 		getPaginationRowModel,
 		type RowSelectionState
 	} from "@tanstack/table-core";
-	import { CheckIcon, XIcon } from "@lucide/svelte";
+	import { CheckIcon, Inspect, XIcon } from "@lucide/svelte";
+	import PlayerAvatar from "$lib/components/PlayerAvatar.svelte";
+	import Header from "$lib/components/Header.svelte";
 
 	let showAll = $state<boolean>(false);
 
@@ -41,9 +44,16 @@
 	};
 
 	const querySummary = createRaceSummary(Number(page.params.Id));
-	const tracks = $derived($querySummary.data?.tracks.map((x) => x.trackId) ?? []);
+
+	const tracksDetail = $derived($querySummary.data?.tracks ?? []);
+	const tracks = $derived(tracksDetail.map((x) => x.trackId));
 
 	let tab = $state(0);
+
+	const selectedTrackDetail = $derived(tracksDetail.find((x) => x.trackId == tab));
+	const selectedLapTotal = $derived(
+		selectedTrackDetail?.laps.map((x) => x.isValid).filter((x) => x == true).length
+	);
 
 	$effect(() => {
 		if (tab == 0) {
@@ -117,6 +127,7 @@
 			data: { ids: Object.keys(rowSelection) }
 		});
 		$query.refetch();
+		$querySummary.refetch();
 	};
 </script>
 
@@ -140,10 +151,37 @@
 	{/if}
 {/snippet}
 
+{#snippet right()}
+	<div class="flex items-center gap-2">
+		<Button variant="ghost" href="/race/{page.params.Id}"><FlagIcon /> Race</Button>
+	</div>
+{/snippet}
+
+<Header {right} />
+
 {#snippet header()}
+	<Card.Root class="p-2 my-2 flex gap-2 items-center bg-black/20 justify-between">
+		{#if selectedTrackDetail}
+			<div class="flex items-center gap-2">
+				<PlayerAvatar name={selectedTrackDetail.player.name} isSmall />
+				<div class="flex flex-col">
+					<div class="leading-4">
+						{selectedTrackDetail.player.name}
+					</div>
+					<div class="text-muted-foreground text-xs leading-3">
+						{selectedTrackDetail.player.nickName}
+					</div>
+				</div>
+			</div>
+		{/if}
+		<div>
+			<Badge>Laps: {selectedLapTotal} of {selectedTrackDetail?.laps.length}</Badge>
+			<Badge variant="outline">Track {tab}</Badge>
+		</div>
+	</Card.Root>
+
 	<div class="flex items-center justify-between">
 		<div>
-			<h1>Post Race Track {tab}</h1>
 			<p class="text-muted-foreground">Check flagged laps</p>
 		</div>
 
