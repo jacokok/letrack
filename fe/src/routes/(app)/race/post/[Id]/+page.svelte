@@ -4,7 +4,7 @@
 	import { timeSpanToParts } from "$lib/util";
 	import {
 		DataTable,
-		createSvelteTable,
+		ShadTable,
 		Checkbox,
 		Label,
 		renderSnippet,
@@ -90,7 +90,7 @@
 		}
 	];
 
-	const table = createSvelteTable({
+	const tableState = new ShadTable({
 		columns,
 		get data() {
 			return data;
@@ -174,8 +174,7 @@
 	</Tabs.Root>
 	{@render header()}
 	<DataTable
-		{table}
-		{columns}
+		{tableState}
 		headerClass="pb-2"
 		isLoading={$query.isPending}
 		noDataMessage="No history available"

@@ -4,6 +4,7 @@
 	import PlusIcon from "@lucide/svelte/icons/plus";
 	import AddPlayer from "./AddPlayer.svelte";
 	import Actions from "./Actions.svelte";
+	import PlayerAvatar from "$lib/components/PlayerAvatar.svelte";
 
 	const query = createPlayersList();
 
@@ -12,7 +13,8 @@
 
 {#snippet playerSnippet(player: EntitiesPlayer)}
 	<Card.Root>
-		<Card.Header class="mb-6 flex flex-row items-center">
+		<Card.Header class="mb-6 flex flex-row items-center gap-2">
+			<PlayerAvatar name={player.name} />
 			<div class="flex w-full flex-col items-start">
 				<Card.Title>{player.name}</Card.Title>
 				<Card.Description>{player.nickName}</Card.Description>

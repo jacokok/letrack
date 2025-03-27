@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { DTOLapDTO, RaceSummaryTrack } from "$lib/api";
 	import { timeSpanToParts } from "$lib/util";
-	import { Badge, Card, createShadTable, DataTable, renderSnippet, Tooltip } from "@kayord/ui";
+	import { Badge, Card, ShadTable, DataTable, renderSnippet, Tooltip } from "@kayord/ui";
 	import { CircleCheckIcon, CircleXIcon, FlagIcon } from "@lucide/svelte";
 	import type { ColumnDef } from "@tanstack/table-core";
 
@@ -27,7 +27,7 @@
 		}
 	];
 
-	const table = createShadTable({
+	const tableState = new ShadTable({
 		columns,
 		get data() {
 			return data?.laps ?? [];
@@ -78,5 +78,5 @@
 		<Badge variant="outline">Track {data?.trackId}</Badge>
 		<div>{data?.player.name}</div>
 	</Card.Root>
-	<DataTable headerClass="pb-2" {table} {columns} noDataMessage="No laps" />
+	<DataTable headerClass="pb-2" {tableState} noDataMessage="No laps" />
 </Card.Root>
