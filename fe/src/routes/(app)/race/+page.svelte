@@ -62,6 +62,7 @@
 			header: "",
 			accessorKey: "id",
 			size: 10,
+			enableSorting: false,
 			cell: (item) =>
 				renderComponent(Actions, { race: item.cell.row.original, refetch: $query.refetch })
 		}
