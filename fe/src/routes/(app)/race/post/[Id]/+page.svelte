@@ -4,14 +4,14 @@
 	import { timeSpanToParts } from "$lib/util";
 	import {
 		DataTable,
-		ShadTable,
 		Checkbox,
 		Label,
 		renderSnippet,
 		Badge,
 		Tabs,
 		Button,
-		Card
+		Card,
+		createShadTable
 	} from "@kayord/ui";
 	import FlagIcon from "@lucide/svelte/icons/flag";
 
@@ -100,7 +100,7 @@
 		}
 	];
 
-	const tableState = new ShadTable({
+	const table = createShadTable({
 		columns,
 		get data() {
 			return data;
@@ -212,7 +212,7 @@
 	</Tabs.Root>
 	{@render header()}
 	<DataTable
-		{tableState}
+		{table}
 		headerClass="pb-2"
 		isLoading={$query.isPending}
 		noDataMessage="No history available"

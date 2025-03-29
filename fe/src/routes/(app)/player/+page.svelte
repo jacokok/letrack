@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createPlayersList, type EntitiesPlayer } from "$lib/api";
-	import { Button, Card, DataTable, renderComponent, ShadTable } from "@kayord/ui";
+	import { Button, Card, createShadTable, DataTable, renderComponent } from "@kayord/ui";
 	import PlusIcon from "@lucide/svelte/icons/plus";
 	import AddPlayer from "./AddPlayer.svelte";
 	import Actions from "./Actions.svelte";
@@ -47,7 +47,7 @@
 
 	const data = $derived($query.data ?? []);
 
-	const tableState = new ShadTable({
+	const table = createShadTable({
 		columns,
 		get data() {
 			return data;
@@ -66,6 +66,8 @@
 {/snippet}
 
 <div class="m-2">
-	<DataTable {header} headerClass="pb-2" {tableState} noDataMessage="No Players" />
-	<AddPlayer bind:open refetch={$query.refetch} />
+	<DataTable {header} headerClass="pb-2" {table} noDataMessage="No Players" />
+	{#if open}
+		<AddPlayer bind:open refetch={$query.refetch} />
+	{/if}
 </div>

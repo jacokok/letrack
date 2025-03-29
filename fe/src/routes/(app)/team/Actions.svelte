@@ -42,7 +42,9 @@
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
 
-<AddTeam {refetch} bind:open={editOpen} {team} />
+{#if editOpen}
+	<AddTeam {refetch} bind:open={editOpen} {team} />
+{/if}
 
 <AlertDialog.Root bind:open={deleteOpen}>
 	<AlertDialog.Content>

@@ -5,7 +5,7 @@
 		DataTable,
 		renderComponent,
 		renderSnippet,
-		ShadTable,
+		createShadTable,
 		Tooltip
 	} from "@kayord/ui";
 	import PlusIcon from "@lucide/svelte/icons/plus";
@@ -19,10 +19,7 @@
 	let open = $state(false);
 
 	let page = $state(1);
-	const pageSize = 20;
-
-	const query = $derived(createRaceList({ page: page, pageSize: pageSize }));
-	const data = $derived($query.data?.items ?? []);
+	const pageSize = 2;
 
 	const getVariant = (track: number) => {
 		if (track <= 1) {
@@ -44,13 +41,15 @@
 			header: "Slot 1",
 			accessorKey: "raceTracks[0]",
 			cell: (item) => renderSnippet(track, item.cell.row.original.raceTracks[0]),
-			size: 1000
+			size: 1000,
+			enableSorting: false
 		},
 		{
 			header: "Slot 2",
 			accessorKey: "raceTracks[1]",
 			cell: (item) => renderSnippet(track, item.cell.row.original.raceTracks[1]),
-			size: 1000
+			size: 1000,
+			enableSorting: false
 		},
 		{
 			header: "Status",
@@ -68,12 +67,17 @@
 		}
 	];
 
-	const tableState = new ShadTable({
+	const query = $derived(createRaceList({ page: page, pageSize: pageSize }));
+	const data = $derived($query.data?.items ?? []);
+
+	const table = createShadTable({
 		columns,
 		get data() {
 			return data;
 		},
-		enableRowSelection: false
+		enableRowSelection: false,
+		manualPagination: true,
+		enableVisibility: true
 	});
 </script>
 
@@ -137,7 +141,7 @@
 {/snippet}
 
 <div class="m-2">
-	<DataTable {header} headerClass="pb-2" {tableState} noDataMessage="No Races" />
+	<DataTable {header} headerClass="pb-2" {table} noDataMessage="No Races" enableVisibility />
 
 	<AddRace bind:open refetch={$query.refetch} />
 </div>
