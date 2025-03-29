@@ -51,7 +51,9 @@
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
 
-<AddRace {refetch} bind:open={editOpen} {race} />
+{#if editOpen}
+	<AddRace {refetch} bind:open={editOpen} {race} />
+{/if}
 
 <AlertDialog.Root bind:open={deleteOpen}>
 	<AlertDialog.Content>

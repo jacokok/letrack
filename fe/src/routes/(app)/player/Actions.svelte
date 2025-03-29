@@ -42,7 +42,9 @@
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
 
-<AddPlayer {refetch} bind:open={editOpen} {player} />
+{#if editOpen}
+	<AddPlayer {refetch} bind:open={editOpen} {player} />
+{/if}
 
 <AlertDialog.Root bind:open={deleteOpen}>
 	<AlertDialog.Content>
