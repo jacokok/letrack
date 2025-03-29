@@ -4,14 +4,14 @@
 	import { timeSpanToParts } from "$lib/util";
 	import {
 		DataTable,
-		Checkbox,
 		Label,
 		renderSnippet,
 		Badge,
 		Tabs,
 		Button,
 		Card,
-		createShadTable
+		createShadTable,
+		Switch
 	} from "@kayord/ui";
 	import FlagIcon from "@lucide/svelte/icons/flag";
 
@@ -23,11 +23,13 @@
 		getPaginationRowModel,
 		type RowSelectionState
 	} from "@tanstack/table-core";
-	import { CheckIcon, Inspect, XIcon } from "@lucide/svelte";
+	import { CheckIcon, Inspect, PlusIcon, XIcon } from "@lucide/svelte";
 	import PlayerAvatar from "$lib/components/PlayerAvatar.svelte";
 	import Header from "$lib/components/Header.svelte";
+	import AddAdjustment from "./AddAdjustment.svelte";
 
-	let showAll = $state<boolean>(false);
+	let showAll = $state(false);
+	let adjustmentOpen = $state(false);
 
 	let rowSelection: RowSelectionState = $state({});
 	const setRowSelection = (updater: Updater<RowSelectionState>) => {
@@ -186,7 +188,21 @@
 		</div>
 
 		<div class="flex items-center gap-2">
-			<Checkbox id="flag" bind:checked={showAll} aria-labelledby="flag-label" />
+			{#if adjustmentOpen}
+				<AddAdjustment
+					trackId={tab}
+					raceId={Number(page.params.Id)}
+					refetch={() => {
+						$query.refetch();
+						$querySummary.refetch();
+					}}
+					bind:open={adjustmentOpen}
+				/>
+			{/if}
+			<Button size="sm" variant="outline" onclick={() => (adjustmentOpen = true)}>
+				<PlusIcon /> Adjustment
+			</Button>
+			<Switch id="flag" bind:checked={showAll} aria-labelledby="flag-label" />
 			<Label
 				id="flag-label"
 				for="flag"

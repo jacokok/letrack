@@ -239,6 +239,12 @@ export interface LapsValidRequest {
 	ids: string[];
 }
 
+export interface LapsAdjustmentRequest {
+	raceId: number;
+	trackId: number;
+	amount: number;
+}
+
 export interface DTOLapExportDTO {
 	id: string;
 	trackId: number;

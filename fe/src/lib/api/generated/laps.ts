@@ -16,7 +16,13 @@ import type {
 	QueryKey
 } from "@tanstack/svelte-query";
 
-import type { DTOLapDTO, InternalErrorResponse, LapsParams, LapsValidRequest } from "./api.schemas";
+import type {
+	DTOLapDTO,
+	InternalErrorResponse,
+	LapsAdjustmentRequest,
+	LapsParams,
+	LapsValidRequest
+} from "./api.schemas";
 
 import { customInstance } from "../mutator/customInstance.svelte";
 import type { ErrorType, BodyType } from "../mutator/customInstance.svelte";
@@ -135,6 +141,74 @@ export const createLapsValid = <
 	TContext
 > => {
 	const mutationOptions = getLapsValidMutationOptions(options);
+
+	return createMutation(mutationOptions);
+};
+export const lapsAdjustment = (lapsAdjustmentRequest: BodyType<LapsAdjustmentRequest>) => {
+	return customInstance<void>({
+		url: `/laps/adjustment`,
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		data: lapsAdjustmentRequest
+	});
+};
+
+export const getLapsAdjustmentMutationOptions = <
+	TError = ErrorType<InternalErrorResponse>,
+	TContext = unknown
+>(options?: {
+	mutation?: CreateMutationOptions<
+		Awaited<ReturnType<typeof lapsAdjustment>>,
+		TError,
+		{ data: BodyType<LapsAdjustmentRequest> },
+		TContext
+	>;
+}): CreateMutationOptions<
+	Awaited<ReturnType<typeof lapsAdjustment>>,
+	TError,
+	{ data: BodyType<LapsAdjustmentRequest> },
+	TContext
+> => {
+	const mutationKey = ["lapsAdjustment"];
+	const { mutation: mutationOptions } = options
+		? options.mutation && "mutationKey" in options.mutation && options.mutation.mutationKey
+			? options
+			: { ...options, mutation: { ...options.mutation, mutationKey } }
+		: { mutation: { mutationKey } };
+
+	const mutationFn: MutationFunction<
+		Awaited<ReturnType<typeof lapsAdjustment>>,
+		{ data: BodyType<LapsAdjustmentRequest> }
+	> = (props) => {
+		const { data } = props ?? {};
+
+		return lapsAdjustment(data);
+	};
+
+	return { mutationFn, ...mutationOptions };
+};
+
+export type LapsAdjustmentMutationResult = NonNullable<Awaited<ReturnType<typeof lapsAdjustment>>>;
+export type LapsAdjustmentMutationBody = BodyType<LapsAdjustmentRequest>;
+export type LapsAdjustmentMutationError = ErrorType<InternalErrorResponse>;
+
+export const createLapsAdjustment = <
+	TError = ErrorType<InternalErrorResponse>,
+	TContext = unknown
+>(options?: {
+	mutation?: CreateMutationOptions<
+		Awaited<ReturnType<typeof lapsAdjustment>>,
+		TError,
+		{ data: BodyType<LapsAdjustmentRequest> },
+		TContext
+	>;
+}): CreateMutationResult<
+	Awaited<ReturnType<typeof lapsAdjustment>>,
+	TError,
+	{ data: BodyType<LapsAdjustmentRequest> },
+	TContext
+> => {
+	const mutationOptions = getLapsAdjustmentMutationOptions(options);
 
 	return createMutation(mutationOptions);
 };
