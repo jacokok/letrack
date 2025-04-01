@@ -9,6 +9,15 @@
 	const toggleActive = () => {
 		isActive = !isActive;
 	};
+
+	const audio = new Audio("/sounds/light.mp3");
+	const audio2 = new Audio("/sounds/voice.mp3");
+	const playSound = () => {
+		audio.play();
+	};
+	const playSound2 = () => {
+		audio2.play();
+	};
 </script>
 
 <div class="flex h-screen w-full flex-col items-center justify-center gap-4">
@@ -21,4 +30,6 @@
 			<PlayIcon />
 		{/if}
 	</Button>
+	<Button onclick={playSound}>Sound</Button>
+	<Button onclick={playSound2}>Sound2</Button>
 </div>

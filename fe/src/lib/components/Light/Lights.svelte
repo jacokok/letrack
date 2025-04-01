@@ -22,11 +22,22 @@
 
 	let showConfetti = $state(false);
 
+	const lightAudio = new Audio("/sounds/light.mp3");
+	const voiceAudio = new Audio("/sounds/voice.mp3");
+
+	const playLightSound = () => {
+		lightAudio.play();
+	};
+	const playVoiceSound = () => {
+		voiceAudio.play();
+	};
+
 	$effect(() => {
 		if (isActive) {
 			let curLight = 0;
 			const turnOnNextLight = () => {
 				lights[curLight] = true;
+				playLightSound();
 			};
 
 			const turnOffAllLights = () => {
@@ -42,6 +53,7 @@
 				clearInterval(timer);
 				setTimeout(() => {
 					turnOffAllLights();
+					playVoiceSound();
 					startConfetti();
 					isActive = false;
 					onComplete?.();
