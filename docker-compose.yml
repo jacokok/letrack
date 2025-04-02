@@ -11,6 +11,10 @@ services:
     depends_on:
       - db
       - mqtt
+    healthcheck:
+      test: curl -f http://localhost:5021
+      timeout: 10s
+      interval: 5s
 
   fe:
     image: doink/letrack:latest
@@ -21,6 +25,8 @@ services:
       PUBLIC_API_URL: http://localhost:5021
     depends_on:
       - api
+    healthcheck:
+      test: curl -f http://localhost
 
   db:
     image: postgres:17

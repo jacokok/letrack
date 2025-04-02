@@ -1,4 +1,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+RUN apt update \
+    && apt install -y curl \
+    && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 EXPOSE 5021
 
