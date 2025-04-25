@@ -24,7 +24,7 @@
 	const schema = z.object({
 		name: z.string().min(1, { message: "Name is Required" }),
 		nickName: z.string(),
-		teamId: z.number()
+		teamId: z.number().min(1, { message: "Team is required" })
 	});
 	type FormSchema = z.infer<typeof schema>;
 

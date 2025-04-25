@@ -1,5 +1,5 @@
 {
-  "x-generator": "NSwag v14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v14.3.0.0 (NJsonSchema v11.2.0.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "letrack-api",
@@ -29,22 +29,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TrackSummaryResponse"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrackSummaryResponse"
                 }
               }
             }
@@ -59,22 +59,22 @@
         ],
         "operationId": "TestSignal",
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
                 }
               }
             }
@@ -89,22 +89,22 @@
         ],
         "operationId": "Test",
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
                 }
               }
             }
@@ -132,22 +132,22 @@
           "x-position": 1
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntitiesTeam"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntitiesTeam"
                 }
               }
             }
@@ -160,6 +160,16 @@
         ],
         "operationId": "TeamsList",
         "responses": {
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
           "200": {
             "description": "Success",
             "content": {
@@ -169,16 +179,6 @@
                   "items": {
                     "$ref": "#/components/schemas/EntitiesTeam"
                   }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
                 }
               }
             }
@@ -204,22 +204,22 @@
           "x-position": 1
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntitiesTeam"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntitiesTeam"
                 }
               }
             }
@@ -245,9 +245,6 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
-          },
           "500": {
             "description": "Server Error",
             "content": {
@@ -257,6 +254,9 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No Content"
           }
         }
       }
@@ -281,22 +281,22 @@
           "x-position": 1
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntitiesRace"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntitiesRace"
                 }
               }
             }
@@ -345,22 +345,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ModelsPaginatedListOfRace"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelsPaginatedListOfRace"
                 }
               }
             }
@@ -386,22 +386,22 @@
           "x-position": 1
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntitiesRace"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntitiesRace"
                 }
               }
             }
@@ -427,22 +427,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RaceSummaryResponse"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RaceSummaryResponse"
                 }
               }
             }
@@ -470,22 +470,22 @@
           "x-position": 1
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntitiesRace"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntitiesRace"
                 }
               }
             }
@@ -513,22 +513,22 @@
           "x-position": 1
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntitiesRace"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntitiesRace"
                 }
               }
             }
@@ -554,9 +554,6 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
-          },
           "500": {
             "description": "Server Error",
             "content": {
@@ -566,6 +563,9 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No Content"
           }
         }
       }
@@ -590,22 +590,22 @@
           "x-position": 1
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntitiesPlayer"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntitiesPlayer"
                 }
               }
             }
@@ -618,6 +618,16 @@
         ],
         "operationId": "PlayersList",
         "responses": {
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
           "200": {
             "description": "Success",
             "content": {
@@ -627,16 +637,6 @@
                   "items": {
                     "$ref": "#/components/schemas/EntitiesPlayer"
                   }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
                 }
               }
             }
@@ -662,22 +662,22 @@
           "x-position": 1
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntitiesPlayer"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntitiesPlayer"
                 }
               }
             }
@@ -703,9 +703,6 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
-          },
           "500": {
             "description": "Server Error",
             "content": {
@@ -715,6 +712,9 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No Content"
           }
         }
       }
@@ -726,22 +726,22 @@
         ],
         "operationId": "Leaderboard",
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LeaderboardResponse"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaderboardResponse"
                 }
               }
             }
@@ -776,6 +776,16 @@
           }
         ],
         "responses": {
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
           "200": {
             "description": "Success",
             "content": {
@@ -785,16 +795,6 @@
                   "items": {
                     "$ref": "#/components/schemas/DTOLapDTO"
                   }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
                 }
               }
             }
@@ -822,22 +822,22 @@
           "x-position": 1
         },
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
                 }
               }
             }
@@ -865,9 +865,6 @@
           "x-position": 1
         },
         "responses": {
-          "204": {
-            "description": "No Content"
-          },
           "500": {
             "description": "Server Error",
             "content": {
@@ -877,6 +874,9 @@
                 }
               }
             }
+          },
+          "204": {
+            "description": "No Content"
           }
         }
       }
@@ -888,6 +888,16 @@
         ],
         "operationId": "Export",
         "responses": {
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
           "200": {
             "description": "Success",
             "content": {
@@ -897,16 +907,6 @@
                   "items": {
                     "$ref": "#/components/schemas/DTOLapExportDTO"
                   }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
                 }
               }
             }
@@ -921,22 +921,22 @@
         ],
         "operationId": "AdminSnapshot",
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
                 }
               }
             }
@@ -951,22 +951,22 @@
         ],
         "operationId": "AdminClearRaces",
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
                 }
               }
             }
@@ -981,22 +981,22 @@
         ],
         "operationId": "AdminClearLaps",
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
                 }
               }
             }
@@ -1011,22 +1011,22 @@
         ],
         "operationId": "AdminClearInvalidLaps",
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
                 }
               }
             }
@@ -1041,22 +1041,22 @@
         ],
         "operationId": "AdminClearEvents",
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
                 }
               }
             }
@@ -1071,22 +1071,22 @@
         ],
         "operationId": "AdminClearAll",
         "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Server Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
                 }
               }
             }
@@ -1097,6 +1097,40 @@
   },
   "components": {
     "schemas": {
+      "InternalErrorResponse": {
+        "type": "object",
+        "description": "the dto used to send an error response to the client when an unhandled exception occurs on the server",
+        "additionalProperties": false,
+        "required": [
+          "status",
+          "code",
+          "reason",
+          "note"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "error status",
+            "default": "Internal Server Error!"
+          },
+          "code": {
+            "type": "integer",
+            "description": "http status code of the error response",
+            "format": "int32",
+            "default": 500
+          },
+          "reason": {
+            "type": "string",
+            "description": "the reason for the error",
+            "default": "Something unexpected has happened"
+          },
+          "note": {
+            "type": "string",
+            "description": "additional information or instructions",
+            "default": "See application log for stack trace."
+          }
+        }
+      },
       "TrackSummaryResponse": {
         "type": "object",
         "additionalProperties": false,
@@ -1343,35 +1377,6 @@
           },
           "name": {
             "type": "string"
-          }
-        }
-      },
-      "InternalErrorResponse": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "status",
-          "code",
-          "reason",
-          "note"
-        ],
-        "properties": {
-          "status": {
-            "type": "string",
-            "default": "Internal Server Error!"
-          },
-          "code": {
-            "type": "integer",
-            "format": "int32",
-            "default": 500
-          },
-          "reason": {
-            "type": "string",
-            "default": "Something unexpected has happened"
-          },
-          "note": {
-            "type": "string",
-            "default": "See application log for stack trace."
           }
         }
       },
