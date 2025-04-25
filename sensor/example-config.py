@@ -11,3 +11,12 @@ MQTT_SERVER = "192.168.0.100"
 NTP_HOST = "192.168.0.100"
 BEAM1 = 1
 BEAM2 = 2
+HOSTNAME = "letrack1"
+
+# WIFI_SSID = "letrack"
+# WIFI_PASSWD = "letrack123"
+# MQTT_SERVER = "192.168.0.100"
+# NTP_HOST = "192.168.0.100"
+# BEAM1 = 3
+# BEAM2 = 4
+# HOSTNAME = "letrack2"

@@ -40,11 +40,14 @@ async def up(client: MQTTClient):
 async def connect_wifi(buzzer: Buzzer):
     light.off()
     ap_if = network.WLAN(network.AP_IF)
+    ap_if.config(hostname=config.HOSTNAME)
+    network.hostname(config.HOSTNAME)
     ap_if.active(False)
     sta_if = network.WLAN(network.STA_IF)
     if not sta_if.isconnected():
         # print("Connecting to WiFi...")
         sta_if.active(True)
+        sta_if.config(hostname=config.HOSTNAME)
         sta_if.connect(config.WIFI_SSID, config.WIFI_PASSWD)
         while not sta_if.isconnected():
             light.on()
@@ -62,6 +65,7 @@ async def main(client: MQTTClient):
     try:
         ntptime.host = config.NTP_HOST
         ntptime.settime()
+        client._client_id = config.HOSTNAME
         await client.connect()
     except OSError:
         light.off()
