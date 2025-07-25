@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Button, Checkbox, Dialog, Form, Input } from "@kayord/ui";
 	import { defaults, superForm } from "sveltekit-superforms";
-	import { zod } from "sveltekit-superforms/adapters";
+	import { zod4 } from "sveltekit-superforms/adapters";
 	import { z } from "zod";
 
 	interface Props {
@@ -20,9 +20,9 @@
 
 	type FormSchema = z.infer<typeof schema>;
 
-	const form = superForm(defaults({ duration: 0, laps: 0, showCountdown: true }, zod(schema)), {
+	const form = superForm(defaults({ duration: 0, laps: 0, showCountdown: true }, zod4(schema)), {
 		SPA: true,
-		validators: zod(schema),
+		validators: zod4(schema),
 		onUpdate({ form }) {
 			if (form.valid) {
 				startRace(form.data);

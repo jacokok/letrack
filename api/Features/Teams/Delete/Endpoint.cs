@@ -28,6 +28,6 @@ public class Endpoint : Endpoint<Request>
 
         _dbContext.Team.Remove(team);
         await _dbContext.SaveChangesAsync();
-        await SendNoContentAsync();
+        await Send.NoContentAsync();
     }
 }

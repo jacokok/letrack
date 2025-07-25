@@ -29,6 +29,6 @@ public class Endpoint : Endpoint<Request, Team>
         team.Name = req.Name;
 
         await _dbContext.SaveChangesAsync();
-        await SendAsync(team);
+        await Send.OkAsync(team);
     }
 }

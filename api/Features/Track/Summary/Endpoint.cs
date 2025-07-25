@@ -44,6 +44,6 @@ public class Endpoint : Endpoint<Request, Response>
         response.FastestLap = laps.Where(x => !x.IsFlagged).OrderBy(x => x.LapTime).FirstOrDefault();
         response.Race = race;
 
-        await SendAsync(response);
+        await Send.OkAsync(response);
     }
 }

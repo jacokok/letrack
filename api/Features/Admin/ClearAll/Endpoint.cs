@@ -32,6 +32,6 @@ public class Endpoint : EndpointWithoutRequest<bool>
         """
         );
 
-        await SendAsync(true);
+        await Send.OkAsync(true);
     }
 }

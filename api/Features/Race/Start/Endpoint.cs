@@ -74,6 +74,6 @@ public class Endpoint : Endpoint<Request, Entities.Race>
             await scheduler.TriggerJob(jobKey, ct);
         }
 
-        await SendAsync(race);
+        await Send.OkAsync(race);
     }
 }

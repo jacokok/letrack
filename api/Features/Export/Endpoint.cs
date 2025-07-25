@@ -58,7 +58,7 @@ public class Endpoint : EndpointWithoutRequest<List<LapExportDTO>>
         using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
         await csv.WriteRecordsAsync(result, ct);
         await writer.FlushAsync();
-        await SendBytesAsync(ms.ToArray(), "laps.csv", "text/csv", cancellation: ct);
-        // await SendAsync(result);
+        await Send.BytesAsync(ms.ToArray(), "laps.csv", "text/csv", cancellation: ct);
+        // await Send.OkAsync(result);
     }
 }

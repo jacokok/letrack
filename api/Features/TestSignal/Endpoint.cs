@@ -22,6 +22,6 @@ public class Endpoint : EndpointWithoutRequest<bool>
     public override async Task HandleAsync(CancellationToken ct)
     {
         await _hub.Clients.All.ReceiveMessage(DateTime.Now.ToString());
-        await SendAsync(true);
+        await Send.OkAsync(true);
     }
 }

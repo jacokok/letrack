@@ -28,6 +28,6 @@ public class Endpoint : Endpoint<Request, List<LapDTO>>
 
         laps = laps.Select((x, index) => { x.LapNumber = index + 1; return x; }).ToList();
 
-        await SendAsync(laps);
+        await Send.OkAsync(laps);
     }
 }

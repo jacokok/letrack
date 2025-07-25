@@ -49,6 +49,6 @@ public class Endpoint : EndpointWithoutRequest<Response>
 
         Response response = new() { PlayerSummary = players, TeamSummary = teams };
 
-        await SendAsync(response);
+        await Send.OkAsync(response);
     }
 }

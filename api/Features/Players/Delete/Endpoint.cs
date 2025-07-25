@@ -28,6 +28,6 @@ public class Endpoint : Endpoint<Request>
 
         _dbContext.Player.Remove(player);
         await _dbContext.SaveChangesAsync();
-        await SendNoContentAsync();
+        await Send.NoContentAsync();
     }
 }

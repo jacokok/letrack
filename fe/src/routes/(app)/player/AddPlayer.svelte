@@ -8,7 +8,7 @@
 	import { getError } from "$lib/types";
 	import { Button, Dialog, Form, Input, Select, toast } from "@kayord/ui";
 	import { defaults, superForm } from "sveltekit-superforms";
-	import { zod } from "sveltekit-superforms/adapters";
+	import { zod4 } from "sveltekit-superforms/adapters";
 	import { z } from "zod";
 
 	interface Props {
@@ -65,9 +65,9 @@
 	};
 
 	// svelte-ignore state_referenced_locally
-	const form = superForm(defaults(defaultValues, zod(schema)), {
+	const form = superForm(defaults(defaultValues, zod4(schema)), {
 		SPA: true,
-		validators: zod(schema),
+		validators: zod4(schema),
 		onUpdate({ form }) {
 			if (form.valid) {
 				updateExtra(form.data);

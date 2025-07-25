@@ -20,6 +20,6 @@ public class Endpoint : EndpointWithoutRequest<bool>
     public override async Task HandleAsync(CancellationToken ct)
     {
         await _dbContext.Event.ToListAsync();
-        await SendAsync(true);
+        await Send.OkAsync(true);
     }
 }

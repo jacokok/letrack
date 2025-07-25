@@ -26,6 +26,6 @@ public class Endpoint : Endpoint<Request, bool>
         }
 
         await _dbContext.SaveChangesAsync();
-        await SendAsync(true);
+        await Send.OkAsync(true);
     }
 }

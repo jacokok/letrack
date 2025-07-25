@@ -28,6 +28,6 @@ public class Endpoint : Endpoint<Request>
 
         _dbContext.Race.Remove(race);
         await _dbContext.SaveChangesAsync();
-        await SendNoContentAsync();
+        await Send.NoContentAsync();
     }
 }

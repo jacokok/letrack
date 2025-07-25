@@ -32,6 +32,6 @@ public class Endpoint : Endpoint<Request, Player>
         player.TeamId = req.TeamId;
 
         await _dbContext.SaveChangesAsync();
-        await SendAsync(player);
+        await Send.OkAsync(player);
     }
 }

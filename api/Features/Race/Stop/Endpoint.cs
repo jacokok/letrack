@@ -43,6 +43,6 @@ public class Endpoint : Endpoint<Request, Entities.Race>
         }
 
         await _dbContext.SaveChangesAsync();
-        await SendAsync(race);
+        await Send.OkAsync(race);
     }
 }

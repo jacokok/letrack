@@ -22,6 +22,6 @@ public class Endpoint : Endpoint<Request, Player>
         Player player = new() { Name = req.Name, NickName = req.NickName, TeamId = req.TeamId };
         await _dbContext.Player.AddAsync(player);
         await _dbContext.SaveChangesAsync();
-        await SendAsync(player);
+        await Send.OkAsync(player);
     }
 }

@@ -20,6 +20,6 @@ public class Endpoint : EndpointWithoutRequest<List<Entities.Team>>
     public override async Task HandleAsync(CancellationToken ct)
     {
         var results = await _dbContext.Team.OrderBy(x => x.Name).ToListAsync(ct);
-        await SendAsync(results);
+        await Send.OkAsync(results);
     }
 }

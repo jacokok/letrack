@@ -28,6 +28,6 @@ public class Endpoint : Endpoint<Request, PaginatedList<Entities.Race>>
             .OrderByDescending(x => x.CreatedDateTime)
             .GetPagedAsync(req, ct);
 
-        await SendAsync(results);
+        await Send.OkAsync(results);
     }
 }
