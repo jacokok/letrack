@@ -13,11 +13,13 @@ const timeSpanToParts = (timeSpan: string | null | undefined) => {
 	const minutes = parseInt(minutesRaw);
 	const minutesFmt = minutes.toString().padStart(2, "0");
 
-	const [secondsRaw, ms] = secondsAndMs.split(".");
-
+	let [secondsRaw, ms] = secondsAndMs.split(".");
 	const seconds = parseInt(secondsRaw);
 	const secondsFmt = seconds.toString().padStart(2, "0");
 
+	if (ms == undefined) {
+		ms = "0";
+	}
 	const msFmt = ms.toString().padStart(2, "0").substring(0, 3);
 
 	const value = `${minutesFmt}:${secondsFmt}:${msFmt}`;

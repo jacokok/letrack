@@ -96,3 +96,8 @@ import mip
 mip.install('umqtt.simple')
 ```
 
+## Emulate Events From Bash
+
+```bash
+mqttui publish "event" '{ "Id": "'$(uuidgen)'", "TrackId": '$((RANDOM % 2 + 1))', "Timestamp": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'"}'
+```

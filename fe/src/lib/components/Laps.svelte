@@ -26,7 +26,7 @@
 	{/if}
 	{#each laps as lap}
 		{@const diff = timeSpanToParts(lap.lapTimeDifference)}
-		<Card.Root class="flex items-center gap-2 p-2">
+		<Card.Root class="flex items-center gap-2 p-2 flex-row">
 			<Badge class="bg-muted text-muted-foreground">{lap.lapNumber}</Badge>
 			<h1>{timeSpanToParts(lap.lapTime).value}</h1>
 			<div class={`${diff.isMinus ? "text-destructive" : "text-green-300"}`}>
