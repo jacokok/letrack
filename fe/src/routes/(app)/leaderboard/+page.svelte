@@ -36,7 +36,7 @@
 			</div>
 			{#each $query.data?.teamSummary ?? [] as team, i}
 				{@const position = i + 1}
-				<Card.Root class="bg-background flex items-center justify-between gap-2 p-2">
+				<Card.Root class="bg-background flex flex-row items-center justify-between gap-2 p-2">
 					<div class="flex items-center gap-2">
 						<div
 							class="bg-muted text-muted-foreground flex h-8 w-8 items-center justify-center rounded-sm text-xl font-bold"
@@ -56,7 +56,7 @@
 			</div>
 			{#each $query.data?.playerSummary ?? [] as player, i}
 				{@const position = i + 1}
-				<Card.Root class="bg-mu flex items-center justify-between gap-2 p-2">
+				<Card.Root class="bg-mu flex flex-row items-center justify-between gap-2 p-2">
 					<div class="flex items-center gap-2">
 						<div
 							class="bg-muted text-muted-foreground flex h-8 w-8 items-center justify-center rounded-sm text-xl font-bold"

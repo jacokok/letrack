@@ -28,7 +28,7 @@
 			{#if data.race.endDateTime && data.race.isActive}
 				<CountDownTimer endDateTime={data.race.endDateTime} />
 			{:else if data.race.timeRemaining != null}
-				<Card.Root class="flex w-72 items-center gap-2 p-2">
+				<Card.Root class="flex flex-row w-72 items-center gap-2 p-2">
 					<TimerIcon class="size-10" />
 					<h1 class="flex gap-2 text-5xl font-bold">
 						{data.race.timeRemaining.substring(0, 8)}

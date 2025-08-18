@@ -40,7 +40,7 @@
 	});
 </script>
 
-<Card.Root class="flex w-72 items-center gap-2 p-2">
+<Card.Root class="flex flex-row w-72 items-center gap-2 p-2">
 	<TimerIcon class="size-10" />
 	<h1 class="flex gap-2 text-5xl font-bold">
 		{countDown.hours}:{countDown.minutes}:{countDown.seconds}

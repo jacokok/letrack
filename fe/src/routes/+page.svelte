@@ -15,7 +15,7 @@
 	</h1>
 </div>
 
-<div class="m-2 flex w-full flex-row flex-wrap justify-center gap-4">
+<div class="flex w-full flex-row flex-wrap justify-center gap-4">
 	<Item title="Practice" description="Go to driving range" href="/practice">
 		{#snippet icon()}
 			<PracticeIcon />
@@ -33,7 +33,7 @@
 	</Item>
 </div>
 
-<div class="m-2 mt-8 flex w-full flex-row flex-wrap justify-center gap-4">
+<div class="mt-8 flex w-full flex-row flex-wrap justify-center gap-4">
 	<Item title="Players" description="Manage players/racers" href="/player">
 		{#snippet icon()}
 			<UserIcon />

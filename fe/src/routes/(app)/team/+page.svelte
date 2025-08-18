@@ -12,7 +12,7 @@
 
 {#snippet teamSnippet(team: EntitiesTeam)}
 	<Card.Root>
-		<Card.Header class="mb-6 flex flex-row items-center">
+		<Card.Header class="flex flex-row items-center">
 			<div class="flex w-full flex-col items-start">
 				<Card.Title>{team.name}</Card.Title>
 			</div>

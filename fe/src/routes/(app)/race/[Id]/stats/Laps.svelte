@@ -74,7 +74,7 @@
 {/snippet}
 
 <Card.Root class="p-2 w-full">
-	<Card.Root class="flex items-center gap-2 bg-black/20 p-2">
+	<Card.Root class="flex flex-row items-center gap-2 bg-black/20 p-2">
 		<Badge variant="outline">Track {data?.trackId}</Badge>
 		<div>{data?.player.name}</div>
 	</Card.Root>

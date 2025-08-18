@@ -38,7 +38,7 @@
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Content class="max-h-[98%] overflow-scroll">
+	<Dialog.Content class="max-h-[98%] overflow-auto">
 		<form method="POST" use:enhance>
 			<Dialog.Header>
 				<Dialog.Title>Start Race</Dialog.Title>

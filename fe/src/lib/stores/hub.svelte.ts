@@ -7,105 +7,51 @@ import {
 
 import { PUBLIC_API_URL } from "$env/static/public";
 
-const createHub = () => {
-	let connection: HubConnection;
-	let hubConnectionState = $state(HubConnectionState.Disconnected);
+class Hub {
+	connection: HubConnection | undefined = $state(undefined);
+	state: HubConnectionState = $state(HubConnectionState.Disconnected);
 
-	const onStateUpdatedCallback = () => {
-		hubConnectionState = connection?.state ?? HubConnectionState.Disconnected;
-	};
-
-	const init = async () => {
-		connection = new HubConnectionBuilder()
+	public async init() {
+		this.connection = new HubConnectionBuilder()
 			.withUrl(`${PUBLIC_API_URL}/hub`)
-			.withAutomaticReconnect({
-				nextRetryDelayInMilliseconds: (retryContext) => {
-					if (retryContext.elapsedMilliseconds < 120000) {
-						return 1000;
-					} else {
-						return 15000;
-					}
-				}
-			})
+			.withAutomaticReconnect()
 			.configureLogging(LogLevel.None)
 			.build();
 
-		connection
-			.start()
-			.then(onStateUpdatedCallback)
-			.catch((err) => {
-				console.error(err);
-			});
-		onStateUpdatedCallback();
-	};
+		this.connection.onclose(this.onStateUpdatedCallback);
+		this.connection.onreconnected(this.onStateUpdatedCallback);
+		this.connection.onreconnecting(this.onStateUpdatedCallback);
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const on = (methodName: string, method: (...args: any[]) => void) => {
-		if (!connection) {
+		try {
+			await this.connection.start();
+			this.onStateUpdatedCallback();
+		} catch (err) {
+			this.onStateUpdatedCallback();
+			console.error(err);
+		}
+	}
+
+	private onStateUpdatedCallback() {
+		this.state = this.connection?.state ?? HubConnectionState.Disconnected;
+	}
+
+	public on(methodName: string, method: (...args: any[]) => void) {
+		if (!this.connection) {
 			return;
 		}
-		connection.on(methodName, method);
-	};
+		this.connection.on(methodName, method);
+	}
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const off = (methodName: string, method: (...args: any[]) => void) => {
-		if (!connection) {
+	public off(methodName: string, method: (...args: any[]) => void) {
+		if (!this.connection) {
 			return;
 		}
-		connection.off(methodName, method);
-	};
+		this.connection.off(methodName, method);
+	}
 
-	const disconnect = () => {
-		connection?.stop();
-	};
-
-	$effect.root(() => {
-		if (!connection) {
-			hubConnectionState = HubConnectionState.Disconnected;
-			return;
-		}
-
-		if (connection.state !== hubConnectionState) {
-			hubConnectionState = connection.state;
-		}
-
-		connection.onclose(onStateUpdatedCallback);
-		connection.onreconnected(onStateUpdatedCallback);
-		connection.onreconnecting(onStateUpdatedCallback);
-
-		$effect(() => {
-			if (connection?.state === HubConnectionState.Disconnected) {
-				connection
-					.start()
-					.then(onStateUpdatedCallback)
-					.catch((err) => {
-						console.error(err);
-					});
-				onStateUpdatedCallback();
-
-				return () => {
-					connection?.stop();
-				};
-			}
-		});
-
-		return () => {
-			connection?.stop();
-		};
-	});
-
-	return {
-		get state() {
-			return hubConnectionState;
-		},
-		get connection() {
-			return connection;
-		},
-		init,
-		on,
-		off,
-		disconnect
-	};
-};
-
-export const hub = createHub();
+	public disconnect() {
+		this.connection?.stop();
+		this.onStateUpdatedCallback();
+	}
+}
+export const hub = new Hub();

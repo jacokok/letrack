@@ -31,7 +31,7 @@
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Content class="max-h-[98%] overflow-scroll">
+	<Dialog.Content class="max-h-[98%] overflow-auto">
 		<Dialog.Header>
 			<Dialog.Title>Adjustment</Dialog.Title>
 			<Dialog.Description>You want to manually add laps for some reason</Dialog.Description>

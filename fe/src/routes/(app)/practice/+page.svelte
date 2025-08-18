@@ -8,7 +8,7 @@
 	import Chart from "$lib/components/Chart.svelte";
 	import Header from "$lib/components/Header.svelte";
 
-	let tracks: Array<Track | undefined> = new Array(4);
+	let tracks: Array<Track | undefined> = $state(new Array(4));
 
 	const doneEvent = (evt: DoneEvent) => {
 		tracks[evt.trackId]?.doneEvent(evt);
@@ -69,16 +69,16 @@
 
 <div class="m-2 flex flex-row gap-2">
 	{#if practice.value.track1 == true}
-		<Track trackId={1} />
+		<Track trackId={1} bind:this={tracks[1]} />
 	{/if}
 	{#if practice.value.track2 == true}
-		<Track trackId={2} />
+		<Track trackId={2} bind:this={tracks[2]} />
 	{/if}
 	{#if practice.value.track3 == true}
-		<Track trackId={3} />
+		<Track trackId={3} bind:this={tracks[3]} />
 	{/if}
 	{#if practice.value.track4 == true}
-		<Track trackId={4} />
+		<Track trackId={4} bind:this={tracks[4]} />
 	{/if}
 </div>
 

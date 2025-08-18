@@ -11,7 +11,7 @@
 	let { track }: Props = $props();
 </script>
 
-<Card.Root class="flex items-center justify-between p-2">
+<Card.Root class="flex flex-row items-center justify-between p-2">
 	<div class="flex flex-col gap-1">
 		<Badge variant="outline">Track {track.trackId}</Badge>
 		<Badge class="bg-muted text-muted-foreground">Laps: {track.totalLaps}</Badge>

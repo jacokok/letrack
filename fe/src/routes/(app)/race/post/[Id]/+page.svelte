@@ -162,7 +162,7 @@
 <Header {right} />
 
 {#snippet header()}
-	<Card.Root class="p-2 my-2 flex gap-2 items-center bg-black/20 justify-between">
+	<Card.Root class="p-2 my-2 flex flex-row gap-2 items-center bg-black/20 justify-between">
 		{#if selectedTrackDetail}
 			<div class="flex items-center gap-2">
 				<PlayerAvatar name={selectedTrackDetail.player.name} isSmall />
