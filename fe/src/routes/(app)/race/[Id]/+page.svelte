@@ -15,7 +15,7 @@
 
 	const query = createRaceSummary(Number(page.params.Id));
 
-	let tracks: Array<Track | undefined> = new Array(4);
+	let tracks: Array<Track | undefined> = $state(new Array(4));
 	let startRaceOpen = $state(false);
 	let startRaceIsActive = $state(false);
 	let startRaceSheetOpen = $state(false);
