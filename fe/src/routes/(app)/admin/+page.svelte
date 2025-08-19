@@ -60,65 +60,118 @@
 			<Card.Title>Admin</Card.Title>
 			<Card.Description>Advanced option for admin which is very dangerous</Card.Description>
 		</Card.Header>
-		<Card.Content class="flex flex-col gap-4">
-			<Button
-				class="w-full"
-				variant="secondary"
-				onclick={() => {
-					isOpen = true;
-					eventType = "snapshot";
-				}}
-			>
-				<ArchiveIcon />Create Snapshot
-			</Button>
-			<Button
-				class="w-full"
-				onclick={() => {
-					isOpen = true;
-					eventType = "event";
-				}}
-			>
-				<EventIcon />Clear Events
-			</Button>
-			<Button
-				class="w-full"
-				onclick={() => {
-					isOpen = true;
-					eventType = "lap-invalid";
-				}}
-			>
-				<InvalidLapIcon />Clear Invalid Laps
-			</Button>
-			<Button
-				class="w-full"
-				variant="destructive"
-				onclick={() => {
-					isOpen = true;
-					eventType = "lap";
-				}}
-			>
-				<LapIcon />Clear All Laps
-			</Button>
-			<Button
-				class="w-full"
-				variant="destructive"
-				onclick={() => {
-					isOpen = true;
-					eventType = "race";
-				}}
-			>
-				<RaceIcon />Clear All Races
-			</Button>
-			<Button
-				class="w-full"
-				variant="destructive"
-				onclick={() => {
-					isOpen = true;
-					eventType = "all";
-				}}
-			>
-				<TrashIcon />Clear All
-			</Button>
+		<Card.Content class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>Snapshot</Card.Title>
+					<Card.Description>This takes a snapshot of the entire database</Card.Description>
+				</Card.Header>
+				<Card.Content>
+					<Button
+						class="w-full"
+						variant="secondary"
+						onclick={() => {
+							isOpen = true;
+							eventType = "snapshot";
+						}}
+					>
+						<ArchiveIcon />Create Snapshot
+					</Button>
+				</Card.Content>
+			</Card.Root>
+
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>Clear Events</Card.Title>
+					<Card.Description>Clears all events but will keep lap records</Card.Description>
+				</Card.Header>
+				<Card.Content>
+					<Button
+						class="w-full"
+						onclick={() => {
+							isOpen = true;
+							eventType = "event";
+						}}
+					>
+						<EventIcon />Clear Events
+					</Button>
+				</Card.Content>
+			</Card.Root>
+
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>Clear Invalid Laps</Card.Title>
+					<Card.Description>This will clear all invalid laps</Card.Description>
+				</Card.Header>
+				<Card.Content>
+					<Button
+						class="w-full"
+						onclick={() => {
+							isOpen = true;
+							eventType = "lap-invalid";
+						}}
+					>
+						<InvalidLapIcon />Clear Invalid Laps
+					</Button>
+				</Card.Content>
+			</Card.Root>
+
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>Clear All Laps</Card.Title>
+					<Card.Description>Removes all lap records</Card.Description>
+				</Card.Header>
+				<Card.Content>
+					<Button
+						class="w-full"
+						variant="destructive"
+						onclick={() => {
+							isOpen = true;
+							eventType = "lap";
+						}}
+					>
+						<LapIcon />Clear All Laps
+					</Button>
+				</Card.Content>
+			</Card.Root>
+
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>Clear All Races</Card.Title>
+					<Card.Description>This will remove all races</Card.Description>
+				</Card.Header>
+				<Card.Content>
+					<Button
+						class="w-full"
+						variant="destructive"
+						onclick={() => {
+							isOpen = true;
+							eventType = "race";
+						}}
+					>
+						<RaceIcon />Clear All Races
+					</Button>
+				</Card.Content>
+			</Card.Root>
+
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>Clear All</Card.Title>
+					<Card.Description>Clear all records in the entire database</Card.Description>
+				</Card.Header>
+				<Card.Content>
+					<Button
+						class="w-full"
+						variant="destructive"
+						onclick={() => {
+							isOpen = true;
+							eventType = "all";
+						}}
+					>
+						<TrashIcon />Clear All
+					</Button>
+				</Card.Content>
+			</Card.Root>
 		</Card.Content>
 	</Card.Root>
 </div>

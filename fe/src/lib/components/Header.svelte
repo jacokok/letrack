@@ -10,7 +10,7 @@
 
 <div class="flex h-12 w-full items-center justify-between gap-2 bg-muted/30 px-2">
 	<button class="flex items-center gap-2" onclick={() => goto("/")}>
-		<img src="/favicon.svg" alt="LeTrack" class="h-8" />
+		<img src="/favicon.svg" alt="LeTrack" class="h-8 animate-spin [animation-duration:5s]" />
 		<h1 class="text-3xl tracking-tighter">
 			<span class="text-secondary">Le</span><span class="font-bold text-primary">Track</span>
 		</h1>

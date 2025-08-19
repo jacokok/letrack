@@ -3,6 +3,7 @@
 	import Laps from "$lib/components/Laps.svelte";
 	import StopWatch from "$lib/components/StopWatch.svelte";
 	import { chartData } from "$lib/stores/chart.svelte";
+	import { Timer } from "$lib/stores/timer.svelte";
 	import type { DoneEvent, SaveEvent } from "$lib/types";
 	import { timeSpanToParts } from "$lib/util";
 	import { Alert, Loader } from "@kayord/ui";
@@ -15,16 +16,15 @@
 		$query.refetch();
 	};
 
+	const timer = new Timer();
+
 	export const receiveEvent = (evt: SaveEvent) => {
-		console.log("Recieved Event", evt, " on Track", trackId);
-		stopWatch.receiveEvent(evt);
+		timer.start();
 	};
 
 	let { trackId }: Props = $props();
 
 	const query = createTrackSummary(trackId);
-
-	let stopWatch: StopWatch;
 
 	$effect(() => {
 		if ($query.data) {
@@ -39,7 +39,7 @@
 </script>
 
 <div class="flex w-full flex-col gap-1">
-	<StopWatch bind:this={stopWatch} />
+	<StopWatch {timer} />
 	{#if $query.error}
 		<Alert.Root>
 			<Alert.Title>An Error Occurred!</Alert.Title>

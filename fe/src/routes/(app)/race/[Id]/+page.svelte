@@ -12,18 +12,21 @@
 	import StartRace from "./StartRace.svelte";
 	import Lights from "$lib/components/Light/Lights.svelte";
 	import { ChartNoAxesCombinedIcon, FlagIcon } from "@lucide/svelte";
+	import { Timer } from "$lib/stores/timer.svelte";
 
 	const query = createRaceSummary(Number(page.params.Id));
 
-	let tracks: Array<Track | undefined> = $state(new Array(4));
+	let timers: Record<number, Timer> = $state({
+		1: new Timer(),
+		2: new Timer(),
+		3: new Timer(),
+		4: new Timer()
+	});
+
 	let startRaceOpen = $state(false);
 	let startRaceIsActive = $state(false);
 	let startRaceSheetOpen = $state(false);
 	let startState: { duration: number; laps: number; showCountdown: boolean };
-
-	const doneEvent = (evt: DoneEvent) => {
-		tracks[evt.trackId]?.doneEvent(evt);
-	};
 
 	$effect(() => {
 		if (hub.state == "Connected") {
@@ -43,24 +46,6 @@
 		}
 	});
 
-	const raceComplete = (raceId: number) => {
-		console.log(raceComplete);
-		stopEvent();
-		$query.refetch();
-	};
-
-	const receiveEvent = (evt: SaveEvent) => {
-		if ($query.data?.race.isActive) {
-			tracks[evt.trackId]?.receiveEvent(evt);
-		}
-	};
-
-	const stopEvent = () => {
-		for (const track of $query.data?.tracks ?? []) {
-			tracks[track.trackId]?.stopEvent();
-		}
-	};
-
 	$effect(() => {
 		if (hub.state == "Connected") {
 			hub.on("ReceiveEvent", receiveEvent);
@@ -69,6 +54,27 @@
 			};
 		}
 	});
+
+	const doneEvent = (evt: DoneEvent) => {
+		$query.refetch();
+	};
+
+	const raceComplete = (raceId: number) => {
+		stopEvent();
+		$query.refetch();
+	};
+
+	const receiveEvent = (evt: SaveEvent) => {
+		if ($query.data?.race.isActive) {
+			timers[evt.trackId]?.start();
+		}
+	};
+
+	const stopEvent = () => {
+		for (const track of $query.data?.tracks ?? []) {
+			timers[track.trackId]?.stop();
+		}
+	};
 
 	const stopMutation = createRaceStop();
 	const startMutation = createRaceStart();
@@ -85,11 +91,7 @@
 
 	const startTimers = () => {
 		for (const track of $query.data?.tracks ?? []) {
-			tracks[track.trackId]?.receiveEvent({
-				trackId: track.trackId,
-				id: "",
-				timestamp: new Date().toISOString()
-			});
+			timers[track.trackId].start();
 		}
 	};
 
@@ -187,7 +189,7 @@
 		<RaceSummary data={$query.data} />
 		<div class="flex w-full flex-row gap-2 p-2">
 			{#each $query.data?.tracks ?? [] as track}
-				<Track {track} refetch={$query.refetch} bind:this={tracks[track.trackId]} />
+				<Track {track} timer={timers[track.trackId]} />
 			{/each}
 		</div>
 	{/if}
