@@ -11,15 +11,12 @@
 	import PlusIcon from "@lucide/svelte/icons/plus";
 	import { createRaceList, type EntitiesRace, type EntitiesRaceTrack } from "$lib/api";
 	import AddRace from "./AddRace.svelte";
-	import type { ColumnDef } from "@tanstack/table-core";
+	import type { ColumnDef, PaginationState, SortingState, Updater } from "@tanstack/table-core";
 	import Actions from "./Actions.svelte";
 	import PlayerAvatar from "$lib/components/PlayerAvatar.svelte";
 	import { cn } from "@kayord/ui/utils";
 
 	let open = $state(false);
-
-	let page = $state(1);
-	const pageSize = 2;
 
 	const getVariant = (track: number) => {
 		if (track <= 1) {
@@ -67,8 +64,26 @@
 		}
 	];
 
-	const query = $derived(createRaceList({ page: page, pageSize: pageSize }));
+	let pagination: PaginationState = $state({ pageIndex: 0, pageSize: 20 });
+	const setPagination = (updater: Updater<PaginationState>) => {
+		if (updater instanceof Function) {
+			pagination = updater(pagination);
+		} else pagination = updater;
+	};
+
+	let sorting: SortingState = $state([]);
+	const setSorting = (updater: Updater<SortingState>) => {
+		if (updater instanceof Function) {
+			sorting = updater(sorting);
+		} else sorting = updater;
+	};
+	const sorts = $derived(sorting.map((sort) => `${sort.desc ? "-" : ""}${sort.id}`).join(","));
+
+	const query = $derived(
+		createRaceList({ page: pagination.pageIndex + 1, pageSize: pagination.pageSize, sorts })
+	);
 	const data = $derived($query.data?.items ?? []);
+	let rowCount = $derived($query.data?.totalCount ?? 0);
 
 	const table = createShadTable({
 		columns,
@@ -77,7 +92,21 @@
 		},
 		enableRowSelection: false,
 		manualPagination: true,
-		enableVisibility: true
+		manualSorting: true,
+		enableVisibility: true,
+		state: {
+			get pagination() {
+				return pagination;
+			},
+			get sorting() {
+				return sorting;
+			}
+		},
+		get rowCount() {
+			return rowCount;
+		},
+		onPaginationChange: setPagination,
+		onSortingChange: setSorting
 	});
 </script>
 
@@ -142,6 +171,5 @@
 
 <div class="m-2">
 	<DataTable {header} headerClass="pb-2" {table} noDataMessage="No Races" enableVisibility />
-
 	<AddRace bind:open refetch={$query.refetch} />
 </div>
