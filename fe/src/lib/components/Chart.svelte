@@ -106,7 +106,7 @@
 			},
 			highlight: { area: { fill: "none" } },
 			yAxis: {
-				placement: "radius"
+				placement: "left"
 			}
 		}}
 		legend

@@ -31,14 +31,16 @@ public class Endpoint : Endpoint<Request, Response>
         if (race == null)
         {
             laps = await _dbContext.Lap.Where(x => x.TrackId == r.TrackId).OrderByDescending(x => x.Timestamp).Take(10).ProjectToDto().ToListAsync(ct);
+            // Add Lap Number
+            laps = laps.OrderBy(x => x.Timestamp).Select((x, index) => { x.LapNumber = laps.Count - index; return x; }).ToList();
         }
         else
         {
             laps = await _dbContext.Lap.Where(x => x.TrackId == r.TrackId && x.RaceId == race.Id).OrderByDescending(x => x.Timestamp).ProjectToDto().ToListAsync(ct);
+            // Add Lap Number
+            laps = laps.Select((x, index) => { x.LapNumber = laps.Count - index; return x; }).ToList();
         }
 
-        // Add Lap Number
-        laps = laps.Select((x, index) => { x.LapNumber = laps.Count - index; return x; }).ToList();
         response.TotalLaps = (race == null) ? 0 : laps.Count;
         response.Last10Laps = laps.OrderByDescending(x => x.Timestamp).Take(10).ToList();
         response.FastestLap = laps.Where(x => !x.IsFlagged).OrderBy(x => x.LapTime).FirstOrDefault();

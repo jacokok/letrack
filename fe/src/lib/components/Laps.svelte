@@ -24,7 +24,7 @@
 			<Alert.Description>Current track have not received any events</Alert.Description>
 		</Alert.Root>
 	{/if}
-	{#each laps as lap}
+	{#each laps as lap (lap.id)}
 		{@const diff = timeSpanToParts(lap.lapTimeDifference)}
 		<Card.Root class="flex items-center gap-2 p-2 flex-row">
 			<Badge class="bg-muted text-muted-foreground">{lap.lapNumber}</Badge>
