@@ -38,8 +38,8 @@ pm dev
 
 This consist of two parts. The front and the back. It has slots for all required components to go in.
 
-- ![Back](./assets/LeTrack-Back.stl)
-- ![Front](./assets/LeTrack-Front.stl)
+- [Back](./assets/LeTrack-Back.stl)
+- [Front](./assets/LeTrack-Front.stl)
 
 ### 3D Model Additional Parts
 
