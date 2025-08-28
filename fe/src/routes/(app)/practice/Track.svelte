@@ -8,7 +8,6 @@
 	import type { DoneEvent, SaveEvent } from "$lib/types";
 	import { timeSpanToParts } from "$lib/util";
 	import { Alert, Loader } from "@kayord/ui";
-	import Confetti from "svelte-confetti";
 
 	interface Props {
 		trackId: number;
@@ -28,9 +27,11 @@
 
 	let { trackId }: Props = $props();
 
-	let fastestLapId: string | undefined = $state();
-
 	const query = createTrackSummary(trackId);
+
+	let fastestLapId: string = $state(
+		$query.data?.fastestLap?.id ?? "0000000-0000-0000-0000-000000000000"
+	);
 
 	$effect(() => {
 		if ($query.data) {
@@ -48,8 +49,8 @@
 		if ($query.data) {
 			if ($query.data.fastestLap?.id != fastestLapId) {
 				if (
-					fastestLapId != undefined &&
 					$query.data.fastestLap?.id != undefined &&
+					$query.data.last10Laps.length > 0 &&
 					$query.data.last10Laps[0].id == $query.data.fastestLap?.id
 				) {
 					confetti.triggerFn();
