@@ -6,4 +6,5 @@ public class PlayerSummary
     public string Name { get; set; } = string.Empty;
     public string NickName { get; set; } = string.Empty;
     public int Laps { get; set; }
+    public int Rank { get; set; }
 }

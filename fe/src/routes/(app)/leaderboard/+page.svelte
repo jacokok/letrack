@@ -8,6 +8,7 @@
 	import Header from "$lib/components/Header.svelte";
 	import { PUBLIC_API_URL } from "$env/static/public";
 	import PlayerAvatar from "$lib/components/PlayerAvatar.svelte";
+	import { TrophyIcon } from "@lucide/svelte";
 	const query = createLeaderboard({ query: { refetchInterval: 30000 } });
 
 	const exportToCSV = () => {
@@ -34,16 +35,18 @@
 				<h1 class="font-bold">Dream Team</h1>
 				<UsersIcon />
 			</div>
-			{#each $query.data?.teamSummary ?? [] as team, i}
-				{@const position = i + 1}
+			{#each $query.data?.teamSummary ?? [] as team (team.id)}
 				<Card.Root class="bg-background flex flex-row items-center justify-between gap-2 p-2">
 					<div class="flex items-center gap-2">
 						<div
-							class="bg-muted text-muted-foreground flex h-8 w-8 items-center justify-center rounded-sm text-xl font-bold"
+							class="bg-muted text-muted-foreground flex h-8 w-8 items-center justify-center rounded-lg text-xl font-bold"
 						>
-							{position}
+							{team.rank}
 						</div>
 						<div class="text-xl">{team.name}</div>
+						{#if team.rank == 1}
+							<TrophyIcon class="text-secondary size-5" />
+						{/if}
 					</div>
 					<Badge>{team.laps}</Badge>
 				</Card.Root>
@@ -54,14 +57,13 @@
 				<h1 class="font-bold">Dream Racer</h1>
 				<UserIcon />
 			</div>
-			{#each $query.data?.playerSummary ?? [] as player, i}
-				{@const position = i + 1}
+			{#each $query.data?.playerSummary ?? [] as player (player.id)}
 				<Card.Root class="bg-mu flex flex-row items-center justify-between gap-2 p-2">
 					<div class="flex items-center gap-2">
 						<div
-							class="bg-muted text-muted-foreground flex h-8 w-8 items-center justify-center rounded-sm text-xl font-bold"
+							class="bg-muted text-muted-foreground flex h-8 w-8 items-center justify-center rounded-lg text-xl font-bold"
 						>
-							{position}
+							{player.rank}
 						</div>
 						<PlayerAvatar name={player.name} isSmall />
 						<div class="flex flex-col">
@@ -72,6 +74,9 @@
 								{player.nickName ? ` ${player.nickName}` : ""}
 							</div>
 						</div>
+						{#if player.rank == 1}
+							<TrophyIcon class="text-secondary size-5" />
+						{/if}
 					</div>
 					<Badge>{player.laps}</Badge>
 				</Card.Root>
