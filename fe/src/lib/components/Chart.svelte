@@ -104,7 +104,11 @@
 					height: { type: "tween", duration: 500, easing: cubicInOut }
 				}
 			},
-			highlight: { area: { fill: "none" } }
+			highlight: { area: { fill: "none" } },
+			yAxis: {
+				placement: "radius"
+			}
 		}}
+		legend
 	></BarChart>
 </Chart.Container>
