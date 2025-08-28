@@ -61,11 +61,27 @@
 			}
 		}
 	});
+
+	const practiceColor = () => {
+		if (trackId == 1) {
+			return "text-[var(--color-primary)]";
+		}
+		if (trackId == 2) {
+			return "text-[hsl(var(--color-danger))]";
+		}
+		if (trackId == 3) {
+			return "text-[hsl(var(--color-warning))]";
+		}
+		if (trackId == 4) {
+			return "text-[hsl(var(--color-secondary))]";
+		}
+		return "";
+	};
 </script>
 
 <div class="flex w-full flex-col gap-1">
-	<div class="flex flex-col items-center justify-center w-full h-full">
-		<StopWatch {timer} />
+	<div class="flex flex-col items-center justify-start w-full">
+		<StopWatch {timer} colorClass={practiceColor()} />
 		<MyConfetti bind:this={confetti} />
 	</div>
 
