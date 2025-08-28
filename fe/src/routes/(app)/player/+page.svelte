@@ -52,7 +52,8 @@
 		get data() {
 			return data;
 		},
-		enableRowSelection: false
+		enableRowSelection: false,
+		enablePaging: false
 	});
 </script>
 
