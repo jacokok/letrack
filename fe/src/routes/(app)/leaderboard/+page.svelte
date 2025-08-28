@@ -8,7 +8,7 @@
 	import Header from "$lib/components/Header.svelte";
 	import { PUBLIC_API_URL } from "$env/static/public";
 	import PlayerAvatar from "$lib/components/PlayerAvatar.svelte";
-	const query = createLeaderboard();
+	const query = createLeaderboard({ query: { refetchInterval: 30000 } });
 
 	const exportToCSV = () => {
 		window.location.assign(`${PUBLIC_API_URL}/export`);
