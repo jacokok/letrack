@@ -17,13 +17,13 @@
 	<div class="flex items-center gap-2">
 		<button class="flex items-center gap-2" onclick={() => goto("/")}>
 			<img src="/favicon.svg" alt="LeTrack" class="h-8 animate-spin [animation-duration:5s]" />
+			<div
+				class={`size-2 rounded-full ${isConnected ? "bg-primary" : "bg-destructive  animate-pulse"}`}
+			></div>
 			<h1 class="text-3xl tracking-tighter">
 				<span class="text-secondary">Le</span><span class="font-bold text-primary">Track</span>
 			</h1>
 		</button>
-		<div
-			class={`size-2 rounded-full ${isConnected ? "bg-primary" : "bg-destructive  animate-pulse"}`}
-		></div>
 	</div>
 	{@render right?.()}
 </div>

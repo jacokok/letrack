@@ -3,12 +3,11 @@
 	import { Badge, Button, Card, Table } from "@kayord/ui";
 	import UsersIcon from "@lucide/svelte/icons/users";
 	import UserIcon from "@lucide/svelte/icons/user";
-	import FileIcon from "@lucide/svelte/icons/file";
 	import RefreshIcon from "@lucide/svelte/icons/refresh-cw";
 	import Header from "$lib/components/Header.svelte";
 	import { PUBLIC_API_URL } from "$env/static/public";
 	import PlayerAvatar from "$lib/components/PlayerAvatar.svelte";
-	import { TrophyIcon } from "@lucide/svelte";
+	import { FileDownIcon, TrophyIcon } from "@lucide/svelte";
 	const query = createLeaderboard({ query: { refetchInterval: 30000 } });
 
 	const exportToCSV = () => {
@@ -19,7 +18,7 @@
 {#snippet refreshSnippet()}
 	<div>
 		<Button size="icon" onclick={exportToCSV} variant="ghost">
-			<FileIcon />
+			<FileDownIcon />
 		</Button>
 		<Button size="icon" onclick={$query.refetch} variant="ghost">
 			<RefreshIcon />
