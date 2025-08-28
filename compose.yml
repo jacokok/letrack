@@ -64,6 +64,7 @@ services:
     environment:
       - NTP_SERVERS=time.cloudflare.com
       - LOG_LEVEL=3
+
 volumes:
   pg-data:
   mosquitto:

@@ -33,7 +33,7 @@
 	<LineChart data={$query.data?.tracks ?? []} />
 </div>
 
-<div class="flex items-center gap-2 m-2">
+<div class="flex items-start gap-2 m-2">
 	<Laps data={track1} />
 	<Laps data={track2} />
 </div>
