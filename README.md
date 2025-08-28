@@ -8,6 +8,11 @@ This project consist of 3 parts.
 - Svelte Front end (fe)
 - Hardware sensors (sensor)
 
+## UI Screenshots
+
+![home](./assets/home.png)
+![practice](./assets/practice.png)
+
 ## Back End
 
 ### Run Back End
