@@ -18,21 +18,21 @@ class Hub {
 			.configureLogging(LogLevel.None)
 			.build();
 
-		this.connection.onclose(this.onStateUpdatedCallback);
-		this.connection.onreconnected(this.onStateUpdatedCallback);
-		this.connection.onreconnecting(this.onStateUpdatedCallback);
+		const onStateUpdatedCallback = () => {
+			this.state = this.connection?.state ?? HubConnectionState.Disconnected;
+		};
+
+		this.connection.onclose(onStateUpdatedCallback);
+		this.connection.onreconnected(onStateUpdatedCallback);
+		this.connection.onreconnecting(onStateUpdatedCallback);
 
 		try {
 			await this.connection.start();
-			this.onStateUpdatedCallback();
+			onStateUpdatedCallback();
 		} catch (err) {
-			this.onStateUpdatedCallback();
+			onStateUpdatedCallback();
 			console.error(err);
 		}
-	}
-
-	private onStateUpdatedCallback() {
-		this.state = this.connection?.state ?? HubConnectionState.Disconnected;
 	}
 
 	public on(methodName: string, method: (...args: any[]) => void) {
@@ -51,7 +51,8 @@ class Hub {
 
 	public disconnect() {
 		this.connection?.stop();
-		this.onStateUpdatedCallback();
+		this.state = this.connection?.state ?? HubConnectionState.Disconnected;
 	}
 }
+
 export const hub = new Hub();

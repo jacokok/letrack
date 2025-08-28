@@ -41,7 +41,7 @@
 		{#if lap.isFlagged}
 			<Tooltip.Provider>
 				<Tooltip.Root>
-					<Tooltip.Trigger><FlagIcon class="stroke-destructive" /></Tooltip.Trigger>
+					<Tooltip.Trigger><FlagIcon class="stroke-destructive animate-pulse" /></Tooltip.Trigger>
 					<Tooltip.Content>
 						<p>Lap was flagged</p>
 						{lap.flagReason}

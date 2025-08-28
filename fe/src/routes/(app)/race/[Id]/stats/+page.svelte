@@ -29,7 +29,9 @@
 
 <Header {right} />
 
-<LineChart data={$query.data?.tracks ?? []} />
+<div class="flex m-2">
+	<LineChart data={$query.data?.tracks ?? []} />
+</div>
 
 <div class="flex items-center gap-2 m-2">
 	<Laps data={track1} />

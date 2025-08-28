@@ -1,6 +1,9 @@
 <script lang="ts">
 	import type { DTOLapDTO, RaceSummaryTrack } from "$lib/api";
+	import { Card, Chart } from "@kayord/ui";
+	import { scaleUtc } from "d3-scale";
 	import { LineChart } from "layerchart";
+	import { curveBasis } from "d3-shape";
 
 	interface Props {
 		data: RaceSummaryTrack[];
@@ -37,26 +40,40 @@
 		}
 		return result;
 	});
+
+	const chartConfig = $derived({
+		first: { label: `Track ${firstTrack}`, color: firstTrackColor },
+		second: { label: `Track ${secondTrack}`, color: secondTrackColor }
+	}) satisfies Chart.ChartConfig;
 </script>
 
-<div class="h-[500px] p-4 border rounded m-2">
-	<LineChart
-		x="timestamp"
-		data={chartData}
-		series={[
-			{
-				key: "first",
-				label: `Track ${firstTrack}`,
-				color: firstTrackColor
-			},
-			{
-				key: "second",
-				label: `Track ${secondTrack}`,
-				color: secondTrackColor
-			}
-		]}
-		axis="y"
-		props={{ spline: { strokeWidth: 5, draw: true } }}
-		legend
-	/>
-</div>
+<Card.Root class="p-4 border rounded-xl w-full flex">
+	<Chart.Container config={chartConfig} class="h-[300px] w-full">
+		<LineChart
+			data={chartData}
+			x="timestamp"
+			xScale={scaleUtc()}
+			axis="y"
+			series={[
+				{
+					key: "first",
+					label: `Track ${firstTrack}`,
+					color: chartConfig.first.color
+				},
+				{
+					key: "second",
+					label: `Track ${secondTrack}`,
+					color: chartConfig.second.color
+				}
+			]}
+			props={{
+				spline: { curve: curveBasis, motion: "tween", strokeWidth: 3, draw: true }
+			}}
+			legend
+		>
+			{#snippet tooltip()}
+				<Chart.Tooltip hideLabel />
+			{/snippet}
+		</LineChart>
+	</Chart.Container>
+</Card.Root>
