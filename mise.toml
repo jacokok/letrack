@@ -1,0 +1,18 @@
+[tools]
+python = "latest"
+uv = 'latest'
+ruff = "latest"
+"github:EdJoPaTo/mqttui" = "latest"
+"pipx:rshell" = "latest"
+
+[env]
+_.python.venv = { path = ".venv", create=true }
+
+[tasks.install]
+description = "Install dependencies"
+alias = "i"
+run = "uv pip install -r requirements.txt"
+
+[tasks.lint]
+description = "Lint"
+run = "ruff ./"
