@@ -6,14 +6,11 @@
 	import UsersIcon from "@lucide/svelte/icons/users";
 	import AdminIcon from "@lucide/svelte/icons/shield-ellipsis";
 	import PracticeIcon from "@lucide/svelte/icons/flag-triangle-right";
+	import AsciLogo from "./asci-logo.svelte";
+	import Logo from "./logo.svelte";
 </script>
 
-<div class="my-8 flex justify-center gap-4">
-	<img src="/favicon.svg" alt="LeTrack" class="h-12 animate-spin [animation-duration:5s]" />
-	<h1 class="text-5xl tracking-tighter">
-		<span class="text-secondary">Le</span><span class="text-primary font-bold">Track</span>
-	</h1>
-</div>
+<AsciLogo />
 
 <div class="flex w-full flex-row flex-wrap justify-center gap-4">
 	<Item title="Practice" description="Go to driving range" href="/practice">
