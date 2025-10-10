@@ -60,7 +60,7 @@
 			size: 10,
 			enableSorting: false,
 			cell: (item) =>
-				renderComponent(Actions, { race: item.cell.row.original, refetch: $query.refetch })
+				renderComponent(Actions, { race: item.cell.row.original, refetch: query.refetch })
 		}
 	];
 
@@ -82,8 +82,8 @@
 	const query = $derived(
 		createRaceList({ page: pagination.pageIndex + 1, pageSize: pagination.pageSize, sorts })
 	);
-	const data = $derived($query.data?.items ?? []);
-	let rowCount = $derived($query.data?.totalCount ?? 0);
+	const data = $derived(query.data?.items ?? []);
+	let rowCount = $derived(query.data?.totalCount ?? 0);
 
 	const table = createShadTable({
 		columns,
@@ -171,5 +171,5 @@
 
 <div class="m-2">
 	<DataTable {header} headerClass="pb-2" {table} noDataMessage="No Races" enableVisibility />
-	<AddRace bind:open refetch={$query.refetch} />
+	<AddRace bind:open refetch={query.refetch} />
 </div>

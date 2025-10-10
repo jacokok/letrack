@@ -41,11 +41,11 @@
 			size: 10,
 			enableSorting: false,
 			cell: (item) =>
-				renderComponent(Actions, { player: item.cell.row.original, refetch: $query.refetch })
+				renderComponent(Actions, { player: item.cell.row.original, refetch: query.refetch })
 		}
 	];
 
-	const data = $derived($query.data ?? []);
+	const data = $derived(query.data ?? []);
 
 	const table = createShadTable({
 		columns,
@@ -69,6 +69,6 @@
 <div class="m-2">
 	<DataTable {header} headerClass="pb-2" {table} noDataMessage="No Players" />
 	{#if open}
-		<AddPlayer bind:open refetch={$query.refetch} />
+		<AddPlayer bind:open refetch={query.refetch} />
 	{/if}
 </div>

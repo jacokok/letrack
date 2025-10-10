@@ -47,7 +47,7 @@
 
 	const querySummary = createRaceSummary(Number(page.params.Id));
 
-	const tracksDetail = $derived($querySummary.data?.tracks ?? []);
+	const tracksDetail = $derived(querySummary.data?.tracks ?? []);
 	const tracks = $derived(tracksDetail.map((x) => x.trackId));
 
 	let tab = $state(0);
@@ -70,7 +70,7 @@
 	);
 
 	const data = $derived.by(() => {
-		let data = $query.data ?? [];
+		let data = query.data ?? [];
 		if (!showAll) {
 			data = data.filter((x) => x.isFlagged == true);
 		}
@@ -125,11 +125,11 @@
 
 	const toggleValidMutation = createLapsValid();
 	const toggleValid = async () => {
-		await $toggleValidMutation.mutateAsync({
+		await toggleValidMutation.mutateAsync({
 			data: { ids: Object.keys(rowSelection) }
 		});
-		$query.refetch();
-		$querySummary.refetch();
+		query.refetch();
+		querySummary.refetch();
 	};
 </script>
 
@@ -193,8 +193,8 @@
 					trackId={tab}
 					raceId={Number(page.params.Id)}
 					refetch={() => {
-						$query.refetch();
-						$querySummary.refetch();
+						query.refetch();
+						querySummary.refetch();
 					}}
 					bind:open={adjustmentOpen}
 				/>
@@ -230,7 +230,7 @@
 	<DataTable
 		{table}
 		headerClass="pb-2"
-		isLoading={$query.isPending}
+		isLoading={query.isPending}
 		noDataMessage="No history available"
 	/>
 

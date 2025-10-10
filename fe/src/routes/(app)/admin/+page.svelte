@@ -33,22 +33,22 @@
 			return;
 		} else if (eventType == "snapshot") {
 			toast.info("Disconnect active connections from database and creating snapshot.");
-			await $snapshot.mutateAsync();
+			await snapshot.mutateAsync();
 			toast.info("Created Snapshot");
 		} else if (eventType == "race") {
-			await $clearRacesMutation.mutateAsync();
+			await clearRacesMutation.mutateAsync();
 			toast.info("Deleted all races");
 		} else if (eventType == "event") {
-			await $clearEventMutation.mutateAsync();
+			await clearEventMutation.mutateAsync();
 			toast.info("Deleted all events");
 		} else if (eventType == "lap-invalid") {
-			await $clearInvalidLapsMutation.mutateAsync();
+			await clearInvalidLapsMutation.mutateAsync();
 			toast.info("Deleted invalid laps");
 		} else if (eventType == "lap") {
-			await $clearLapsMutation.mutateAsync();
+			await clearLapsMutation.mutateAsync();
 			toast.info("Deleted all laps");
 		} else if (eventType == "all") {
-			await $clearAllMutation.mutateAsync();
+			await clearAllMutation.mutateAsync();
 			toast.info("Deleted all data");
 		}
 	};

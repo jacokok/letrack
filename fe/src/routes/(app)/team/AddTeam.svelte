@@ -32,7 +32,7 @@
 		try {
 			open = false;
 			if (isEdit) {
-				await $editMutation.mutateAsync({
+				await editMutation.mutateAsync({
 					data: {
 						id: team?.id ?? 0,
 						name: data.name
@@ -40,7 +40,7 @@
 				});
 				toast.info("Edited team");
 			} else {
-				await $createMutation.mutateAsync({ data: { name: data.name } });
+				await createMutation.mutateAsync({ data: { name: data.name } });
 				toast.info("Added team");
 			}
 			refetch();

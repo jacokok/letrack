@@ -21,7 +21,7 @@
 	const deleteMenu = async () => {
 		deleteOpen = false;
 		try {
-			await $deleteMutation.mutateAsync({ id: team.id });
+			await deleteMutation.mutateAsync({ id: team.id });
 			refetch();
 			toast.message("Player Deleted");
 		} catch (error) {

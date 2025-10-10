@@ -43,7 +43,7 @@
 		try {
 			open = false;
 			if (isEdit) {
-				await $editMutation.mutateAsync({
+				await editMutation.mutateAsync({
 					data: {
 						id: player?.id ?? 0,
 						name: data.name,
@@ -53,7 +53,7 @@
 				});
 				toast.info("Edited player");
 			} else {
-				await $createMutation.mutateAsync({
+				await createMutation.mutateAsync({
 					data: { name: data.name, nickName: data.nickName, teamId: data.teamId }
 				});
 				toast.info("Added player");
@@ -83,7 +83,7 @@
 		}
 	});
 
-	const selectedTeam = $derived($teamsQuery.data?.find((x) => x.id == $formData.teamId));
+	const selectedTeam = $derived(teamsQuery.data?.find((x) => x.id == $formData.teamId));
 </script>
 
 <Dialog.Root bind:open>
@@ -127,7 +127,7 @@
 									{selectedTeam ? selectedTeam.name : "Select a Team"}
 								</Select.Trigger>
 								<Select.Content>
-									{#each $teamsQuery.data ?? [] as team}
+									{#each teamsQuery.data ?? [] as team}
 										<Select.Item value={team.id.toString()} label={team.name} />
 									{/each}
 								</Select.Content>

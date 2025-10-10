@@ -16,7 +16,7 @@
 	let confetti: MyConfetti;
 
 	export const doneEvent = (evt: DoneEvent) => {
-		$query.refetch();
+		query.refetch();
 	};
 
 	const timer = new Timer();
@@ -30,12 +30,12 @@
 	const query = createTrackSummary(trackId);
 
 	let fastestLapId: string = $state(
-		$query.data?.fastestLap?.id ?? "0000000-0000-0000-0000-000000000000"
+		query.data?.fastestLap?.id ?? "0000000-0000-0000-0000-000000000000"
 	);
 
 	$effect(() => {
-		if ($query.data) {
-			chartData[trackId - 1].data = $query.data.last10Laps.map((lap, i) => ({
+		if (query.data) {
+			chartData[trackId - 1].data = query.data.last10Laps.map((lap, i) => ({
 				lap: i + 1,
 				time: timeSpanToParts(lap.lapTime).toSeconds
 			}));
@@ -46,17 +46,17 @@
 
 	// Trigger Confetti on Fastest Lap
 	$effect(() => {
-		if ($query.data) {
-			if ($query.data.fastestLap?.id != fastestLapId) {
+		if (query.data) {
+			if (query.data.fastestLap?.id != fastestLapId) {
 				if (
-					$query.data.fastestLap?.id != undefined &&
-					$query.data.last10Laps.length > 0 &&
-					$query.data.last10Laps[0].id == $query.data.fastestLap?.id
+					query.data.fastestLap?.id != undefined &&
+					query.data.last10Laps.length > 0 &&
+					query.data.last10Laps[0].id == query.data.fastestLap?.id
 				) {
 					confetti.triggerFn();
 				}
-				if ($query.data.fastestLap?.id != undefined) {
-					fastestLapId = $query.data.fastestLap?.id;
+				if (query.data.fastestLap?.id != undefined) {
+					fastestLapId = query.data.fastestLap?.id;
 				}
 			}
 		}
@@ -85,18 +85,18 @@
 		<MyConfetti bind:this={confetti} />
 	</div>
 
-	{#if $query.error}
+	{#if query.error}
 		<Alert.Root>
 			<Alert.Title>An Error Occurred!</Alert.Title>
-			<Alert.Description>{$query.error}</Alert.Description>
+			<Alert.Description>{query.error}</Alert.Description>
 		</Alert.Root>
 	{/if}
 
-	{#if $query.isPending}
+	{#if query.isPending}
 		<Loader />
 	{/if}
 
-	{#if $query.data}
-		<Laps laps={$query.data.last10Laps ?? []} fastestLap={$query.data.fastestLap} />
+	{#if query.data}
+		<Laps laps={query.data.last10Laps ?? []} fastestLap={query.data.fastestLap} />
 	{/if}
 </div>

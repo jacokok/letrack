@@ -42,13 +42,13 @@
 	const createMutation = createRaceInsert();
 
 	const playersQuery = createPlayersList();
-	const players = $derived($playersQuery?.data ?? []);
+	const players = $derived(playersQuery?.data ?? []);
 
 	const updateExtra = async (data: FormSchema) => {
 		try {
 			open = false;
 			if (isEdit) {
-				await $editMutation.mutateAsync({
+				await editMutation.mutateAsync({
 					data: {
 						name: data.name,
 						players: data.players,
@@ -58,7 +58,7 @@
 				});
 				toast.info("Edited race");
 			} else {
-				await $createMutation.mutateAsync({
+				await createMutation.mutateAsync({
 					data: { name: data.name, players: data.players, isFirstTracks: data.isFirstTracks }
 				});
 				toast.info("Added race");

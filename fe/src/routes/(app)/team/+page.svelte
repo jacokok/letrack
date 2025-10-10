@@ -16,7 +16,7 @@
 			<div class="flex w-full flex-col items-start">
 				<Card.Title>{team.name}</Card.Title>
 			</div>
-			<Actions {team} refetch={$query.refetch} />
+			<Actions {team} refetch={query.refetch} />
 		</Card.Header>
 	</Card.Root>
 {/snippet}
@@ -28,15 +28,15 @@
 		</Button>
 	</div>
 
-	{#if $query.data?.length == 0}
+	{#if query.data?.length == 0}
 		<Card.Root class="p-2">No teams</Card.Root>
 	{/if}
 
 	<div class="flex flex-col gap-2">
-		{#each $query.data ?? [] as team}
+		{#each query.data ?? [] as team}
 			{@render teamSnippet(team)}
 		{/each}
 	</div>
 
-	<AddTeam bind:open refetch={$query.refetch} />
+	<AddTeam bind:open refetch={query.refetch} />
 </div>

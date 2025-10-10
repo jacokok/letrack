@@ -56,22 +56,22 @@
 	});
 
 	const doneEvent = (evt: DoneEvent) => {
-		$query.refetch();
+		query.refetch();
 	};
 
 	const raceComplete = (raceId: number) => {
 		stopEvent();
-		$query.refetch();
+		query.refetch();
 	};
 
 	const receiveEvent = (evt: SaveEvent) => {
-		if ($query.data?.race.isActive) {
+		if (query.data?.race.isActive) {
 			timers[evt.trackId]?.start();
 		}
 	};
 
 	const stopEvent = () => {
-		for (const track of $query.data?.tracks ?? []) {
+		for (const track of query.data?.tracks ?? []) {
 			timers[track.trackId]?.stop();
 		}
 	};
@@ -80,27 +80,27 @@
 	const startMutation = createRaceStart();
 
 	const stopStart = async () => {
-		if ($query.data?.race.isActive) {
-			await $stopMutation.mutateAsync({ data: { id: Number(page.params.Id) } });
+		if (query.data?.race.isActive) {
+			await stopMutation.mutateAsync({ data: { id: Number(page.params.Id) } });
 			stopEvent();
-			$query.refetch();
+			query.refetch();
 		} else {
 			startRaceOpen = true;
 		}
 	};
 
 	const startTimers = () => {
-		for (const track of $query.data?.tracks ?? []) {
+		for (const track of query.data?.tracks ?? []) {
 			timers[track.trackId].start();
 		}
 	};
 
 	const startRaceLogic = async () => {
-		await $startMutation.mutateAsync({
+		await startMutation.mutateAsync({
 			data: { id: Number(page.params.Id), duration: startState.duration, laps: startState.laps }
 		});
 		startTimers();
-		$query.refetch();
+		query.refetch();
 	};
 
 	const startRace = async (data: { duration: number; laps: number; showCountdown: boolean }) => {
@@ -126,23 +126,23 @@
 		startRaceLogic();
 	};
 
-	const hideOptions = $derived($query.data?.race.timeRemaining != undefined);
+	const hideOptions = $derived(query.data?.race.timeRemaining != undefined);
 </script>
 
 {#snippet right()}
-	{#if $query.data}
+	{#if query.data}
 		<div class="flex items-center gap-2">
 			<Button variant="ghost" href="/race/{page.params.Id}/stats">
 				<ChartNoAxesCombinedIcon /> Stats
 			</Button>
 
-			{#if !$query.data?.race.isActive}
+			{#if !query.data?.race.isActive}
 				<Button variant="secondary" href="/race/post/{page.params.Id}"
 					><FlagIcon /> Post Race</Button
 				>
 			{/if}
 			<Button size="icon" onclick={stopStart}>
-				{#if $query.data?.race.isActive}
+				{#if query.data?.race.isActive}
 					<StopIcon />
 				{:else}
 					<PlayIcon />
@@ -174,21 +174,21 @@
 
 <div class="flex w-full flex-col">
 	<StartRace bind:open={startRaceOpen} cb={startRace} {hideOptions} />
-	{#if $query.error}
+	{#if query.error}
 		<Alert.Root>
 			<Alert.Title>An Error Occurred!</Alert.Title>
-			<Alert.Description>{$query.error}</Alert.Description>
+			<Alert.Description>{query.error}</Alert.Description>
 		</Alert.Root>
 	{/if}
 
-	{#if $query.isPending}
+	{#if query.isPending}
 		<Loader />
 	{/if}
 
-	{#if $query.data}
-		<RaceSummary data={$query.data} />
+	{#if query.data}
+		<RaceSummary data={query.data} />
 		<div class="flex w-full flex-row gap-2 p-2">
-			{#each $query.data?.tracks ?? [] as track}
+			{#each query.data?.tracks ?? [] as track}
 				<Track {track} timer={timers[track.trackId]} />
 			{/each}
 		</div>

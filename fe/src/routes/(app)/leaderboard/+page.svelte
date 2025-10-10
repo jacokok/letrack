@@ -20,7 +20,7 @@
 		<Button size="icon" onclick={exportToCSV} variant="ghost">
 			<FileDownIcon />
 		</Button>
-		<Button size="icon" onclick={$query.refetch} variant="ghost">
+		<Button size="icon" onclick={query.refetch} variant="ghost">
 			<RefreshIcon />
 		</Button>
 	</div>
@@ -34,7 +34,7 @@
 				<h1 class="font-bold">Dream Team</h1>
 				<UsersIcon />
 			</div>
-			{#each $query.data?.teamSummary ?? [] as team (team.id)}
+			{#each query.data?.teamSummary ?? [] as team (team.id)}
 				<Card.Root class="bg-background flex flex-row items-center justify-between gap-2 p-2">
 					<div class="flex items-center gap-2">
 						<div
@@ -56,7 +56,7 @@
 				<h1 class="font-bold">Dream Racer</h1>
 				<UserIcon />
 			</div>
-			{#each $query.data?.playerSummary ?? [] as player (player.id)}
+			{#each query.data?.playerSummary ?? [] as player (player.id)}
 				<Card.Root class="bg-mu flex flex-row items-center justify-between gap-2 p-2">
 					<div class="flex items-center gap-2">
 						<div

@@ -19,7 +19,7 @@
 	const onSubmit = async () => {
 		try {
 			open = false;
-			await $createMutation.mutateAsync({
+			await createMutation.mutateAsync({
 				data: { amount, raceId, trackId }
 			});
 			toast.info("Added adjustment");

@@ -10,13 +10,13 @@
 	const query = createRaceSummary(Number(page.params.Id));
 
 	const track1: RaceSummaryTrack | undefined = $derived(
-		($query.data?.tracks?.length ?? 0) > 1 && ($query.data?.tracks.length ?? 0) > 1
-			? $query.data?.tracks[0]
+		(query.data?.tracks?.length ?? 0) > 1 && (query.data?.tracks.length ?? 0) > 1
+			? query.data?.tracks[0]
 			: undefined
 	);
 	const track2: RaceSummaryTrack | undefined = $derived(
-		($query.data?.tracks?.length ?? 0) && ($query.data?.tracks.length ?? 0) > 1
-			? $query.data?.tracks[1]
+		(query.data?.tracks?.length ?? 0) && (query.data?.tracks.length ?? 0) > 1
+			? query.data?.tracks[1]
 			: undefined
 	);
 </script>
@@ -30,7 +30,7 @@
 <Header {right} />
 
 <div class="flex m-2">
-	<LineChart data={$query.data?.tracks ?? []} />
+	<LineChart data={query.data?.tracks ?? []} />
 </div>
 
 <div class="flex items-start gap-2 m-2">
