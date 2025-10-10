@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { createTeamsList, type EntitiesTeam } from "$lib/api";
-	import { Button, Card } from "@kayord/ui";
+	import { Button, Card, Empty } from "@kayord/ui";
 	import PlusIcon from "@lucide/svelte/icons/plus";
 	import Actions from "./Actions.svelte";
 	import AddTeam from "./AddTeam.svelte";
+	import { BirdIcon, ProjectorIcon, Users2Icon } from "@lucide/svelte";
 
 	const query = createTeamsList();
 
@@ -21,15 +22,30 @@
 	</Card.Root>
 {/snippet}
 
-<div class="m-2">
+{#snippet addButton()}
 	<div class="flex justify-end">
 		<Button class="my-2" onclick={() => (open = true)}>
 			<PlusIcon />Add new Team
 		</Button>
 	</div>
+{/snippet}
+
+<div class="m-2">
+	{@render addButton()}
 
 	{#if query.data?.length == 0}
-		<Card.Root class="p-2">No teams</Card.Root>
+		<Empty.Root>
+			<Empty.Header>
+				<Empty.Media variant="icon">
+					<BirdIcon />
+				</Empty.Media>
+				<Empty.Title>No Teams</Empty.Title>
+				<Empty.Description>You haven't created any teams yet.</Empty.Description>
+			</Empty.Header>
+			<Empty.Content>
+				{@render addButton()}
+			</Empty.Content>
+		</Empty.Root>
 	{/if}
 
 	<div class="flex flex-col gap-2">
@@ -38,5 +54,7 @@
 		{/each}
 	</div>
 
-	<AddTeam bind:open refetch={query.refetch} />
+	{#if open}
+		<AddTeam bind:open refetch={query.refetch} />
+	{/if}
 </div>
