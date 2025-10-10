@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { AlertDialog, Button, Card, toast } from "@kayord/ui";
+	import { AlertDialog, Button, Card } from "@kayord/ui";
+	import { toast } from "@kayord/ui/sonner";
 	import TrashIcon from "@lucide/svelte/icons/trash-2";
 	import LapIcon from "@lucide/svelte/icons/timer-reset";
 	import InvalidLapIcon from "@lucide/svelte/icons/timer-off";

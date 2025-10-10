@@ -3,7 +3,7 @@
 
 	import { chartData } from "$lib/stores/chart.svelte";
 	import { practice } from "$lib/stores/practice.svelte";
-	import { Chart } from "@kayord/ui";
+	import { Chart } from "@kayord/ui/chart";
 	import { cubicInOut } from "svelte/easing";
 	import { scaleBand } from "d3-scale";
 

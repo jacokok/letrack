@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { DTOLapDTO, RaceSummaryTrack } from "$lib/api";
-	import { Card, Chart } from "@kayord/ui";
+	import { Card } from "@kayord/ui";
+	import { Chart } from "@kayord/ui/chart";
 	import { scaleUtc } from "d3-scale";
 	import { LineChart } from "layerchart";
 	import { curveBasis } from "d3-shape";

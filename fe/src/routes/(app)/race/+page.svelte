@@ -1,13 +1,11 @@
 <script lang="ts">
+	import { Badge, Button, Tooltip } from "@kayord/ui";
 	import {
-		Badge,
-		Button,
 		DataTable,
-		renderComponent,
-		renderSnippet,
 		createShadTable,
-		Tooltip
-	} from "@kayord/ui";
+		renderComponent,
+		renderSnippet
+	} from "@kayord/ui/data-table";
 	import PlusIcon from "@lucide/svelte/icons/plus";
 	import { createRaceList, type EntitiesRace, type EntitiesRaceTrack } from "$lib/api";
 	import AddRace from "./AddRace.svelte";

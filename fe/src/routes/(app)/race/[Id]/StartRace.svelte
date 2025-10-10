@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Button, Checkbox, Dialog, Form, Input } from "@kayord/ui";
+	import { Button, Checkbox, Dialog, Input } from "@kayord/ui";
+	import { Form } from "@kayord/ui/form";
 	import { defaults, superForm } from "sveltekit-superforms";
 	import { zod4 } from "sveltekit-superforms/adapters";
 	import { z } from "zod";

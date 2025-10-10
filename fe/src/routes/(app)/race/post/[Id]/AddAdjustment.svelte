@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { createLapsAdjustment } from "$lib/api";
 	import { getError } from "$lib/types";
-	import { Button, Dialog, Input, Label, toast } from "@kayord/ui";
+	import { Button, Dialog, Input, Label } from "@kayord/ui";
+	import { toast } from "@kayord/ui/sonner";
 
 	interface Props {
 		refetch: () => void;

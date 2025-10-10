@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { DTOLapDTO, RaceSummaryTrack } from "$lib/api";
 	import { timeSpanToParts } from "$lib/util";
-	import { Badge, Card, DataTable, renderSnippet, Tooltip, createShadTable } from "@kayord/ui";
+	import { Badge, Card, Tooltip } from "@kayord/ui";
+	import { DataTable, createShadTable, renderSnippet } from "@kayord/ui/data-table";
 	import { CircleCheckIcon, CircleXIcon, FlagIcon } from "@lucide/svelte";
 	import type { ColumnDef } from "@tanstack/table-core";
 

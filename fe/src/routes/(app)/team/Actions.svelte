@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createTeamsDelete, type EntitiesTeam } from "$lib/api";
-	import { AlertDialog, Button, DropdownMenu, toast } from "@kayord/ui";
+	import { AlertDialog, Button, DropdownMenu } from "@kayord/ui";
+	import { toast } from "@kayord/ui/sonner";
 	import PencilIcon from "@lucide/svelte/icons/pencil";
 	import Trash2Icon from "@lucide/svelte/icons/trash-2";
 	import EllipsisVerticalIcon from "@lucide/svelte/icons/ellipsis-vertical";

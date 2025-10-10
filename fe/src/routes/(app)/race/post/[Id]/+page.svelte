@@ -2,17 +2,8 @@
 	import { page } from "$app/state";
 	import { createLaps, type DTOLapDTO, createLapsValid, createRaceSummary } from "$lib/api";
 	import { timeSpanToParts } from "$lib/util";
-	import {
-		DataTable,
-		Label,
-		renderSnippet,
-		Badge,
-		Tabs,
-		Button,
-		Card,
-		createShadTable,
-		Switch
-	} from "@kayord/ui";
+	import { Label, Badge, Tabs, Button, Card, Switch } from "@kayord/ui";
+	import { DataTable, createShadTable, renderSnippet } from "@kayord/ui/data-table";
 	import FlagIcon from "@lucide/svelte/icons/flag";
 
 	import {

@@ -3,7 +3,7 @@
 	import { QueryClient, QueryClientProvider } from "@tanstack/svelte-query";
 	import "../app.css";
 	import { browser } from "$app/environment";
-	import { Toaster } from "@kayord/ui";
+	import { Toaster } from "@kayord/ui/sonner";
 	import { onMount } from "svelte";
 	let { children } = $props();
 

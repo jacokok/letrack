@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createPlayersList, type EntitiesPlayer } from "$lib/api";
-	import { Button, Card, createShadTable, DataTable, renderComponent } from "@kayord/ui";
+	import { Button } from "@kayord/ui";
+	import { DataTable, createShadTable, renderComponent } from "@kayord/ui/data-table";
 	import PlusIcon from "@lucide/svelte/icons/plus";
 	import AddPlayer from "./AddPlayer.svelte";
 	import Actions from "./Actions.svelte";

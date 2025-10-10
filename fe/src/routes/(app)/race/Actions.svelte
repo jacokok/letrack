@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createRaceDelete, type EntitiesPlayer, type EntitiesRace } from "$lib/api";
-	import { AlertDialog, Button, DropdownMenu, toast } from "@kayord/ui";
+	import { AlertDialog, Button, DropdownMenu } from "@kayord/ui";
+	import { toast } from "@kayord/ui/sonner";
 	import PencilIcon from "@lucide/svelte/icons/pencil";
 	import ViewIcon from "@lucide/svelte/icons/view";
 	import Trash2Icon from "@lucide/svelte/icons/trash-2";
