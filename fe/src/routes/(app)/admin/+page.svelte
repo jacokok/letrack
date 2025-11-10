@@ -14,7 +14,7 @@
 		createAdminClearInvalidLaps,
 		createAdminSnapshot
 	} from "$lib/api";
-	import { ArchiveIcon } from "@lucide/svelte";
+	import { AmbulanceIcon, ArchiveIcon } from "@lucide/svelte";
 
 	const clearEventMutation = createAdminClearEvents();
 	const clearInvalidLapsMutation = createAdminClearInvalidLaps();
@@ -61,6 +61,11 @@
 			<Card.Title>Admin</Card.Title>
 			<Card.Description>Advanced option for admin which is very dangerous</Card.Description>
 		</Card.Header>
+		<Card.Content>
+			<Button href="/health">
+				<AmbulanceIcon /> Health
+			</Button>
+		</Card.Content>
 		<Card.Content class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 			<Card.Root>
 				<Card.Header>

@@ -12,6 +12,7 @@ builder.Services.AddSingleton<MqttService>();
 builder.Services.AddHostedService<EventSubscriber>();
 // builder.Services.AddHostedService<EventEmulator>();
 
+builder.Services.ConfigureHealth(builder.Configuration);
 builder.Services.ConfigureGeneral();
 builder.Services.ConfigureJobs();
 builder.Services.ConfigureEF(builder.Configuration, builder.Environment);
@@ -25,5 +26,5 @@ var app = builder.Build();
 app.UseCorsLeTrack();
 app.UseApi();
 app.MapHub<LeTrackHub>("/hub");
-
+app.UseHealth();
 app.Run();
