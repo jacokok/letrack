@@ -14,7 +14,7 @@
 		getPaginationRowModel,
 		type RowSelectionState
 	} from "@tanstack/table-core";
-	import { CheckIcon, Inspect, PlusIcon, XIcon } from "@lucide/svelte";
+	import { CheckIcon, PlusIcon, ToggleRightIcon, XIcon } from "@lucide/svelte";
 	import PlayerAvatar from "$lib/components/PlayerAvatar.svelte";
 	import Header from "$lib/components/Header.svelte";
 	import AddAdjustment from "./AddAdjustment.svelte";
@@ -80,7 +80,7 @@
 		{
 			accessorKey: "isFlagged",
 			header: "Flagged",
-			cell: (item) => renderSnippet(flag, item.cell.row.original.isFlagged)
+			cell: (item) => renderSnippet(flag, { isFlagged: item.cell.row.original.isFlagged })
 		},
 		{
 			accessorKey: "flagReason",
@@ -89,7 +89,7 @@
 		{
 			accessorKey: "isValid",
 			header: "Valid",
-			cell: (item) => renderSnippet(valid, item.cell.row.original.isValid)
+			cell: (item) => renderSnippet(valid, { isValid: item.cell.row.original.isValid })
 		}
 	];
 
@@ -124,16 +124,16 @@
 	};
 </script>
 
-{#snippet flag(isFlagged: boolean)}
-	{#if isFlagged}
+{#snippet flag(props: { isFlagged: boolean })}
+	{#if props.isFlagged}
 		<Badge variant="destructive" class=" animate-pulse">
 			<FlagIcon class="size-4" />
 		</Badge>
 	{/if}
 {/snippet}
 
-{#snippet valid(isValid: boolean)}
-	{#if isValid}
+{#snippet valid(props: { isValid: boolean })}
+	{#if props.isValid}
 		<Badge>
 			<CheckIcon class="size-4" />
 		</Badge>
@@ -174,7 +174,7 @@
 	</Card.Root>
 
 	<div class="flex items-center justify-between">
-		<div>
+		<div class="flex gap-2 items-center">
 			<p class="text-muted-foreground">Check flagged laps</p>
 		</div>
 
@@ -190,6 +190,7 @@
 					bind:open={adjustmentOpen}
 				/>
 			{/if}
+			{@render toggleValidSnippet()}
 			<Button size="sm" variant="outline" onclick={() => (adjustmentOpen = true)}>
 				<PlusIcon /> Adjustment
 			</Button>
@@ -224,8 +225,14 @@
 		isLoading={query.isPending}
 		noDataMessage="No history available"
 	/>
-
-	{#if Object.keys(rowSelection).length > 0}
-		<Button class="w-full" onclick={toggleValid}>Toggle Is Valid</Button>
-	{/if}
+	{@render toggleValidSnippet()}
 </div>
+
+{#snippet toggleValidSnippet()}
+	{#if Object.keys(rowSelection).length > 0}
+		<Button size="sm" onclick={toggleValid}>
+			<ToggleRightIcon />
+			Toggle Is Valid
+		</Button>
+	{/if}
+{/snippet}

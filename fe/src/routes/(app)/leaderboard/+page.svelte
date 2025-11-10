@@ -28,7 +28,7 @@
 
 <Header right={refreshSnippet} />
 <div class="m-2">
-	<div class="flex justify-between gap-4">
+	<div class="flex justify-between gap-4 sm:flex-row flex-col">
 		<div class="flex w-full flex-col gap-2">
 			<div class="mb-2 flex items-center justify-start gap-2">
 				<h1 class="font-bold">Dream Team</h1>
@@ -44,10 +44,10 @@
 						</div>
 						<div class="text-xl">{team.name}</div>
 						{#if team.rank == 1}
-							<TrophyIcon class="text-secondary size-5" />
+							<TrophyIcon class="text-secondary size-5 animate-pulse" />
 						{/if}
 					</div>
-					<Badge>{team.laps}</Badge>
+					<Badge variant={team.rank == 1 ? "secondary" : "default"}>{team.laps}</Badge>
 				</Card.Root>
 			{/each}
 		</div>
@@ -74,10 +74,10 @@
 							</div>
 						</div>
 						{#if player.rank == 1}
-							<TrophyIcon class="text-secondary size-5" />
+							<TrophyIcon class="text-secondary size-5 animate-pulse" />
 						{/if}
 					</div>
-					<Badge>{player.laps}</Badge>
+					<Badge variant={player.rank == 1 ? "secondary" : "default"}>{player.laps}</Badge>
 				</Card.Root>
 			{/each}
 		</div>

@@ -1,5 +1,5 @@
 <pre
-	class="lg:text-xs text-center text-primary p-4 m-4 my-12 text-[8px] md:text-[10px]">                                                                                                                                 
+	class="lg:text-xs text-center text-primary p-4 m-4 my-12 text-[8px] md:text-[10px] overflow-hidden">                                                                                                                                 
 ░██                    ░██████████                               ░██       
 ░██                        ░██                                   ░██       
 ░██          ░███████      ░██    ░██░████  ░██████    ░███████  ░██    ░██

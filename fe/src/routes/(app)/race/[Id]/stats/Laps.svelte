@@ -24,7 +24,7 @@
 		{
 			header: "Status",
 			accessorKey: "isValid",
-			cell: (item) => renderSnippet(lapStatus, item.cell.row.original)
+			cell: (item) => renderSnippet(lapStatus, { lap: item.cell.row.original })
 		}
 	];
 
@@ -37,26 +37,26 @@
 	});
 </script>
 
-{#snippet lapStatus(lap: DTOLapDTO)}
+{#snippet lapStatus(props: { lap: DTOLapDTO })}
 	<div class="flex items-center gap-2">
-		{#if lap.isFlagged}
+		{#if props.lap.isFlagged}
 			<Tooltip.Provider>
 				<Tooltip.Root>
 					<Tooltip.Trigger><FlagIcon class="stroke-destructive animate-pulse" /></Tooltip.Trigger>
 					<Tooltip.Content>
 						<p>Lap was flagged</p>
-						{lap.flagReason}
+						{props.lap.flagReason}
 					</Tooltip.Content>
 				</Tooltip.Root>
 			</Tooltip.Provider>
 		{/if}
-		{#if lap.isValid}
+		{#if props.lap.isValid}
 			<Tooltip.Provider>
 				<Tooltip.Root>
 					<Tooltip.Trigger><CircleCheckIcon class="stroke-primary" /></Tooltip.Trigger>
 					<Tooltip.Content>
 						<p>Lap is valid</p>
-						{lap.flagReason}
+						{props.lap.flagReason}
 					</Tooltip.Content>
 				</Tooltip.Root>
 			</Tooltip.Provider>
@@ -66,7 +66,7 @@
 					<Tooltip.Trigger><CircleXIcon class="stroke-destructive" /></Tooltip.Trigger>
 					<Tooltip.Content>
 						<p>Lap marked as invalid and will not count</p>
-						{lap.flagReason}
+						{props.lap.flagReason}
 					</Tooltip.Content>
 				</Tooltip.Root>
 			</Tooltip.Provider>

@@ -26,7 +26,7 @@ public class Endpoint : EndpointWithoutRequest<Response>
                 p.name, 
                 p.nick_name, 
                 sum(case when l.is_valid then 1 else 0 end) laps,
-                DENSE_RANK() OVER (ORDER BY sum(case when l.is_valid then 1 else 0 end) DESC) rank
+                RANK() OVER (ORDER BY sum(case when l.is_valid then 1 else 0 end) DESC) rank
             FROM player p
             LEFT JOIN lap l
                 ON p.id = l.player_id
@@ -40,12 +40,11 @@ public class Endpoint : EndpointWithoutRequest<Response>
             SELECT 
                 t.id, 
                 t.name, 
-                count(*) laps,
-                DENSE_RANK() OVER (ORDER BY count(*) DESC) rank
+                sum(case when l.is_valid then 1 else 0 end) laps,
+                RANK() OVER (ORDER BY count(*) DESC) rank
             FROM team t
-            JOIN lap l
+            LEFT JOIN lap l
                 ON t.id = l.team_id
-            WHERE l.is_valid = true
             GROUP BY t.id
             ORDER BY laps DESC;
         """
