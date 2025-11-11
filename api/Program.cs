@@ -10,7 +10,6 @@ builder.Host.AddLoggingConfiguration(builder.Configuration);
 
 builder.Services.AddSingleton<MqttService>();
 builder.Services.AddHostedService<EventSubscriber>();
-// builder.Services.AddHostedService<EventEmulator>();
 
 builder.Services.ConfigureHealth(builder.Configuration);
 builder.Services.ConfigureGeneral();
@@ -22,6 +21,8 @@ var corsSection = builder.Configuration.GetSection("Cors");
 builder.Services.ConfigureCors(corsSection.Get<string[]>() ?? [""]);
 
 var app = builder.Build();
+
+await app.Services.ApplyMigrations(app.Lifetime.ApplicationStopping);
 
 app.UseCorsLeTrack();
 app.UseApi();

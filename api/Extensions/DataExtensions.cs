@@ -21,4 +21,14 @@ public static class DataExtensions
         });
         return services;
     }
+
+    public static async Task ApplyMigrations(this IServiceProvider serviceProvider, CancellationToken ct)
+    {
+        using var scope = serviceProvider.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        if (db.Database.IsNpgsql())
+        {
+            await db.Database.MigrateAsync(ct);
+        }
+    }
 }

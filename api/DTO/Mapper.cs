@@ -1,13 +1,44 @@
 using LeTrack.Entities;
-using Riok.Mapperly.Abstractions;
 
 namespace LeTrack.DTO;
 
-[Mapper]
-public static partial class Mapper
+public static class Mapper
 {
-    public static partial IQueryable<LapDTO> ProjectToDto(this IQueryable<Lap> q);
-#pragma warning disable RMG020
-    [MapperIgnoreTarget(nameof(LapDTO.LapNumber))]
-    private static partial LapDTO MapLap(Lap model);
+    public static IQueryable<LapDTO> ProjectToDto(this IQueryable<Lap> q)
+    {
+        return q.Select(lap => new LapDTO
+        {
+            Id = lap.Id,
+            LastLapId = lap.LastLapId,
+            TrackId = lap.TrackId,
+            Timestamp = lap.Timestamp,
+            LapTime = lap.LapTime,
+            LapTimeDifference = lap.LapTimeDifference,
+            IsFlagged = lap.IsFlagged,
+            FlagReason = lap.FlagReason,
+            RaceId = lap.RaceId,
+            PlayerId = lap.PlayerId,
+            TeamId = lap.TeamId,
+            IsValid = lap.IsValid,
+        });
+    }
+
+    public static LapDTO MapLap(Lap lap)
+    {
+        return new LapDTO
+        {
+            Id = lap.Id,
+            LastLapId = lap.LastLapId,
+            TrackId = lap.TrackId,
+            Timestamp = lap.Timestamp,
+            LapTime = lap.LapTime,
+            LapTimeDifference = lap.LapTimeDifference,
+            IsFlagged = lap.IsFlagged,
+            FlagReason = lap.FlagReason,
+            RaceId = lap.RaceId,
+            PlayerId = lap.PlayerId,
+            TeamId = lap.TeamId,
+            IsValid = lap.IsValid,
+        };
+    }
 }
