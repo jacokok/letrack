@@ -13,7 +13,7 @@
 		"api": "curl http://localhost:5021/swagger/v1/swagger.json > swagger.json && orval"
 	},
 	"devDependencies": {
-		"@kayord/ui": "2.0.7",
+		"@kayord/ui": "2.0.9",
 		"@lucide/svelte": "^0.553.0",
 		"@microsoft/signalr": "^9.0.6",
 		"@sveltejs/adapter-static": "^3.0.10",
@@ -40,8 +40,8 @@
 		"prettier-plugin-svelte": "^3.4.0",
 		"qs": "^6.14.0",
 		"runed": "^0.36.0",
-		"svelte": "^5.43.5",
-		"svelte-check": "^4.3.3",
+		"svelte": "^5.43.6",
+		"svelte-check": "^4.3.4",
 		"svelte-confetti": "^2.3.2",
 		"sveltekit-superforms": "^2.28.1",
 		"tailwindcss": "^4.1.17",
