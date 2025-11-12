@@ -111,7 +111,8 @@
 {#snippet track(track: EntitiesRaceTrack)}
 	<div class="flex items-center gap-2">
 		<PlayerAvatar name={track.player.name} isSmall />
-		{track.player.name} ({track.player.nickName})
+		{track.player.name}
+		{track.player.nickName ? `(${track.player.nickName})` : ""}
 		<Badge class={cn(getVariant(track.trackId))}>Track {track.trackId}</Badge>
 	</div>
 {/snippet}

@@ -1,5 +1,5 @@
 {
-  "x-generator": "NSwag v14.4.0.0 (NJsonSchema v11.3.2.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v14.6.1.0 (NJsonSchema v11.5.1.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "letrack-api",
@@ -228,6 +228,45 @@
       }
     },
     "/teams/{id}": {
+      "get": {
+        "tags": [
+          "Teams"
+        ],
+        "operationId": "TeamsGet",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntitiesTeam"
+                }
+              }
+            }
+          }
+        }
+      },
       "delete": {
         "tags": [
           "Teams"
@@ -686,6 +725,45 @@
       }
     },
     "/players/{id}": {
+      "get": {
+        "tags": [
+          "Players"
+        ],
+        "operationId": "PlayersGet",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntitiesPlayer"
+                }
+              }
+            }
+          }
+        }
+      },
       "delete": {
         "tags": [
           "Players"
@@ -742,6 +820,94 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LeaderboardResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/leaderboard/team/{id}": {
+      "get": {
+        "tags": [
+          "Leaderboard"
+        ],
+        "operationId": "LeaderboardTeam",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LeaderboardTeamResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/leaderboard/player/{id}": {
+      "get": {
+        "tags": [
+          "Leaderboard"
+        ],
+        "operationId": "LeaderboardPlayer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalErrorResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LeaderboardPlayerResponse"
+                  }
                 }
               }
             }
@@ -1413,6 +1579,10 @@
           }
         }
       },
+      "TeamsGetRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
       "TeamsDeleteRequest": {
         "type": "object",
         "additionalProperties": false
@@ -1683,6 +1853,10 @@
           }
         }
       },
+      "PlayersGetRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
       "PlayersDeleteRequest": {
         "type": "object",
         "additionalProperties": false
@@ -1764,6 +1938,58 @@
             "format": "int32"
           }
         }
+      },
+      "LeaderboardTeamResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "raceId",
+          "raceName",
+          "laps"
+        ],
+        "properties": {
+          "raceId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "raceName": {
+            "type": "string"
+          },
+          "laps": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "LeaderboardTeamRequest": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "LeaderboardPlayerResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "raceId",
+          "raceName",
+          "laps"
+        ],
+        "properties": {
+          "raceId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "raceName": {
+            "type": "string"
+          },
+          "laps": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "LeaderboardPlayerRequest": {
+        "type": "object",
+        "additionalProperties": false
       },
       "LapsRequest": {
         "type": "object",

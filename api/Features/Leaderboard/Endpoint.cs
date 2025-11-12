@@ -41,7 +41,7 @@ public class Endpoint : EndpointWithoutRequest<Response>
                 t.id, 
                 t.name, 
                 sum(case when l.is_valid then 1 else 0 end) laps,
-                RANK() OVER (ORDER BY count(*) DESC) rank
+                RANK() OVER (ORDER BY sum(case when l.is_valid then 1 else 0 end) DESC) rank
             FROM team t
             LEFT JOIN lap l
                 ON t.id = l.team_id
