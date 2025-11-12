@@ -87,8 +87,8 @@
 		</Card.Root>
 		<Card.Root class="w-full">
 			<Card.Header>
-				<Card.Title>Bar Chart - Mixed</Card.Title>
-				<Card.Description>January - June 2024</Card.Description>
+				<Card.Title>Race Breakdown</Card.Title>
+				<Card.Description>{player?.name}</Card.Description>
 			</Card.Header>
 			<Card.Content class="min-w-50">
 				<Chart.Container config={chartConfig}>

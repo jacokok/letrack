@@ -5,6 +5,7 @@
 	import { Label, Badge, Tabs, Button, Card, Switch } from "@kayord/ui";
 	import { DataTable, createShadTable, renderSnippet } from "@kayord/ui/data-table";
 	import FlagIcon from "@lucide/svelte/icons/flag";
+	import { watch } from "runed";
 
 	import {
 		type ColumnDef,
@@ -46,6 +47,16 @@
 	const selectedTrackDetail = $derived(tracksDetail.find((x) => x.trackId == tab));
 	const selectedLapTotal = $derived(
 		selectedTrackDetail?.laps.map((x) => x.isValid).filter((x) => x == true).length
+	);
+
+	// Make sure you do not validate other track's laps when switching tabs
+	watch(
+		() => tab,
+		(curr, prev) => {
+			if ((prev ?? 0) > 0) {
+				rowSelection = {};
+			}
+		}
 	);
 
 	$effect(() => {
