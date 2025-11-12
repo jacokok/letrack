@@ -29,7 +29,7 @@ services:
       start_period: 30s
 
   db:
-    image: postgres:17
+    image: postgres:18
     ports:
       - 5432:5432
     restart: unless-stopped
@@ -39,7 +39,7 @@ services:
       POSTGRES_PASSWORD: letrack
       PGUSER: letrack
     volumes:
-      - pg-data:/var/lib/postgresql/data
+      - pg-data:/var/lib/postgresql/18/docker
     healthcheck:
       test: pg_isready -d letrack
       start_period: 30s

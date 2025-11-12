@@ -23,6 +23,7 @@ public class Endpoint : Endpoint<Request, Response>
         Response response = new();
 
         var race = await _dbContext.Race
+            .AsNoTracking()
             .Include(x => x.RaceTracks)
                 .ThenInclude(x => x.Player)
             .FirstOrDefaultAsync(x => x.Id == r.RaceId, ct);
@@ -32,7 +33,12 @@ public class Endpoint : Endpoint<Request, Response>
             throw new Exception("Race not found");
         }
 
-        List<LapDTO>? laps = await _dbContext.Lap.Where(x => x.RaceId == r.RaceId).OrderByDescending(x => x.Timestamp).ProjectToDto().ToListAsync(ct);
+        List<LapDTO>? laps = await _dbContext.Lap
+            .AsNoTracking()
+            .Where(x => x.RaceId == r.RaceId)
+            .OrderByDescending(x => x.Timestamp)
+            .ProjectToDto()
+            .ToListAsync(ct);
 
         foreach (var track in race.RaceTracks)
         {

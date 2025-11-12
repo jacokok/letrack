@@ -10,9 +10,14 @@ public static class DataExtensions
         services.AddDbContext<AppDbContext>(options =>
         {
             options.UseSnakeCaseNamingConvention();
-            options.UseNpgsql(
-                configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)
+            options.UseNpgsql(options =>
+            {
+                configuration.GetConnectionString("DefaultConnection");
+                options.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
+
+                options.EnableRetryOnFailure(maxRetryCount: 1);
+                options.CommandTimeout(30);
+            }
             );
             if (environment.IsDevelopment())
             {
