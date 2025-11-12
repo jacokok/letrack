@@ -147,6 +147,10 @@
 							</Select.Root>
 						{/snippet}
 					</Form.Control>
+
+					<Form.Legend>
+						{players.find((i) => i.id === $formData.players[0])?.team?.name}
+					</Form.Legend>
 					<Form.FieldErrors />
 				</Form.Field>
 
@@ -174,6 +178,9 @@
 							</Select.Root>
 						{/snippet}
 					</Form.Control>
+					<Form.Legend>
+						{players.find((i) => i.id === $formData.players[1])?.team?.name}
+					</Form.Legend>
 					<Form.FieldErrors />
 				</Form.Field>
 			</div>
