@@ -252,6 +252,7 @@ export interface LeaderboardTeamResponse {
 	raceId: number;
 	raceName: string;
 	laps: number;
+	trackId: number;
 }
 
 export interface LeaderboardTeamRequest {
@@ -261,6 +262,7 @@ export interface LeaderboardTeamRequest {
 export interface LeaderboardPlayerResponse {
 	raceId: number;
 	raceName: string;
+	trackId: number;
 	laps: number;
 }
 

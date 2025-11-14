@@ -24,6 +24,7 @@ public class Endpoint : Endpoint<Request, List<Response>>
             SELECT 
               l.race_id,
               r.name race_name,
+              l.track_id,
               sum(case when l.is_valid then 1 else 0 end) laps
             FROM race r
             JOIN lap l
@@ -31,7 +32,8 @@ public class Endpoint : Endpoint<Request, List<Response>>
             WHERE l.team_id = {r.Id}
             GROUP BY 
               l.race_id,
-              r.name
+              r.name,
+              l.track_id
             ORDER BY l.race_id;
         """
     ).ToListAsync(ct);

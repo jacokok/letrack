@@ -1796,7 +1796,7 @@
 			"LeaderboardTeamResponse": {
 				"type": "object",
 				"additionalProperties": false,
-				"required": ["raceId", "raceName", "laps"],
+				"required": ["raceId", "raceName", "laps", "trackId"],
 				"properties": {
 					"raceId": {
 						"type": "integer",
@@ -1806,6 +1806,10 @@
 						"type": "string"
 					},
 					"laps": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"trackId": {
 						"type": "integer",
 						"format": "int32"
 					}
@@ -1818,7 +1822,7 @@
 			"LeaderboardPlayerResponse": {
 				"type": "object",
 				"additionalProperties": false,
-				"required": ["raceId", "raceName", "laps"],
+				"required": ["raceId", "raceName", "trackId", "laps"],
 				"properties": {
 					"raceId": {
 						"type": "integer",
@@ -1826,6 +1830,10 @@
 					},
 					"raceName": {
 						"type": "string"
+					},
+					"trackId": {
+						"type": "integer",
+						"format": "int32"
 					},
 					"laps": {
 						"type": "integer",
