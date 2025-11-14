@@ -132,6 +132,18 @@ export interface TeamsDeleteRequest {
 	[key: string]: unknown;
 }
 
+export interface ScheduleResponse {
+	name: string;
+	raceTracks: EntitiesRaceTrack[];
+}
+
+export interface ScheduleRequest {
+	startTime: string;
+	intervalMinutes: number;
+	durationHours: number;
+	save: boolean;
+}
+
 export interface RaceUpdateRequest {
 	id: number;
 	name: string;
@@ -244,7 +256,8 @@ export interface LeaderboardResponse {
 export interface LeaderboardPlayerSummary {
 	id: number;
 	name: string;
-	nickName: string;
+	/** @nullable */
+	nickName?: string | null;
 	laps: number;
 	rank: number;
 }
@@ -260,7 +273,8 @@ export interface LeaderboardFastestLap {
 	trackId: number;
 	lapTime: string;
 	name: string;
-	nickName: string;
+	/** @nullable */
+	nickName?: string | null;
 }
 
 export interface LeaderboardTeamResponse {

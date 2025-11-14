@@ -37,6 +37,11 @@
 			size: 1000
 		},
 		{
+			header: "Grid",
+			accessorKey: "order",
+			size: 1000
+		},
+		{
 			header: "",
 			accessorKey: "id",
 			size: 10,

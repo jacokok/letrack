@@ -284,6 +284,50 @@
 				}
 			}
 		},
+		"/schedule": {
+			"post": {
+				"tags": ["Schedule"],
+				"operationId": "Schedule",
+				"requestBody": {
+					"x-name": "Request",
+					"description": "",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ScheduleRequest"
+							}
+						}
+					},
+					"required": true,
+					"x-position": 1
+				},
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/ScheduleResponse"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/race": {
 			"put": {
 				"tags": ["Race"],
@@ -1541,6 +1585,44 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ScheduleResponse": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["name", "raceTracks"],
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"raceTracks": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/EntitiesRaceTrack"
+						}
+					}
+				}
+			},
+			"ScheduleRequest": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["startTime", "intervalMinutes", "durationHours", "save"],
+				"properties": {
+					"startTime": {
+						"type": "string",
+						"format": "duration"
+					},
+					"intervalMinutes": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"durationHours": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"save": {
+						"type": "boolean"
+					}
+				}
+			},
 			"RaceUpdateRequest": {
 				"type": "object",
 				"additionalProperties": false,
@@ -1822,7 +1904,7 @@
 			"LeaderboardPlayerSummary": {
 				"type": "object",
 				"additionalProperties": false,
-				"required": ["id", "name", "nickName", "laps", "rank"],
+				"required": ["id", "name", "laps", "rank"],
 				"properties": {
 					"id": {
 						"type": "integer",
@@ -1832,7 +1914,8 @@
 						"type": "string"
 					},
 					"nickName": {
-						"type": "string"
+						"type": "string",
+						"nullable": true
 					},
 					"laps": {
 						"type": "integer",
@@ -1869,7 +1952,7 @@
 			"LeaderboardFastestLap": {
 				"type": "object",
 				"additionalProperties": false,
-				"required": ["trackId", "lapTime", "name", "nickName"],
+				"required": ["trackId", "lapTime", "name"],
 				"properties": {
 					"trackId": {
 						"type": "integer",
@@ -1883,7 +1966,8 @@
 						"type": "string"
 					},
 					"nickName": {
-						"type": "string"
+						"type": "string",
+						"nullable": true
 					}
 				}
 			},

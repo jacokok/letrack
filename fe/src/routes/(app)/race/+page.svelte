@@ -13,6 +13,7 @@
 	import Actions from "./Actions.svelte";
 	import PlayerAvatar from "$lib/components/PlayerAvatar.svelte";
 	import { cn } from "@kayord/ui/utils";
+	import type { id } from "zod/v4/locales";
 
 	let open = $state(false);
 
@@ -69,7 +70,7 @@
 		} else pagination = updater;
 	};
 
-	let sorting: SortingState = $state([]);
+	let sorting: SortingState = $state([{ id: "name", desc: false }]);
 	const setSorting = (updater: Updater<SortingState>) => {
 		if (updater instanceof Function) {
 			sorting = updater(sorting);
