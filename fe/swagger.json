@@ -1,2138 +1,1972 @@
 {
-  "x-generator": "NSwag v14.6.1.0 (NJsonSchema v11.5.1.0 (Newtonsoft.Json v13.0.0.0))",
-  "openapi": "3.0.0",
-  "info": {
-    "title": "letrack-api",
-    "version": "v1"
-  },
-  "servers": [
-    {
-      "url": "http://localhost:5021"
-    }
-  ],
-  "paths": {
-    "/track/summary/{trackId}": {
-      "get": {
-        "tags": [
-          "Track"
-        ],
-        "operationId": "TrackSummary",
-        "parameters": [
-          {
-            "name": "trackId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TrackSummaryResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/test/signal": {
-      "get": {
-        "tags": [
-          "Test"
-        ],
-        "operationId": "TestSignal",
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/test": {
-      "get": {
-        "tags": [
-          "Test"
-        ],
-        "operationId": "Test",
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/teams": {
-      "put": {
-        "tags": [
-          "Teams"
-        ],
-        "operationId": "TeamsUpdate",
-        "requestBody": {
-          "x-name": "Request",
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TeamsUpdateRequest"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntitiesTeam"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Teams"
-        ],
-        "operationId": "TeamsList",
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/EntitiesTeam"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Teams"
-        ],
-        "operationId": "TeamsInsert",
-        "requestBody": {
-          "x-name": "Request",
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TeamsInsertRequest"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntitiesTeam"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/teams/{id}": {
-      "get": {
-        "tags": [
-          "Teams"
-        ],
-        "operationId": "TeamsGet",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntitiesTeam"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Teams"
-        ],
-        "operationId": "TeamsDelete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      }
-    },
-    "/race": {
-      "put": {
-        "tags": [
-          "Race"
-        ],
-        "operationId": "RaceUpdate",
-        "requestBody": {
-          "x-name": "Request",
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RaceUpdateRequest"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntitiesRace"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Race"
-        ],
-        "operationId": "RaceList",
-        "parameters": [
-          {
-            "name": "sorts",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "filters",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "nullable": true
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "nullable": true
-            }
-          }
-        ],
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ModelsPaginatedListOfRace"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Race"
-        ],
-        "operationId": "RaceInsert",
-        "requestBody": {
-          "x-name": "Request",
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RaceInsertRequest"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntitiesRace"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/race/summary/{raceId}": {
-      "get": {
-        "tags": [
-          "Race"
-        ],
-        "operationId": "RaceSummary",
-        "parameters": [
-          {
-            "name": "raceId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RaceSummaryResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/race/stop": {
-      "post": {
-        "tags": [
-          "Race"
-        ],
-        "operationId": "RaceStop",
-        "requestBody": {
-          "x-name": "Request",
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RaceStopRequest"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntitiesRace"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/race/start": {
-      "post": {
-        "tags": [
-          "Race"
-        ],
-        "operationId": "RaceStart",
-        "requestBody": {
-          "x-name": "Request",
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RaceStartRequest"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntitiesRace"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/race/{id}": {
-      "delete": {
-        "tags": [
-          "Race"
-        ],
-        "operationId": "RaceDelete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      }
-    },
-    "/players": {
-      "put": {
-        "tags": [
-          "Players"
-        ],
-        "operationId": "PlayersUpdate",
-        "requestBody": {
-          "x-name": "Request",
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PlayersUpdateRequest"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntitiesPlayer"
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Players"
-        ],
-        "operationId": "PlayersList",
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/EntitiesPlayer"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Players"
-        ],
-        "operationId": "PlayersInsert",
-        "requestBody": {
-          "x-name": "Request",
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PlayersInsertRequest"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntitiesPlayer"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/players/{id}": {
-      "get": {
-        "tags": [
-          "Players"
-        ],
-        "operationId": "PlayersGet",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EntitiesPlayer"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Players"
-        ],
-        "operationId": "PlayersDelete",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      }
-    },
-    "/leaderboard": {
-      "get": {
-        "tags": [
-          "Leaderboard"
-        ],
-        "operationId": "Leaderboard",
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LeaderboardResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/leaderboard/team/{id}": {
-      "get": {
-        "tags": [
-          "Leaderboard"
-        ],
-        "operationId": "LeaderboardTeam",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LeaderboardTeamResponse"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/leaderboard/player/{id}": {
-      "get": {
-        "tags": [
-          "Leaderboard"
-        ],
-        "operationId": "LeaderboardPlayer",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LeaderboardPlayerResponse"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/laps": {
-      "get": {
-        "tags": [
-          "Laps"
-        ],
-        "operationId": "Laps",
-        "parameters": [
-          {
-            "name": "raceId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "trackId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DTOLapDTO"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/laps/valid": {
-      "post": {
-        "tags": [
-          "Laps"
-        ],
-        "operationId": "LapsValid",
-        "requestBody": {
-          "x-name": "Request",
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LapsValidRequest"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/laps/adjustment": {
-      "post": {
-        "tags": [
-          "Laps"
-        ],
-        "operationId": "LapsAdjustment",
-        "requestBody": {
-          "x-name": "Request",
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LapsAdjustmentRequest"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          }
-        }
-      }
-    },
-    "/export": {
-      "get": {
-        "tags": [
-          "Export"
-        ],
-        "operationId": "Export",
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DTOLapExportDTO"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/snapshot": {
-      "post": {
-        "tags": [
-          "Admin"
-        ],
-        "operationId": "AdminSnapshot",
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/clear-race": {
-      "post": {
-        "tags": [
-          "Admin"
-        ],
-        "operationId": "AdminClearRaces",
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/clear-laps": {
-      "post": {
-        "tags": [
-          "Admin"
-        ],
-        "operationId": "AdminClearLaps",
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/clear-invalid-laps": {
-      "post": {
-        "tags": [
-          "Admin"
-        ],
-        "operationId": "AdminClearInvalidLaps",
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/clear-events": {
-      "post": {
-        "tags": [
-          "Admin"
-        ],
-        "operationId": "AdminClearEvents",
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/clear-all": {
-      "post": {
-        "tags": [
-          "Admin"
-        ],
-        "operationId": "AdminClearAll",
-        "responses": {
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InternalErrorResponse"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "boolean"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "InternalErrorResponse": {
-        "type": "object",
-        "description": "the dto used to send an error response to the client when an unhandled exception occurs on the server",
-        "additionalProperties": false,
-        "required": [
-          "status",
-          "code",
-          "reason",
-          "note"
-        ],
-        "properties": {
-          "status": {
-            "type": "string",
-            "description": "error status",
-            "default": "Internal Server Error!"
-          },
-          "code": {
-            "type": "integer",
-            "description": "http status code of the error response",
-            "format": "int32",
-            "default": 500
-          },
-          "reason": {
-            "type": "string",
-            "description": "the reason for the error",
-            "default": "Something unexpected has happened"
-          },
-          "note": {
-            "type": "string",
-            "description": "additional information or instructions",
-            "default": "See application log for stack trace."
-          }
-        }
-      },
-      "TrackSummaryResponse": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "last10Laps",
-          "totalLaps"
-        ],
-        "properties": {
-          "last10Laps": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DTOLapDTO"
-            }
-          },
-          "fastestLap": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/DTOLapDTO"
-              }
-            ]
-          },
-          "totalLaps": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "race": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/EntitiesRace"
-              }
-            ]
-          }
-        }
-      },
-      "DTOLapDTO": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "id",
-          "trackId",
-          "timestamp",
-          "isFlagged",
-          "lapNumber",
-          "isValid"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          },
-          "lastLapId": {
-            "type": "string",
-            "format": "guid",
-            "nullable": true
-          },
-          "trackId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "lapTime": {
-            "type": "string",
-            "format": "duration",
-            "nullable": true
-          },
-          "lapTimeDifference": {
-            "type": "string",
-            "format": "duration",
-            "nullable": true
-          },
-          "isFlagged": {
-            "type": "boolean"
-          },
-          "flagReason": {
-            "type": "string",
-            "nullable": true
-          },
-          "raceId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "lapNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "playerId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "teamId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "isValid": {
-            "type": "boolean"
-          }
-        }
-      },
-      "EntitiesRace": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "id",
-          "name",
-          "raceTracks",
-          "isActive",
-          "createdDateTime"
-        ],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string"
-          },
-          "raceTracks": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EntitiesRaceTrack"
-            }
-          },
-          "isActive": {
-            "type": "boolean"
-          },
-          "createdDateTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "startDateTime": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "restartDateTime": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "endDateTime": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "endLapCount": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "timeRemaining": {
-            "type": "string",
-            "format": "duration",
-            "nullable": true
-          }
-        }
-      },
-      "EntitiesRaceTrack": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "raceId",
-          "trackId",
-          "playerId",
-          "player"
-        ],
-        "properties": {
-          "raceId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "trackId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "playerId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "player": {
-            "$ref": "#/components/schemas/EntitiesPlayer"
-          }
-        }
-      },
-      "EntitiesPlayer": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "id",
-          "name"
-        ],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string"
-          },
-          "nickName": {
-            "type": "string",
-            "nullable": true
-          },
-          "teamId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "team": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/EntitiesTeam"
-              }
-            ]
-          }
-        }
-      },
-      "EntitiesTeam": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "players",
-          "id",
-          "name"
-        ],
-        "properties": {
-          "players": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EntitiesPlayer"
-            }
-          },
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string"
-          }
-        }
-      },
-      "TrackSummaryRequest": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "TeamsUpdateRequest": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "id",
-          "name"
-        ],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string"
-          }
-        }
-      },
-      "TeamsInsertRequest": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "name"
-        ],
-        "properties": {
-          "name": {
-            "type": "string"
-          }
-        }
-      },
-      "TeamsGetRequest": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "TeamsDeleteRequest": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "RaceUpdateRequest": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "id",
-          "name",
-          "players",
-          "isFirstTracks"
-        ],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string"
-          },
-          "players": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          "isFirstTracks": {
-            "type": "boolean"
-          }
-        }
-      },
-      "RaceSummaryResponse": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "tracks",
-          "totalLaps",
-          "race"
-        ],
-        "properties": {
-          "tracks": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/RaceSummaryTrack"
-            }
-          },
-          "fastestLap": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/DTOLapDTO"
-              }
-            ]
-          },
-          "totalLaps": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "race": {
-            "$ref": "#/components/schemas/EntitiesRace"
-          }
-        }
-      },
-      "RaceSummaryTrack": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "trackId",
-          "laps",
-          "player",
-          "totalLaps"
-        ],
-        "properties": {
-          "trackId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "laps": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DTOLapDTO"
-            }
-          },
-          "player": {
-            "$ref": "#/components/schemas/EntitiesPlayer"
-          },
-          "fastestLap": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/DTOLapDTO"
-              }
-            ]
-          },
-          "totalLaps": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "RaceSummaryRequest": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "RaceStopRequest": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "id"
-        ],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "RaceStartRequest": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "id",
-          "duration",
-          "laps"
-        ],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "duration": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "laps": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "ModelsPaginatedListOfRace": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "items",
-          "pageNumber",
-          "totalPages",
-          "totalCount",
-          "hasPreviousPage",
-          "hasNextPage"
-        ],
-        "properties": {
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EntitiesRace"
-            }
-          },
-          "pageNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "hasPreviousPage": {
-            "type": "boolean"
-          },
-          "hasNextPage": {
-            "type": "boolean"
-          }
-        }
-      },
-      "RaceListRequest": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ModelsQueryModel"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false
-          }
-        ]
-      },
-      "ModelsQueryModel": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "RaceInsertRequest": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "name",
-          "players",
-          "isFirstTracks"
-        ],
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "players": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          "isFirstTracks": {
-            "type": "boolean"
-          }
-        }
-      },
-      "RaceDeleteRequest": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "PlayersUpdateRequest": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "id",
-          "name",
-          "teamId"
-        ],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string"
-          },
-          "nickName": {
-            "type": "string",
-            "nullable": true
-          },
-          "teamId": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "PlayersInsertRequest": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "name",
-          "teamId"
-        ],
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "nickName": {
-            "type": "string",
-            "nullable": true
-          },
-          "teamId": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "PlayersGetRequest": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "PlayersDeleteRequest": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "LeaderboardResponse": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "playerSummary": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/LeaderboardPlayerSummary"
-            }
-          },
-          "teamSummary": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/LeaderboardTeamSummary"
-            }
-          }
-        }
-      },
-      "LeaderboardPlayerSummary": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "id",
-          "name",
-          "nickName",
-          "laps",
-          "rank"
-        ],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string"
-          },
-          "nickName": {
-            "type": "string"
-          },
-          "laps": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "rank": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "LeaderboardTeamSummary": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "id",
-          "name",
-          "laps",
-          "rank"
-        ],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string"
-          },
-          "laps": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "rank": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "LeaderboardTeamResponse": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "raceId",
-          "raceName",
-          "laps"
-        ],
-        "properties": {
-          "raceId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "raceName": {
-            "type": "string"
-          },
-          "laps": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "LeaderboardTeamRequest": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "LeaderboardPlayerResponse": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "raceId",
-          "raceName",
-          "laps"
-        ],
-        "properties": {
-          "raceId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "raceName": {
-            "type": "string"
-          },
-          "laps": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "LeaderboardPlayerRequest": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "LapsRequest": {
-        "type": "object",
-        "additionalProperties": false
-      },
-      "LapsValidRequest": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "ids"
-        ],
-        "properties": {
-          "ids": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "guid"
-            }
-          }
-        }
-      },
-      "LapsAdjustmentRequest": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "raceId",
-          "trackId",
-          "amount"
-        ],
-        "properties": {
-          "raceId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "trackId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "amount": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "DTOLapExportDTO": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "id",
-          "trackId",
-          "timestamp",
-          "isFlagged",
-          "isValid"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "guid"
-          },
-          "trackId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "lapTime": {
-            "type": "string",
-            "format": "duration",
-            "nullable": true
-          },
-          "isFlagged": {
-            "type": "boolean"
-          },
-          "lastLapId": {
-            "type": "string",
-            "format": "guid",
-            "nullable": true
-          },
-          "raceId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "raceName": {
-            "type": "string",
-            "nullable": true
-          },
-          "raceStartDateTime": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "raceEndDateTime": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "lapTimeDifference": {
-            "type": "string",
-            "format": "duration",
-            "nullable": true
-          },
-          "flagReason": {
-            "type": "string",
-            "nullable": true
-          },
-          "playerId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "playerName": {
-            "type": "string",
-            "nullable": true
-          },
-          "playerNickName": {
-            "type": "string",
-            "nullable": true
-          },
-          "isValid": {
-            "type": "boolean"
-          },
-          "teamId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "teamName": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      }
-    },
-    "securitySchemes": {
-      "JWTBearerAuth": {
-        "type": "http",
-        "description": "Enter a JWT token to authorize the requests...",
-        "scheme": "Bearer",
-        "bearerFormat": "JWT"
-      }
-    }
-  }
+	"x-generator": "NSwag v14.6.2.0 (NJsonSchema v11.5.2.0 (Newtonsoft.Json v13.0.0.0))",
+	"openapi": "3.0.0",
+	"info": {
+		"title": "letrack-api",
+		"version": "v1"
+	},
+	"servers": [
+		{
+			"url": "http://localhost:5021"
+		}
+	],
+	"paths": {
+		"/track/summary/{trackId}": {
+			"get": {
+				"tags": ["Track"],
+				"operationId": "TrackSummary",
+				"parameters": [
+					{
+						"name": "trackId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TrackSummaryResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/test/signal": {
+			"get": {
+				"tags": ["Test"],
+				"operationId": "TestSignal",
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/test": {
+			"get": {
+				"tags": ["Test"],
+				"operationId": "Test",
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/teams": {
+			"put": {
+				"tags": ["Teams"],
+				"operationId": "TeamsUpdate",
+				"requestBody": {
+					"x-name": "Request",
+					"description": "",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TeamsUpdateRequest"
+							}
+						}
+					},
+					"required": true,
+					"x-position": 1
+				},
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/EntitiesTeam"
+								}
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": ["Teams"],
+				"operationId": "TeamsList",
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/EntitiesTeam"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": ["Teams"],
+				"operationId": "TeamsInsert",
+				"requestBody": {
+					"x-name": "Request",
+					"description": "",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TeamsInsertRequest"
+							}
+						}
+					},
+					"required": true,
+					"x-position": 1
+				},
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/EntitiesTeam"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/teams/{id}": {
+			"get": {
+				"tags": ["Teams"],
+				"operationId": "TeamsGet",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/EntitiesTeam"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["Teams"],
+				"operationId": "TeamsDelete",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"204": {
+						"description": "No Content"
+					}
+				}
+			}
+		},
+		"/race": {
+			"put": {
+				"tags": ["Race"],
+				"operationId": "RaceUpdate",
+				"requestBody": {
+					"x-name": "Request",
+					"description": "",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/RaceUpdateRequest"
+							}
+						}
+					},
+					"required": true,
+					"x-position": 1
+				},
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/EntitiesRace"
+								}
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": ["Race"],
+				"operationId": "RaceList",
+				"parameters": [
+					{
+						"name": "sorts",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"nullable": true
+						}
+					},
+					{
+						"name": "filters",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"nullable": true
+						}
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"nullable": true
+						}
+					},
+					{
+						"name": "pageSize",
+						"in": "query",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"nullable": true
+						}
+					}
+				],
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ModelsPaginatedListOfRace"
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": ["Race"],
+				"operationId": "RaceInsert",
+				"requestBody": {
+					"x-name": "Request",
+					"description": "",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/RaceInsertRequest"
+							}
+						}
+					},
+					"required": true,
+					"x-position": 1
+				},
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/EntitiesRace"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/race/summary/{raceId}": {
+			"get": {
+				"tags": ["Race"],
+				"operationId": "RaceSummary",
+				"parameters": [
+					{
+						"name": "raceId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/RaceSummaryResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/race/stop": {
+			"post": {
+				"tags": ["Race"],
+				"operationId": "RaceStop",
+				"requestBody": {
+					"x-name": "Request",
+					"description": "",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/RaceStopRequest"
+							}
+						}
+					},
+					"required": true,
+					"x-position": 1
+				},
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/EntitiesRace"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/race/start": {
+			"post": {
+				"tags": ["Race"],
+				"operationId": "RaceStart",
+				"requestBody": {
+					"x-name": "Request",
+					"description": "",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/RaceStartRequest"
+							}
+						}
+					},
+					"required": true,
+					"x-position": 1
+				},
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/EntitiesRace"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/race/{id}": {
+			"delete": {
+				"tags": ["Race"],
+				"operationId": "RaceDelete",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"204": {
+						"description": "No Content"
+					}
+				}
+			}
+		},
+		"/players": {
+			"put": {
+				"tags": ["Players"],
+				"operationId": "PlayersUpdate",
+				"requestBody": {
+					"x-name": "Request",
+					"description": "",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PlayersUpdateRequest"
+							}
+						}
+					},
+					"required": true,
+					"x-position": 1
+				},
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/EntitiesPlayer"
+								}
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": ["Players"],
+				"operationId": "PlayersList",
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/EntitiesPlayer"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": ["Players"],
+				"operationId": "PlayersInsert",
+				"requestBody": {
+					"x-name": "Request",
+					"description": "",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PlayersInsertRequest"
+							}
+						}
+					},
+					"required": true,
+					"x-position": 1
+				},
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/EntitiesPlayer"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/players/{id}": {
+			"get": {
+				"tags": ["Players"],
+				"operationId": "PlayersGet",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/EntitiesPlayer"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["Players"],
+				"operationId": "PlayersDelete",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"204": {
+						"description": "No Content"
+					}
+				}
+			}
+		},
+		"/leaderboard": {
+			"get": {
+				"tags": ["Leaderboard"],
+				"operationId": "Leaderboard",
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/LeaderboardResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/leaderboard/team/{id}": {
+			"get": {
+				"tags": ["Leaderboard"],
+				"operationId": "LeaderboardTeam",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/LeaderboardTeamResponse"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/leaderboard/player/{id}": {
+			"get": {
+				"tags": ["Leaderboard"],
+				"operationId": "LeaderboardPlayer",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/LeaderboardPlayerResponse"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/laps": {
+			"get": {
+				"tags": ["Laps"],
+				"operationId": "Laps",
+				"parameters": [
+					{
+						"name": "raceId",
+						"in": "query",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					},
+					{
+						"name": "trackId",
+						"in": "query",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/DTOLapDTO"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/laps/valid": {
+			"post": {
+				"tags": ["Laps"],
+				"operationId": "LapsValid",
+				"requestBody": {
+					"x-name": "Request",
+					"description": "",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LapsValidRequest"
+							}
+						}
+					},
+					"required": true,
+					"x-position": 1
+				},
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/laps/adjustment": {
+			"post": {
+				"tags": ["Laps"],
+				"operationId": "LapsAdjustment",
+				"requestBody": {
+					"x-name": "Request",
+					"description": "",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LapsAdjustmentRequest"
+							}
+						}
+					},
+					"required": true,
+					"x-position": 1
+				},
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"204": {
+						"description": "No Content"
+					}
+				}
+			}
+		},
+		"/export": {
+			"get": {
+				"tags": ["Export"],
+				"operationId": "Export",
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/DTOLapExportDTO"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/admin/snapshot": {
+			"post": {
+				"tags": ["Admin"],
+				"operationId": "AdminSnapshot",
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/admin/clear-race": {
+			"post": {
+				"tags": ["Admin"],
+				"operationId": "AdminClearRaces",
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/admin/clear-laps": {
+			"post": {
+				"tags": ["Admin"],
+				"operationId": "AdminClearLaps",
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/admin/clear-invalid-laps": {
+			"post": {
+				"tags": ["Admin"],
+				"operationId": "AdminClearInvalidLaps",
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/admin/clear-events": {
+			"post": {
+				"tags": ["Admin"],
+				"operationId": "AdminClearEvents",
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/admin/clear-all": {
+			"post": {
+				"tags": ["Admin"],
+				"operationId": "AdminClearAll",
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "boolean"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"InternalErrorResponse": {
+				"type": "object",
+				"description": "the dto used to send an error response to the client when an unhandled exception occurs on the server",
+				"additionalProperties": false,
+				"required": ["status", "code", "reason", "note"],
+				"properties": {
+					"status": {
+						"type": "string",
+						"description": "error status",
+						"default": "Internal Server Error!"
+					},
+					"code": {
+						"type": "integer",
+						"description": "http status code of the error response",
+						"format": "int32",
+						"default": 500
+					},
+					"reason": {
+						"type": "string",
+						"description": "the reason for the error",
+						"default": "Something unexpected has happened"
+					},
+					"note": {
+						"type": "string",
+						"description": "additional information or instructions",
+						"default": "See application log for stack trace."
+					}
+				}
+			},
+			"TrackSummaryResponse": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["last10Laps", "totalLaps"],
+				"properties": {
+					"last10Laps": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/DTOLapDTO"
+						}
+					},
+					"fastestLap": {
+						"nullable": true,
+						"oneOf": [
+							{
+								"$ref": "#/components/schemas/DTOLapDTO"
+							}
+						]
+					},
+					"totalLaps": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"race": {
+						"nullable": true,
+						"oneOf": [
+							{
+								"$ref": "#/components/schemas/EntitiesRace"
+							}
+						]
+					}
+				}
+			},
+			"DTOLapDTO": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["id", "trackId", "timestamp", "isFlagged", "lapNumber", "isValid"],
+				"properties": {
+					"id": {
+						"type": "string",
+						"format": "guid"
+					},
+					"lastLapId": {
+						"type": "string",
+						"format": "guid",
+						"nullable": true
+					},
+					"trackId": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"lapTime": {
+						"type": "string",
+						"format": "duration",
+						"nullable": true
+					},
+					"lapTimeDifference": {
+						"type": "string",
+						"format": "duration",
+						"nullable": true
+					},
+					"isFlagged": {
+						"type": "boolean"
+					},
+					"flagReason": {
+						"type": "string",
+						"nullable": true
+					},
+					"raceId": {
+						"type": "integer",
+						"format": "int32",
+						"nullable": true
+					},
+					"lapNumber": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"playerId": {
+						"type": "integer",
+						"format": "int32",
+						"nullable": true
+					},
+					"teamId": {
+						"type": "integer",
+						"format": "int32",
+						"nullable": true
+					},
+					"isValid": {
+						"type": "boolean"
+					}
+				}
+			},
+			"EntitiesRace": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["id", "name", "raceTracks", "isActive", "createdDateTime"],
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"name": {
+						"type": "string"
+					},
+					"raceTracks": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/EntitiesRaceTrack"
+						}
+					},
+					"isActive": {
+						"type": "boolean"
+					},
+					"createdDateTime": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"startDateTime": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"restartDateTime": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"endDateTime": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"endLapCount": {
+						"type": "integer",
+						"format": "int32",
+						"nullable": true
+					},
+					"timeRemaining": {
+						"type": "string",
+						"format": "duration",
+						"nullable": true
+					}
+				}
+			},
+			"EntitiesRaceTrack": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["raceId", "trackId", "playerId", "player"],
+				"properties": {
+					"raceId": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"trackId": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"playerId": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"player": {
+						"$ref": "#/components/schemas/EntitiesPlayer"
+					}
+				}
+			},
+			"EntitiesPlayer": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["id", "name"],
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"name": {
+						"type": "string"
+					},
+					"nickName": {
+						"type": "string",
+						"nullable": true
+					},
+					"teamId": {
+						"type": "integer",
+						"format": "int32",
+						"nullable": true
+					},
+					"team": {
+						"nullable": true,
+						"oneOf": [
+							{
+								"$ref": "#/components/schemas/EntitiesTeam"
+							}
+						]
+					}
+				}
+			},
+			"EntitiesTeam": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["players", "id", "name"],
+				"properties": {
+					"players": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/EntitiesPlayer"
+						}
+					},
+					"id": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"name": {
+						"type": "string"
+					}
+				}
+			},
+			"TrackSummaryRequest": {
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TeamsUpdateRequest": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["id", "name"],
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"name": {
+						"type": "string"
+					}
+				}
+			},
+			"TeamsInsertRequest": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["name"],
+				"properties": {
+					"name": {
+						"type": "string"
+					}
+				}
+			},
+			"TeamsGetRequest": {
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TeamsDeleteRequest": {
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RaceUpdateRequest": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["id", "name", "players", "isFirstTracks"],
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"name": {
+						"type": "string"
+					},
+					"players": {
+						"type": "array",
+						"items": {
+							"type": "integer",
+							"format": "int32"
+						}
+					},
+					"isFirstTracks": {
+						"type": "boolean"
+					}
+				}
+			},
+			"RaceSummaryResponse": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["tracks", "totalLaps", "race"],
+				"properties": {
+					"tracks": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/RaceSummaryTrack"
+						}
+					},
+					"fastestLap": {
+						"nullable": true,
+						"oneOf": [
+							{
+								"$ref": "#/components/schemas/DTOLapDTO"
+							}
+						]
+					},
+					"totalLaps": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"race": {
+						"$ref": "#/components/schemas/EntitiesRace"
+					}
+				}
+			},
+			"RaceSummaryTrack": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["trackId", "laps", "player", "totalLaps"],
+				"properties": {
+					"trackId": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"laps": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/DTOLapDTO"
+						}
+					},
+					"player": {
+						"$ref": "#/components/schemas/EntitiesPlayer"
+					},
+					"fastestLap": {
+						"nullable": true,
+						"oneOf": [
+							{
+								"$ref": "#/components/schemas/DTOLapDTO"
+							}
+						]
+					},
+					"totalLaps": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}
+			},
+			"RaceSummaryRequest": {
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RaceStopRequest": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["id"],
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}
+			},
+			"RaceStartRequest": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["id", "duration", "laps"],
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"duration": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"laps": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}
+			},
+			"ModelsPaginatedListOfRace": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": [
+					"items",
+					"pageNumber",
+					"totalPages",
+					"totalCount",
+					"hasPreviousPage",
+					"hasNextPage"
+				],
+				"properties": {
+					"items": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/EntitiesRace"
+						}
+					},
+					"pageNumber": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"totalPages": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"totalCount": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"hasPreviousPage": {
+						"type": "boolean"
+					},
+					"hasNextPage": {
+						"type": "boolean"
+					}
+				}
+			},
+			"RaceListRequest": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/ModelsQueryModel"
+					},
+					{
+						"type": "object",
+						"additionalProperties": false
+					}
+				]
+			},
+			"ModelsQueryModel": {
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RaceInsertRequest": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["name", "players", "isFirstTracks"],
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"players": {
+						"type": "array",
+						"items": {
+							"type": "integer",
+							"format": "int32"
+						}
+					},
+					"isFirstTracks": {
+						"type": "boolean"
+					}
+				}
+			},
+			"RaceDeleteRequest": {
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PlayersUpdateRequest": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["id", "name", "teamId"],
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"name": {
+						"type": "string"
+					},
+					"nickName": {
+						"type": "string",
+						"nullable": true
+					},
+					"teamId": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}
+			},
+			"PlayersInsertRequest": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["name", "teamId"],
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"nickName": {
+						"type": "string",
+						"nullable": true
+					},
+					"teamId": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}
+			},
+			"PlayersGetRequest": {
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PlayersDeleteRequest": {
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LeaderboardResponse": {
+				"type": "object",
+				"additionalProperties": false,
+				"properties": {
+					"playerSummary": {
+						"type": "array",
+						"nullable": true,
+						"items": {
+							"$ref": "#/components/schemas/LeaderboardPlayerSummary"
+						}
+					},
+					"teamSummary": {
+						"type": "array",
+						"nullable": true,
+						"items": {
+							"$ref": "#/components/schemas/LeaderboardTeamSummary"
+						}
+					}
+				}
+			},
+			"LeaderboardPlayerSummary": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["id", "name", "nickName", "laps", "rank"],
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"name": {
+						"type": "string"
+					},
+					"nickName": {
+						"type": "string"
+					},
+					"laps": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"rank": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}
+			},
+			"LeaderboardTeamSummary": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["id", "name", "laps", "rank"],
+				"properties": {
+					"id": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"name": {
+						"type": "string"
+					},
+					"laps": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"rank": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}
+			},
+			"LeaderboardTeamResponse": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["raceId", "raceName", "laps"],
+				"properties": {
+					"raceId": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"raceName": {
+						"type": "string"
+					},
+					"laps": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}
+			},
+			"LeaderboardTeamRequest": {
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LeaderboardPlayerResponse": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["raceId", "raceName", "laps"],
+				"properties": {
+					"raceId": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"raceName": {
+						"type": "string"
+					},
+					"laps": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}
+			},
+			"LeaderboardPlayerRequest": {
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LapsRequest": {
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LapsValidRequest": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["ids"],
+				"properties": {
+					"ids": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "guid"
+						}
+					}
+				}
+			},
+			"LapsAdjustmentRequest": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["raceId", "trackId", "amount"],
+				"properties": {
+					"raceId": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"trackId": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"amount": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}
+			},
+			"DTOLapExportDTO": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["id", "trackId", "timestamp", "isFlagged", "isValid"],
+				"properties": {
+					"id": {
+						"type": "string",
+						"format": "guid"
+					},
+					"trackId": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"lapTime": {
+						"type": "string",
+						"format": "duration",
+						"nullable": true
+					},
+					"isFlagged": {
+						"type": "boolean"
+					},
+					"lastLapId": {
+						"type": "string",
+						"format": "guid",
+						"nullable": true
+					},
+					"raceId": {
+						"type": "integer",
+						"format": "int32",
+						"nullable": true
+					},
+					"raceName": {
+						"type": "string",
+						"nullable": true
+					},
+					"raceStartDateTime": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"raceEndDateTime": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"lapTimeDifference": {
+						"type": "string",
+						"format": "duration",
+						"nullable": true
+					},
+					"flagReason": {
+						"type": "string",
+						"nullable": true
+					},
+					"playerId": {
+						"type": "integer",
+						"format": "int32",
+						"nullable": true
+					},
+					"playerName": {
+						"type": "string",
+						"nullable": true
+					},
+					"playerNickName": {
+						"type": "string",
+						"nullable": true
+					},
+					"isValid": {
+						"type": "boolean"
+					},
+					"teamId": {
+						"type": "integer",
+						"format": "int32",
+						"nullable": true
+					},
+					"teamName": {
+						"type": "string",
+						"nullable": true
+					}
+				}
+			}
+		},
+		"securitySchemes": {
+			"JWTBearerAuth": {
+				"type": "http",
+				"description": "Enter a JWT token to authorize the requests...",
+				"scheme": "Bearer",
+				"bearerFormat": "JWT"
+			}
+		}
+	}
 }
