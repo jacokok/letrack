@@ -3,6 +3,7 @@ using LeTrack.Data;
 using LeTrack.Entities;
 using LeTrack.Features.Events;
 using LeTrack.Services;
+using Microsoft.EntityFrameworkCore;
 using MQTTnet;
 
 namespace LeTrack.BackgroundServices;
@@ -71,7 +72,7 @@ public class EventSubscriber : BackgroundService
             Timestamp = eventModel.Timestamp
         };
 
-        if (db.Event.Any(x => x.Id == evt.Id))
+        if (await db.Event.AnyAsync(x => x.Id == evt.Id))
         {
             _logger.LogInformation("Event already exists");
             return;

@@ -19,7 +19,9 @@ public class Endpoint : Endpoint<Request, Entities.Team>
     }
     public override async Task HandleAsync(Request r, CancellationToken ct)
     {
-        var results = await _dbContext.Team.FirstOrDefaultAsync(x => x.Id == r.Id, ct);
+        var results = await _dbContext.Team
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == r.Id, ct);
         if (results == null)
         {
             await Send.NotFoundAsync();

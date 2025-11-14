@@ -1,7 +1,6 @@
 using LeTrack.Data;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
-using Quartz.Impl.Matchers;
 
 namespace LeTrack.Jobs;
 
@@ -20,7 +19,10 @@ public class TriggerJob : IJob
 
     public async Task Execute(IJobExecutionContext context)
     {
-        var raceTriggers = await _dbContext.Race.Where(x => x.IsActive && x.EndDateTime != null).ToListAsync(context.CancellationToken);
+        var raceTriggers = await _dbContext.Race
+            .AsNoTracking()
+            .Where(x => x.IsActive && x.EndDateTime != null)
+            .ToListAsync(context.CancellationToken);
 
         IScheduler scheduler = await _schedulerFactory.GetScheduler(context.CancellationToken);
 
@@ -29,17 +31,24 @@ public class TriggerJob : IJob
             JobKey jobKey = new($"RaceCloseJob:{race.Id}", "RaceCloseJob");
 
             var triggers = await scheduler.GetTriggersOfJob(jobKey, context.CancellationToken);
+
+            bool performAction = true;
             foreach (var curTrigger in triggers)
             {
                 if (curTrigger.GetNextFireTimeUtc() == race.EndDateTime!.Value.ToUniversalTime())
                 {
                     _logger.LogDebug("Job Trigger already there and happy {Scheduled} {Now}", curTrigger.GetNextFireTimeUtc(), DateTime.UtcNow);
-                    return;
+                    performAction = false;
                 }
                 else
                 {
                     await scheduler.DeleteJob(jobKey, context.CancellationToken);
                 }
+            }
+
+            if (performAction == false)
+            {
+                continue;
             }
 
             var job = JobBuilder.Create<RaceCloseJob>()

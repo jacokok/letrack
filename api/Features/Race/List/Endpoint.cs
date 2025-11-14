@@ -23,6 +23,7 @@ public class Endpoint : Endpoint<Request, PaginatedList<Entities.Race>>
     public override async Task HandleAsync(Request req, CancellationToken ct)
     {
         var results = await _dbContext.Race
+            .AsNoTracking()
             .Include(x => x.RaceTracks)
                 .ThenInclude(x => x.Player)
             .OrderByDescending(x => x.CreatedDateTime)
