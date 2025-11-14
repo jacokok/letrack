@@ -99,12 +99,14 @@ export interface EntitiesPlayer {
 	teamId?: number | null;
 	/** @nullable */
 	team?: EntitiesPlayerTeam;
+	order: number;
 }
 
 export interface EntitiesTeam {
 	players: EntitiesPlayer[];
 	id: number;
 	name: string;
+	order: number;
 }
 
 export interface TrackSummaryRequest {
@@ -114,10 +116,12 @@ export interface TrackSummaryRequest {
 export interface TeamsUpdateRequest {
 	id: number;
 	name: string;
+	order: number;
 }
 
 export interface TeamsInsertRequest {
 	name: string;
+	order: number;
 }
 
 export interface TeamsGetRequest {
@@ -209,6 +213,7 @@ export interface PlayersUpdateRequest {
 	/** @nullable */
 	nickName?: string | null;
 	teamId: number;
+	order: number;
 }
 
 export interface PlayersInsertRequest {
@@ -216,6 +221,7 @@ export interface PlayersInsertRequest {
 	/** @nullable */
 	nickName?: string | null;
 	teamId: number;
+	order: number;
 }
 
 export interface PlayersGetRequest {

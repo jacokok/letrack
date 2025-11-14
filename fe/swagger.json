@@ -1441,7 +1441,7 @@
 			"EntitiesPlayer": {
 				"type": "object",
 				"additionalProperties": false,
-				"required": ["id", "name"],
+				"required": ["id", "name", "order"],
 				"properties": {
 					"id": {
 						"type": "integer",
@@ -1466,13 +1466,17 @@
 								"$ref": "#/components/schemas/EntitiesTeam"
 							}
 						]
+					},
+					"order": {
+						"type": "integer",
+						"format": "int32"
 					}
 				}
 			},
 			"EntitiesTeam": {
 				"type": "object",
 				"additionalProperties": false,
-				"required": ["players", "id", "name"],
+				"required": ["players", "id", "name", "order"],
 				"properties": {
 					"players": {
 						"type": "array",
@@ -1486,6 +1490,10 @@
 					},
 					"name": {
 						"type": "string"
+					},
+					"order": {
+						"type": "integer",
+						"format": "int32"
 					}
 				}
 			},
@@ -1496,7 +1504,7 @@
 			"TeamsUpdateRequest": {
 				"type": "object",
 				"additionalProperties": false,
-				"required": ["id", "name"],
+				"required": ["id", "name", "order"],
 				"properties": {
 					"id": {
 						"type": "integer",
@@ -1504,16 +1512,24 @@
 					},
 					"name": {
 						"type": "string"
+					},
+					"order": {
+						"type": "integer",
+						"format": "int32"
 					}
 				}
 			},
 			"TeamsInsertRequest": {
 				"type": "object",
 				"additionalProperties": false,
-				"required": ["name"],
+				"required": ["name", "order"],
 				"properties": {
 					"name": {
 						"type": "string"
+					},
+					"order": {
+						"type": "integer",
+						"format": "int32"
 					}
 				}
 			},
@@ -1723,7 +1739,7 @@
 			"PlayersUpdateRequest": {
 				"type": "object",
 				"additionalProperties": false,
-				"required": ["id", "name", "teamId"],
+				"required": ["id", "name", "teamId", "order"],
 				"properties": {
 					"id": {
 						"type": "integer",
@@ -1739,13 +1755,17 @@
 					"teamId": {
 						"type": "integer",
 						"format": "int32"
+					},
+					"order": {
+						"type": "integer",
+						"format": "int32"
 					}
 				}
 			},
 			"PlayersInsertRequest": {
 				"type": "object",
 				"additionalProperties": false,
-				"required": ["name", "teamId"],
+				"required": ["name", "teamId", "order"],
 				"properties": {
 					"name": {
 						"type": "string"
@@ -1755,6 +1775,10 @@
 						"nullable": true
 					},
 					"teamId": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"order": {
 						"type": "integer",
 						"format": "int32"
 					}

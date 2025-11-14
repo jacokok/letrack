@@ -19,12 +19,14 @@
 	const isEdit = $derived(team != null);
 
 	const schema = z.object({
-		name: z.string().min(1, { message: "Name is Required" })
+		name: z.string().min(1, { message: "Name is Required" }),
+		order: z.number()
 	});
 	type FormSchema = z.infer<typeof schema>;
 
 	const defaultValues = $derived({
-		name: team?.name ?? ""
+		name: team?.name ?? "",
+		order: team?.order ?? 0
 	});
 
 	const editMutation = createTeamsUpdate();
@@ -37,12 +39,13 @@
 				await editMutation.mutateAsync({
 					data: {
 						id: team?.id ?? 0,
-						name: data.name
+						name: data.name,
+						order: data.order
 					}
 				});
 				toast.info("Edited team");
 			} else {
-				await createMutation.mutateAsync({ data: { name: data.name } });
+				await createMutation.mutateAsync({ data: { name: data.name, order: data.order } });
 				toast.info("Added team");
 			}
 			refetch();
@@ -84,6 +87,15 @@
 						{#snippet children({ props })}
 							<Form.Label>Name</Form.Label>
 							<Input {...props} bind:value={$formData.name} />
+						{/snippet}
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+				<Form.Field {form} name="order">
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Order</Form.Label>
+							<Input {...props} bind:value={$formData.order} type="number" />
 						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />

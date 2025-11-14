@@ -26,14 +26,16 @@
 	const schema = z.object({
 		name: z.string().min(1, { message: "Name is Required" }),
 		nickName: z.string(),
-		teamId: z.number().min(1, { message: "Team is required" })
+		teamId: z.number().min(1, { message: "Team is required" }),
+		order: z.number()
 	});
 	type FormSchema = z.infer<typeof schema>;
 
 	const defaultValues = $derived({
 		name: player?.name ?? "",
 		nickName: player?.nickName ?? "",
-		teamId: player?.teamId ?? 0
+		teamId: player?.teamId ?? 0,
+		order: player?.order ?? 0
 	});
 
 	const teamsQuery = createTeamsList();
@@ -50,13 +52,14 @@
 						id: player?.id ?? 0,
 						name: data.name,
 						nickName: data.nickName,
-						teamId: data.teamId
+						teamId: data.teamId,
+						order: data.order
 					}
 				});
 				toast.info("Edited player");
 			} else {
 				await createMutation.mutateAsync({
-					data: { name: data.name, nickName: data.nickName, teamId: data.teamId }
+					data: { name: data.name, nickName: data.nickName, teamId: data.teamId, order: data.order }
 				});
 				toast.info("Added player");
 			}
@@ -134,6 +137,15 @@
 									{/each}
 								</Select.Content>
 							</Select.Root>
+						{/snippet}
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+				<Form.Field {form} name="order">
+					<Form.Control>
+						{#snippet children({ props })}
+							<Form.Label>Order</Form.Label>
+							<Input {...props} bind:value={$formData.order} type="number" />
 						{/snippet}
 					</Form.Control>
 					<Form.FieldErrors />

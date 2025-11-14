@@ -26,10 +26,10 @@ public class Endpoint : Endpoint<Request, Player>
             throw new Exception("Player not found");
         }
 
-
         player.NickName = req.NickName;
         player.Name = req.Name;
         player.TeamId = req.TeamId;
+        player.Order = req.Order;
 
         await _dbContext.SaveChangesAsync();
         await Send.OkAsync(player);

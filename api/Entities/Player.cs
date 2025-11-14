@@ -7,4 +7,5 @@ public class Player
     public string? NickName { get; set; }
     public int? TeamId { get; set; }
     public Team? Team { get; set; }
+    public int Order { get; set; }
 }

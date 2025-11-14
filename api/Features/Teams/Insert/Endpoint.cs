@@ -19,7 +19,7 @@ public class Endpoint : Endpoint<Request, Team>
     }
     public override async Task HandleAsync(Request req, CancellationToken ct)
     {
-        Team team = new() { Name = req.Name };
+        Team team = new() { Name = req.Name, Order = req.Order };
         await _dbContext.Team.AddAsync(team);
         await _dbContext.SaveChangesAsync();
         await Send.OkAsync(team);

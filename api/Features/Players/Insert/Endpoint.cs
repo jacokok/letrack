@@ -19,7 +19,7 @@ public class Endpoint : Endpoint<Request, Player>
     }
     public override async Task HandleAsync(Request req, CancellationToken ct)
     {
-        Player player = new() { Name = req.Name, NickName = req.NickName, TeamId = req.TeamId };
+        Player player = new() { Name = req.Name, NickName = req.NickName, TeamId = req.TeamId, Order = req.Order };
         await _dbContext.Player.AddAsync(player);
         await _dbContext.SaveChangesAsync();
         await Send.OkAsync(player);
