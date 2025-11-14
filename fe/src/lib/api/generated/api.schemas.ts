@@ -231,6 +231,8 @@ export interface LeaderboardResponse {
 	playerSummary?: LeaderboardPlayerSummary[] | null;
 	/** @nullable */
 	teamSummary?: LeaderboardTeamSummary[] | null;
+	/** @nullable */
+	fastestLap?: LeaderboardFastestLap[] | null;
 }
 
 export interface LeaderboardPlayerSummary {
@@ -246,6 +248,13 @@ export interface LeaderboardTeamSummary {
 	name: string;
 	laps: number;
 	rank: number;
+}
+
+export interface LeaderboardFastestLap {
+	trackId: number;
+	lapTime: string;
+	name: string;
+	nickName: string;
 }
 
 export interface LeaderboardTeamResponse {
@@ -267,6 +276,10 @@ export interface LeaderboardPlayerResponse {
 }
 
 export interface LeaderboardPlayerRequest {
+	[key: string]: unknown;
+}
+
+export interface LeaderboardLapRequest {
 	[key: string]: unknown;
 }
 

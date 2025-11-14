@@ -50,8 +50,24 @@ public class Endpoint : EndpointWithoutRequest<Response>
         """
         ).ToListAsync(ct);
 
+        var fastestLap = await _dbContext.Database.SqlQuery<FastestLap>(
+        $"""
+            SELECT DISTINCT ON (l.track_id)
+              l.track_id,
+              l.lap_time,
+              p.name,
+              p.nick_name
+            FROM lap l
+            JOIN player p ON p.id = l.player_id
+            WHERE 
+              l.race_id IS NOT NULL
+              AND l.is_flagged = false
+              AND l.is_valid = true
+            ORDER BY l.track_id, l.lap_time ASC;
+        """
+        ).ToListAsync(ct);
 
-        Response response = new() { PlayerSummary = players, TeamSummary = teams };
+        Response response = new() { PlayerSummary = players, TeamSummary = teams, FastestLap = fastestLap };
 
         await Send.OkAsync(response);
     }

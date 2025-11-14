@@ -869,6 +869,48 @@
 				}
 			}
 		},
+		"/leaderboard/lap/{trackId}": {
+			"get": {
+				"tags": ["Leaderboard"],
+				"operationId": "LeaderboardLap",
+				"parameters": [
+					{
+						"name": "trackId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"500": {
+						"description": "Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/InternalErrorResponse"
+								}
+							}
+						}
+					},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/LeaderboardFastestLap"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
 		"/laps": {
 			"get": {
 				"tags": ["Laps"],
@@ -1743,6 +1785,13 @@
 						"items": {
 							"$ref": "#/components/schemas/LeaderboardTeamSummary"
 						}
+					},
+					"fastestLap": {
+						"type": "array",
+						"nullable": true,
+						"items": {
+							"$ref": "#/components/schemas/LeaderboardFastestLap"
+						}
 					}
 				}
 			},
@@ -1790,6 +1839,27 @@
 					"rank": {
 						"type": "integer",
 						"format": "int32"
+					}
+				}
+			},
+			"LeaderboardFastestLap": {
+				"type": "object",
+				"additionalProperties": false,
+				"required": ["trackId", "lapTime", "name", "nickName"],
+				"properties": {
+					"trackId": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"lapTime": {
+						"type": "string",
+						"format": "duration"
+					},
+					"name": {
+						"type": "string"
+					},
+					"nickName": {
+						"type": "string"
 					}
 				}
 			},
@@ -1842,6 +1912,10 @@
 				}
 			},
 			"LeaderboardPlayerRequest": {
+				"type": "object",
+				"additionalProperties": false
+			},
+			"LeaderboardLapRequest": {
 				"type": "object",
 				"additionalProperties": false
 			},

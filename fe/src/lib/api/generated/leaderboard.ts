@@ -16,6 +16,7 @@ import type {
 
 import type {
 	InternalErrorResponse,
+	LeaderboardFastestLap,
 	LeaderboardPlayerResponse,
 	LeaderboardResponse,
 	LeaderboardTeamResponse
@@ -188,6 +189,65 @@ export function createLeaderboardPlayer<
 	queryClient?: QueryClient
 ): CreateQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 	const queryOptions = getLeaderboardPlayerQueryOptions(id, options);
+
+	const query = createQuery(() => ({ ...queryOptions, queryClient })) as CreateQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	query.queryKey = queryOptions.queryKey;
+
+	return query;
+}
+
+export const leaderboardLap = (trackId: number) => {
+	return customInstance<LeaderboardFastestLap[]>({
+		url: `/leaderboard/lap/${trackId}`,
+		method: "GET"
+	});
+};
+
+export const getLeaderboardLapQueryKey = (trackId?: number) => {
+	return [`/leaderboard/lap/${trackId}`] as const;
+};
+
+export const getLeaderboardLapQueryOptions = <
+	TData = Awaited<ReturnType<typeof leaderboardLap>>,
+	TError = ErrorType<InternalErrorResponse>
+>(
+	trackId: number,
+	options?: {
+		query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof leaderboardLap>>, TError, TData>>;
+	}
+) => {
+	const { query: queryOptions } = options ?? {};
+
+	const queryKey = queryOptions?.queryKey ?? getLeaderboardLapQueryKey(trackId);
+
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof leaderboardLap>>> = () =>
+		leaderboardLap(trackId);
+
+	return { queryKey, queryFn, enabled: !!trackId, ...queryOptions } as CreateQueryOptions<
+		Awaited<ReturnType<typeof leaderboardLap>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
+};
+
+export type LeaderboardLapQueryResult = NonNullable<Awaited<ReturnType<typeof leaderboardLap>>>;
+export type LeaderboardLapQueryError = ErrorType<InternalErrorResponse>;
+
+export function createLeaderboardLap<
+	TData = Awaited<ReturnType<typeof leaderboardLap>>,
+	TError = ErrorType<InternalErrorResponse>
+>(
+	trackId: number,
+	options?: {
+		query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof leaderboardLap>>, TError, TData>>;
+	},
+	queryClient?: QueryClient
+): CreateQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getLeaderboardLapQueryOptions(trackId, options);
 
 	const query = createQuery(() => ({ ...queryOptions, queryClient })) as CreateQueryResult<
 		TData,
