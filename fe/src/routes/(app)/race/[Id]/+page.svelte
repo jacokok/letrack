@@ -55,6 +55,7 @@
 		}
 	});
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const doneEvent = (evt: DoneEvent) => {
 		query.refetch();
 	};
@@ -65,6 +66,7 @@
 		doneAudio.play();
 	};
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const raceComplete = (raceId: number) => {
 		stopEvent();
 		query.refetch();
@@ -198,7 +200,7 @@
 	{#if query.data}
 		<RaceSummary data={query.data} />
 		<div class="flex w-full flex-row gap-2 p-2">
-			{#each query.data?.tracks ?? [] as track}
+			{#each query.data?.tracks ?? [] as track (track.trackId)}
 				<Track {track} timer={timers[track.trackId]} />
 			{/each}
 		</div>

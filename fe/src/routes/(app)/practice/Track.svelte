@@ -15,12 +15,14 @@
 
 	let confetti: MyConfetti;
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	export const doneEvent = (evt: DoneEvent) => {
 		query.refetch();
 	};
 
 	const timer = new Timer();
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	export const receiveEvent = (evt: SaveEvent) => {
 		timer.start();
 	};

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createLeaderboard } from "$lib/api";
-	import { Badge, Button, Card, Table } from "@kayord/ui";
+	import { Badge, Button, Card } from "@kayord/ui";
 	import UsersIcon from "@lucide/svelte/icons/users";
 	import UserIcon from "@lucide/svelte/icons/user";
 	import RefreshIcon from "@lucide/svelte/icons/refresh-cw";

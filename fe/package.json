@@ -15,11 +15,11 @@
 	"devDependencies": {
 		"@eslint/compat": "^1.4.0",
 		"@eslint/js": "^9.38.0",
-		"@kayord/ui": "2.0.9",
+		"@kayord/ui": "2.0.10",
 		"@lucide/svelte": "^0.553.0",
 		"@microsoft/signalr": "^9.0.6",
 		"@sveltejs/adapter-static": "^3.0.10",
-		"@sveltejs/kit": "^2.48.4",
+		"@sveltejs/kit": "^2.48.5",
 		"@sveltejs/vite-plugin-svelte": "^6.2.1",
 		"@tailwindcss/vite": "^4.1.17",
 		"@tanstack/svelte-query": "^6.0.7",

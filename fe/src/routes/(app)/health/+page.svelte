@@ -2,16 +2,10 @@
 	import { PUBLIC_API_URL } from "$env/static/public";
 	import { Badge, Card, Label, ProgressLoading, Switch } from "@kayord/ui";
 	import {
-		BadgeQuestionMarkIcon,
-		CheckIcon,
 		CircleAlertIcon,
-		CircleCheck,
 		CircleCheckIcon,
-		CircleQuestionMark,
 		CircleQuestionMarkIcon,
-		CircleXIcon,
-		MessageCircleQuestionIcon,
-		ShieldQuestionIcon
+		CircleXIcon
 	} from "@lucide/svelte";
 	import { onMount } from "svelte";
 
@@ -80,7 +74,7 @@
 
 	{#if !showJSON}
 		<div class="flex flex-col gap-4">
-			{#each Object.keys(healthData.entries) as key}
+			{#each Object.keys(healthData.entries) as key (key)}
 				<Card.Root class="flex flex-col justify-center items-center gap-1">
 					{@render statusIcon(healthData.entries[key].status)}
 					<Card.Title>{key}</Card.Title>

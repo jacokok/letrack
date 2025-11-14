@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { EntitiesRace, RaceSummaryResponse, RaceSummaryResponseFastestLap } from "$lib/api";
+	import type { RaceSummaryResponse } from "$lib/api";
 	import CountDownTimer from "$lib/components/CountDownTimer.svelte";
 	import { timeSpanToParts } from "$lib/util";
 	import { Badge, Card } from "@kayord/ui";

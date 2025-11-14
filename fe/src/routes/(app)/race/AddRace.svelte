@@ -84,7 +84,7 @@
 		}
 	});
 
-	const { form: formData, enhance, reset, restore } = form;
+	const { form: formData, enhance, reset } = form;
 
 	$effect(() => {
 		if (open == true && isEdit) {
@@ -138,7 +138,7 @@
 									{players.find((i) => i.id === $formData.players[0])?.name ?? "Select a Player"}
 								</Select.Trigger>
 								<Select.Content>
-									{#each players as player}
+									{#each players as player (player.id)}
 										<Select.Item value={player.id.toString()} label={player.name}>
 											{player.name}
 										</Select.Item>
@@ -169,7 +169,7 @@
 									{players.find((i) => i.id === $formData.players[1])?.name ?? "Select a Player"}
 								</Select.Trigger>
 								<Select.Content>
-									{#each players as player}
+									{#each players as player (player.id)}
 										<Select.Item value={player.id.toString()} label={player.name}>
 											{player.name}
 										</Select.Item>

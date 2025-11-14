@@ -35,6 +35,7 @@ class Hub {
 		}
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public on(methodName: string, method: (...args: any[]) => void) {
 		if (!this.connection) {
 			return;
@@ -42,6 +43,7 @@ class Hub {
 		this.connection.on(methodName, method);
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public off(methodName: string, method: (...args: any[]) => void) {
 		if (!this.connection) {
 			return;

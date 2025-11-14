@@ -99,7 +99,7 @@
 	</div>
 
 	<div class="flex w-fit items-center gap-4 rounded-md">
-		{#each lights as light}
+		{#each lights as light, index (index)}
 			<Light isOn={light} />
 		{/each}
 	</div>

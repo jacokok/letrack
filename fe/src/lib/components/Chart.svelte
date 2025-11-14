@@ -7,6 +7,14 @@
 	import { cubicInOut } from "svelte/easing";
 	import { scaleBand } from "d3-scale";
 
+	const maxTime = 60;
+	const getTime = (time: number) => {
+		if (time > maxTime) {
+			return maxTime;
+		}
+		return time;
+	};
+
 	const data = $derived.by(() => {
 		const results: Array<{
 			lap: number;
@@ -22,33 +30,58 @@
 				const resultIndex = results.findIndex((r) => r.lap == row.lap);
 				if (resultIndex == -1) {
 					if (trackIndex == 1) {
-						results.push({ lap: row.lap, track1: row.time, track2: 0, track3: 0, track4: 0 });
+						results.push({
+							lap: row.lap,
+							track1: getTime(row.time),
+							track2: 0,
+							track3: 0,
+							track4: 0
+						});
 					}
 					if (trackIndex == 2) {
-						results.push({ lap: row.lap, track1: 0, track2: row.time, track3: 0, track4: 0 });
+						results.push({
+							lap: row.lap,
+							track1: 0,
+							track2: getTime(row.time),
+							track3: 0,
+							track4: 0
+						});
 					}
 					if (trackIndex == 3) {
-						results.push({ lap: row.lap, track1: 0, track2: 0, track3: row.time, track4: 0 });
+						results.push({
+							lap: row.lap,
+							track1: 0,
+							track2: 0,
+							track3: getTime(row.time),
+							track4: 0
+						});
 					}
 					if (trackIndex == 4) {
-						results.push({ lap: row.lap, track1: 0, track2: 0, track3: 0, track4: row.time });
+						results.push({
+							lap: row.lap,
+							track1: 0,
+							track2: 0,
+							track3: 0,
+							track4: getTime(row.time)
+						});
 					}
 				} else {
 					if (trackIndex == 1) {
-						results[resultIndex].track1 = row.time;
+						results[resultIndex].track1 = getTime(row.time);
 					}
 					if (trackIndex == 2) {
-						results[resultIndex].track2 = row.time;
+						results[resultIndex].track2 = getTime(row.time);
 					}
 					if (trackIndex == 3) {
-						results[resultIndex].track3 = row.time;
+						results[resultIndex].track3 = getTime(row.time);
 					}
 					if (trackIndex == 4) {
-						results[resultIndex].track4 = row.time;
+						results[resultIndex].track4 = getTime(row.time);
 					}
 				}
 			}
 		}
+		console.log(results);
 		return results;
 	});
 

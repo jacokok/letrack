@@ -129,7 +129,7 @@
 									{selectedTeam ? selectedTeam.name : "Select a Team"}
 								</Select.Trigger>
 								<Select.Content>
-									{#each teamsQuery.data ?? [] as team}
+									{#each teamsQuery.data ?? [] as team (team.id)}
 										<Select.Item value={team.id.toString()} label={team.name} />
 									{/each}
 								</Select.Content>

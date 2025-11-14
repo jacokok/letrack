@@ -224,7 +224,7 @@
 		onValueChange={(v: string) => (tab = Number(v))}
 	>
 		<Tabs.List class="items-center justify-center text-center">
-			{#each tracks as trackId}
+			{#each tracks as trackId (trackId)}
 				<Tabs.Trigger value={trackId.toString()}>Track {trackId}</Tabs.Trigger>
 			{/each}
 		</Tabs.List>

@@ -7,7 +7,6 @@
 	import AdminIcon from "@lucide/svelte/icons/shield-ellipsis";
 	import PracticeIcon from "@lucide/svelte/icons/flag-triangle-right";
 	import AsciLogo from "./asci-logo.svelte";
-	import Logo from "./logo.svelte";
 </script>
 
 <AsciLogo />

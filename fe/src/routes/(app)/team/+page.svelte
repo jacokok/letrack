@@ -4,7 +4,7 @@
 	import PlusIcon from "@lucide/svelte/icons/plus";
 	import Actions from "./Actions.svelte";
 	import AddTeam from "./AddTeam.svelte";
-	import { BirdIcon, ProjectorIcon, Users2Icon } from "@lucide/svelte";
+	import { BirdIcon } from "@lucide/svelte";
 
 	const query = createTeamsList();
 
@@ -49,7 +49,7 @@
 	{/if}
 
 	<div class="flex flex-col gap-2">
-		{#each query.data ?? [] as team}
+		{#each query.data ?? [] as team (team.id)}
 			{@render teamSnippet(team)}
 		{/each}
 	</div>

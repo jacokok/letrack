@@ -1,3 +1,5 @@
+import { SvelteDate } from "svelte/reactivity";
+
 export class Timer {
 	#start = $state<Date | undefined>(undefined);
 
@@ -47,10 +49,10 @@ export class Timer {
 						this.timer = undefined;
 						return;
 					}
-					const current = new Date();
+					const current = new SvelteDate();
 					const currentTime = current.getTime();
 
-					this.timer = new Date(currentTime - this.#startTime);
+					this.timer = new SvelteDate(currentTime - this.#startTime);
 				}, 10);
 
 				return () => {
@@ -61,8 +63,8 @@ export class Timer {
 	}
 
 	start = () => {
-		this.#lastLap = new Date(this.timer?.getTime() ?? 0);
-		this.#start = new Date();
+		this.#lastLap = new SvelteDate(this.timer?.getTime() ?? 0);
+		this.#start = new SvelteDate();
 	};
 
 	stop = () => {
