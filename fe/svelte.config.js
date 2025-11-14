@@ -11,6 +11,11 @@ const config = {
 		adapter: adapter({
 			fallback: "index.html"
 		})
+	},
+	vitePlugin: {
+		inspector: {
+			showToggleButton: "never"
+		}
 	}
 };
 

@@ -59,9 +59,19 @@
 		query.refetch();
 	};
 
+	const doneAudio = new Audio("/sounds/error.mp3");
+
+	const playDoneSound = () => {
+		doneAudio.play();
+	};
+
 	const raceComplete = (raceId: number) => {
 		stopEvent();
 		query.refetch();
+		playDoneSound();
+		setTimeout(() => {
+			query.refetch();
+		}, 500);
 	};
 
 	const receiveEvent = (evt: SaveEvent) => {
