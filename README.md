@@ -106,3 +106,17 @@ mip.install('umqtt.simple')
 ```bash
 mqttui publish "event" '{ "Id": "'$(uuidgen)'", "TrackId": '$((RANDOM % 2 + 1))', "Timestamp": "'$(date -u +"%Y-%m-%dT%H:%M:%S.%3NZ")'"}'
 ```
+
+### Post Race Todo
+
+- [ ] Do not split race between tracks. Make race all 4 tracks at the same time.
+- [ ] Fix the generate schedule to generate it that all players does track twice and in 25min intervals.
+- [ ] Make micro python delay for 3 seconds and limit the number of events.
+- [ ] Make cover around infrared light to try and limit false positives.
+- [ ] Do not display all the laps
+- [ ] Display the 4 players with their amount af laps and time with fastest time
+- [ ] After the race show summary of race like totals to all players
+- [ ] The valid and adjustment can remain but it should not be required
+- [ ] Get simpler and shorter intro sound
+- [ ] Make sure the race end sound always plays
+- [ ] Make sure to add the ip of main machine to cors settings by default so it can work from other laptops.
