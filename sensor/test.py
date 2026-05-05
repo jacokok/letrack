@@ -1,12 +1,13 @@
-import uasyncio
-from machine import Pin
-from buzzer import Buzzer
-from track import BreakBeam
-from mqtt_as import MQTTClient
-from mqtt_local import config as mqtt_config
-import network
+try:
+    import uasyncio as asyncio
+except ImportError:
+    import asyncio
+
 import config
+import network
 import ntptime
+from buzzer import Buzzer
+from machine import Pin
 from utime import sleep_ms
 
 light = Pin(6, Pin.OUT)
@@ -48,7 +49,7 @@ async def main():
 
 
 try:
-    uasyncio.run(main())
+    asyncio.run(main())
 except Exception as e:
     buzzer = Buzzer()
     print("Error occurred", e)
@@ -56,5 +57,8 @@ except Exception as e:
     buzzer.error()
 finally:
     light.off()
-    uasyncio.new_event_loop()
-    print("Finallyh")
+    try:
+        asyncio.new_event_loop()
+    except AttributeError:
+        pass
+    print("Finally")

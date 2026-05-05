@@ -1,12 +1,15 @@
+# pyright: reportImplicitRelativeImport=false
+
 from time import gmtime
-import guid
+
+from guid import GUID, new
 
 
 class Event:
     def __init__(self, trackId: int):
-        self.trackId = trackId
-        self.id = guid.new()
-        self.timestamp = gmtime()
+        self.trackId: int = trackId
+        self.id: GUID = new()
+        self.timestamp: tuple[int, ...] = gmtime()
 
-    def __str__(self):
+    def __str__(self) -> str:  # pyright: ignore[reportImplicitOverride]
         return f"{self.id.hex} {self.timestamp}"

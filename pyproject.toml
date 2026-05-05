@@ -5,6 +5,12 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-  "micropython-rp2-pico_w-stubs",
-  "mpremote"
+  "micropython-rp2-rpi_pico_w-stubs==1.28.0.*",
+  "mpremote",
 ]
+
+[tool.pyright]
+reportMissingModuleSource = "none"
+stubPath = "./typings"
+extraPaths = ["./typings/micropython_rp2_rpi_pico_w_stubs"]
+exclude = ["sensor/mqtt_as"]

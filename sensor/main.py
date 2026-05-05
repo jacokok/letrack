@@ -1,25 +1,30 @@
-import uasyncio
-from machine import Pin
+# pyright: reportImplicitRelativeImport=false
+try:
+    import uasyncio as asyncio
+except ImportError:
+    import asyncio
+
+import config
+import network
+import ntptime
 from buzzer import Buzzer
-from track import BreakBeam
+from machine import Pin
 from mqtt_as import MQTTClient
 from mqtt_local import config as mqtt_config
-import network
-import config
-import ntptime
+from track import BreakBeam
 
 light = Pin(6, Pin.OUT)
 buzzer = Buzzer()
 
 
-async def beam_handler(beam1: BreakBeam, beam2: BreakBeam, mqtt: MQTTClient):
+async def beam_handler(beam1, beam2, mqtt):
     while True:
-        uasyncio.create_task(beam1.check(mqtt))
-        uasyncio.create_task(beam2.check(mqtt))
-        await uasyncio.sleep_ms(0)
+        await beam1.check(mqtt)
+        await beam2.check(mqtt)
+        await asyncio.sleep(0.05)
 
 
-async def down(client: MQTTClient):
+async def down(client):
     while True:
         await client.down.wait()
         client.down.clear()
@@ -27,7 +32,7 @@ async def down(client: MQTTClient):
         light.off()
 
 
-async def up(client: MQTTClient):
+async def up(client):
     while True:
         await client.up.wait()
         client.up.clear()
@@ -37,7 +42,7 @@ async def up(client: MQTTClient):
         # await client.subscribe("foo_topic", 1)
 
 
-async def connect_wifi(buzzer: Buzzer):
+async def connect_wifi(buzzer):
     light.off()
     ap_if = network.WLAN(network.AP_IF)
     ap_if.config(hostname=config.HOSTNAME)
@@ -51,13 +56,13 @@ async def connect_wifi(buzzer: Buzzer):
         sta_if.connect(config.WIFI_SSID, config.WIFI_PASSWD)
         while not sta_if.isconnected():
             light.on()
-            uasyncio.sleep_ms(1000)
+            await asyncio.sleep(1)
             light.off()
     # print("Network config:", sta_if.ifconfig())
     buzzer.wifi()
 
 
-async def main(client: MQTTClient):
+async def main(client):
     led = Pin("LED", Pin.OUT)
     led.on()
     light.off()
@@ -65,39 +70,46 @@ async def main(client: MQTTClient):
     try:
         ntptime.host = config.NTP_HOST
         ntptime.settime()
-        client._client_id = config.HOSTNAME
+        mqtt_config["client_id"] = config.HOSTNAME
         await client.connect()
     except OSError:
         light.off()
         buzzer.error()
         print("MQTT Connection failed.")
+        return
 
-    uasyncio.create_task(up(client))
-    uasyncio.create_task(down(client))
+    asyncio.create_task(up(client))
+    asyncio.create_task(down(client))
 
     beam1 = Pin(10, Pin.IN, Pin.PULL_UP)
     beam2 = Pin(12, Pin.IN, Pin.PULL_UP)
     bb1 = BreakBeam(beam1, config.BEAM1)
     bb2 = BreakBeam(beam2, config.BEAM2)
 
-    uasyncio.run(beam_handler(bb1, bb2, client))
+    await beam_handler(bb1, bb2, client)
 
+
+client = None
 
 try:
-    uasyncio.run(connect_wifi(buzzer))
+    asyncio.run(connect_wifi(buzzer))
     # MQTTClient.DEBUG = True
     mqtt_config["keepalive"] = 120
     mqtt_config["queue_len"] = 1
     # Can include last will
     # mqtt_config["will"] = ("status", "Goodbye cruel world!", False, 0)
     client = MQTTClient(mqtt_config)
-    uasyncio.run(main(client))
+    asyncio.run(main(client))
 except Exception as e:
     print("Error occurred", e)
     light.off()
     buzzer.error()
 finally:
-    client.close()
+    if client is not None:
+        client.close()
     light.off()
-    uasyncio.new_event_loop()
+    try:
+        asyncio.new_event_loop()
+    except AttributeError:
+        pass
     print("Finished")

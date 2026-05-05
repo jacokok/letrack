@@ -1,4 +1,10 @@
-import ustruct as struct
+# mqtt_v5_properties.py Add MQTT V5 extensions to mqtt_as
+
+# (C) Copyright Bob Veringa 2024-2025.
+# Released under the MIT licence.
+
+
+import struct
 
 
 def encode_byte(value):

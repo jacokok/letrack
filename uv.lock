@@ -7,26 +7,26 @@ name = "letrack"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
-    { name = "micropython-rp2-pico-w-stubs" },
+    { name = "micropython-rp2-rpi-pico-w-stubs" },
     { name = "mpremote" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "micropython-rp2-pico-w-stubs" },
+    { name = "micropython-rp2-rpi-pico-w-stubs", specifier = "==1.28.0.*" },
     { name = "mpremote" },
 ]
 
 [[package]]
-name = "micropython-rp2-pico-w-stubs"
-version = "1.20.0.post5"
+name = "micropython-rp2-rpi-pico-w-stubs"
+version = "1.28.0.post3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "micropython-stdlib-stubs" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/72/90/999d70b402ca0d1c1b7d1b8cc42f2c72cd33a05358a43721d7bbf579172b/micropython_rp2_pico_w_stubs-1.20.0.post5.tar.gz", hash = "sha256:ce2bb383baca8b95dbb93280ea0bce5e335a82aa7134af0c2be77a4a6c9f14e0", size = 89201, upload-time = "2023-12-26T12:09:46.228Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/fd/09/2bb4886d0fe28648c0294cf0c2595cebff63469e7f3ed6b2e28f3f3e1018/micropython_rp2_rpi_pico_w_stubs-1.28.0.post3.tar.gz", hash = "sha256:dc2472518c37dbbdfd5e611d0dde090649e906bf18eb767e1ed429899d20bc40", size = 97711, upload-time = "2026-04-28T08:15:15.459Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/04/e8/7a7ea5f79707c5c30ef3d3edaf5b272879c9ba9a6dd9ba43a44ff8643008/micropython_rp2_pico_w_stubs-1.20.0.post5-py3-none-any.whl", hash = "sha256:91ab52533620c6bc69617d5ea72d74bd96b9b70de64aec645fd26c1bc40c6659", size = 110794, upload-time = "2023-12-26T12:09:44.368Z" },
+    { url = "https://files.pythonhosted.org/packages/ec/81/3830aa985d062da4d32fe09afdbbf8eb61f0f565dcf6bbd144cb8004234d/micropython_rp2_rpi_pico_w_stubs-1.28.0.post3-py2.py3-none-any.whl", hash = "sha256:4d565d3840e8f43ccdaa47ac05e9f79e2b85730b9910df75c7c43fd0aa001ac8", size = 125096, upload-time = "2026-04-28T08:15:16.788Z" },
 ]
 
 [[package]]

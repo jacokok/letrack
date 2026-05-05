@@ -1,33 +1,34 @@
 # mqtt_as.py Asynchronous version of umqtt.robust
-# (C) Copyright Peter Hinch 2017-2023.
+# (C) Copyright Peter Hinch 2017-2025.
 # Released under the MIT licence.
 
 # Pyboard D support added also RP2/default
-# Various improvements contributed by Kevin Köck.
+# Various improvements contributed by Kevin Köck
+# V5 support added by Bob Veringa.
+# Also other contributors.
 
-# type: ignore
 import gc
-import usocket as socket
-import ustruct as struct
-import utime as time
+import socket
+import struct
+import time
 
 gc.collect()
-from ubinascii import hexlify
-import uasyncio as asyncio
+import asyncio
+from binascii import hexlify
 
 gc.collect()
-from utime import ticks_ms, ticks_diff
-from uerrno import EINPROGRESS, ETIMEDOUT
+from errno import EINPROGRESS, ETIMEDOUT
+from time import ticks_diff, ticks_ms
 
 gc.collect()
-from micropython import const
-from machine import unique_id
 import network
+from machine import unique_id
+from micropython import const
 
 gc.collect()
-from sys import platform
+from sys import implementation, platform
 
-VERSION = (0, 8, 2)
+VERSION = (0, 8, 5)
 # Default initial size for input messge buffer. Increase this if large messages
 # are expected, but rarely, to avoid big runtime allocations
 IBUFSIZE = 50
@@ -38,10 +39,11 @@ MSG_BYTES = True
 # Legitimate errors while waiting on a socket. See uasyncio __init__.py open_connection().
 ESP32 = platform == "esp32"
 RP2 = platform == "rp2"
+NINA = RP2 and implementation._machine.startswith("Arduino")  # ublox Nina radio
 if ESP32:
     # https://forum.micropython.org/viewtopic.php?f=16&t=3608&p=20942#p20942
     BUSY_ERRORS = [EINPROGRESS, ETIMEDOUT, 118, 119]  # Add in weird ESP32 errors
-elif RP2:
+elif RP2 and not NINA:
     BUSY_ERRORS = [EINPROGRESS, ETIMEDOUT, -110]
 else:
     BUSY_ERRORS = [EINPROGRESS, ETIMEDOUT]
@@ -125,6 +127,16 @@ def pid_gen():
 def qos_check(qos):
     if not (qos == 0 or qos == 1):
         raise ValueError("Only qos 0 and 1 are supported.")
+
+
+# Populate a byte array with a variable byte integer. Args: buf the bytearray,
+# offs: start offset. x the value. Returns the end offset.
+# 1-4 bytes allowed, encoding up to 268,435,455 (V3.1.1 table 2.4). No point trapping this.
+def vbi(buf: bytearray, offs: int, x: int):
+    buf[offs] = x & 0x7F
+    if x := x >> 7:
+        buf[offs] |= 0x80
+    return vbi(buf, offs + 1, x) if x else (offs + 1)
 
 
 encode_properties = None
@@ -282,18 +294,11 @@ class MQTT_base:
         await self._as_write(struct.pack("!H", len(s)))
         await self._as_write(s)
 
-    async def _recv_len(self):
-        n = 0
-        sh = 0
-        i = 0
-        while 1:
-            res = await self._as_read(1)
-            i += 1
-            b = res[0]
-            n |= (b & 0x7F) << sh
-            if not b & 0x80:
-                return n, i
-            sh += 7
+    # Receive a Variable Byte Integer and decode.
+    async def _recv_len(self, d=0, i=0):
+        s = (await self._as_read(1))[0]
+        d |= (s & 0x7F) << (i * 7)
+        return await self._recv_len(d, i + 1) if (s & 0x80) else (d, i + 1)
 
     async def _connect(self, clean):
         mqttv5 = self.mqttv5  # Cache local
@@ -315,10 +320,7 @@ class MQTT_base:
             self._sock = ssl.wrap_socket(self._sock, **self._ssl_params)
         premsg = bytearray(b"\x10\0\0\0\0\0")
         msg = bytearray(b"\x04MQTT\x00\0\0\0")
-        if mqttv5:
-            msg[5] = 0x05
-        else:
-            msg[5] = 0x04
+        msg[5] = 0x05 if mqttv5 else 0x04
 
         sz = 10 + 2 + len(self._client_id)
         msg[6] = clean << 1
@@ -340,13 +342,8 @@ class MQTT_base:
             properties = encode_properties(self.mqttv5_con_props)
             sz += len(properties)
 
-        i = 1
-        while sz > 0x7F:
-            premsg[i] = (sz & 0x7F) | 0x80
-            sz >>= 7
-            i += 1
-        premsg[i] = sz
-        await self._as_write(premsg, i + 2)
+        i = vbi(premsg, 1, sz)  # sz -> Variable Byte Integer
+        await self._as_write(premsg, i + 1)
         await self._as_write(msg)
         if mqttv5:
             await self._as_write(properties)
@@ -517,15 +514,7 @@ class MQTT_base:
             properties = encode_properties(properties)
             sz += len(properties)
 
-        if sz >= 2097152:
-            raise MQTTException("Strings too long.")
-        i = 1
-        while sz > 0x7F:
-            pkt[i] = (sz & 0x7F) | 0x80
-            sz >>= 7
-            i += 1
-        pkt[i] = sz
-        await self._as_write(pkt, i + 1)
+        await self._as_write(pkt, vbi(pkt, 1, sz))  # Encode size as VBI
         await self._send_str(topic)
         if qos > 0:
             struct.pack_into("!H", pkt, 0, pid)
@@ -534,49 +523,49 @@ class MQTT_base:
             await self._as_write(properties)
         await self._as_write(msg)
 
-    # Can raise OSError if WiFi fails. Subclass traps.
     async def subscribe(self, topic, qos, properties=None):
-        pkt = bytearray(b"\x82\0\0\0")
-        pid = next(self.newpid)
-        self.rcv_pids.add(pid)
-        sz = 2 + 2 + len(topic) + 1
-        if self.mqttv5:
-            properties = encode_properties(properties)
-            sz += len(properties)
+        await self._usub(topic, qos, properties)
 
-        struct.pack_into("!BH", pkt, 1, sz, pid)
-        async with self.lock:
-            await self._as_write(pkt)
-            if self.mqttv5:
-                await self._as_write(properties)
-            await self._send_str(topic)
-            # Only QoS is supported other features such as:
-            # (NL) No Local, (RAP) Retain As Published and Retain Handling.
-            # Are not supported.
-            await self._as_write(qos.to_bytes(1, "little"))
-
-        if not await self._await_pid(pid):
-            raise OSError(-1)
-
-    # Can raise OSError if WiFi fails. Subclass traps.
     async def unsubscribe(self, topic, properties=None):
-        pkt = bytearray(b"\xa2\0\0\0")
+        await self._usub(topic, None, properties)
+
+    # Subscribe/unsubscribe
+    # Can raise OSError if WiFi fails. Subclass traps.
+    async def _usub(self, topic, qos, properties):
+        sub = qos is not None
+        pkt = bytearray(7)
+        pkt[0] = 0x82 if sub else 0xA2
         pid = next(self.newpid)
         self.rcv_pids.add(pid)
-        sz = 2 + 2 + len(topic)
+        # 2 bytes of PID + 2 bytes of topic length + len(topic)
+        sz = 2 + 2 + len(topic) + (1 if sub else 0)
         if self.mqttv5:
+            # Return length as VBI followed by properties or b'\0'
             properties = encode_properties(properties)
             sz += len(properties)
+        offs = vbi(pkt, 1, sz)  # Store size as variable byte integer
+        struct.pack_into("!H", pkt, offs, pid)
 
-        struct.pack_into("!BH", pkt, sz, pid)
         async with self.lock:
-            await self._as_write(pkt)
+            await self._as_write(pkt, offs + 2)
             if self.mqttv5:
                 await self._as_write(properties)
             await self._send_str(topic)
+            if sub:
+                # Only QoS is supported other features such as:
+                # (NL) No Local, (RAP) Retain As Published and Retain Handling.
+                # Are not supported.
+                await self._as_write(qos.to_bytes(1, "little"))
 
         if not await self._await_pid(pid):
             raise OSError(-1)
+
+    # Remove a pending pid after a successful receive.
+    def kill_pid(self, pid, msg):
+        if pid in self.rcv_pids:
+            self.rcv_pids.discard(pid)
+        else:
+            raise OSError(-1, f"Invalid pid in {msg} packet")
 
     # Wait for a single incoming MQTT message and process it.
     # Subscribed messages are delivered to a callback previously
@@ -596,14 +585,14 @@ class MQTT_base:
         if res is None:
             return
         if res == b"":
-            raise OSError(-1, "Empty response")
+            raise OSError(-1, "Empty response")  # Can happen on broker fail
 
         if res == b"\xd0":  # PINGRESP
             await self._as_read(1)  # Update .last_rx time
             return
         op = res[0]
 
-        if op == 0x40:  # PUBACK: save pid
+        if op == 0x40:  # PUBACK
             sz, _ = await self._recv_len()
             if not mqttv5 and sz != 2:
                 raise OSError(-1, "Invalid PUBACK packet")
@@ -621,16 +610,16 @@ class MQTT_base:
                     puback_props = await self._as_read(puback_props_sz)
                     decoded_props = decode_properties(puback_props, puback_props_sz)
                     self.dprint("PUBACK properties %s", decoded_props)
-            if pid in self.rcv_pids:
-                self.rcv_pids.discard(pid)
-            else:
-                raise OSError(-1, "Invalid pid in PUBACK packet")
+            # No exception thrown: PUBACK successfuly received. Remove pending PID
+            self.kill_pid(pid, "PUBACK")
 
-        if op == 0x90:  # SUBACK
+        if op == 0x90 or op == 0xB0:  # [UN]SUBACK
+            un = "UN" if op == 0xB0 else ""
+            suback = op == 0x90
             sz, _ = await self._recv_len()
             rcv_pid = await self._as_read(2)
-            sz -= 2
             pid = rcv_pid[0] << 8 | rcv_pid[1]
+            sz -= 2
             # Handle properties
             if mqttv5:
                 suback_props_sz, sz_len = await self._recv_len()
@@ -639,20 +628,16 @@ class MQTT_base:
                 if suback_props_sz > 0:
                     suback_props = await self._as_read(suback_props_sz)
                     decoded_props = decode_properties(suback_props, suback_props_sz)
-                    self.dprint("SUBACK properties %s", decoded_props)
+                    self.dprint("[UN] SUBACK properties %s", decoded_props)
 
             if sz > 1:
                 raise OSError(-1, "Got too many bytes")
-
-            reason_code = await self._as_read(sz)
-            reason_code = reason_code[0]
-            if reason_code >= 0x80:
-                raise OSError(-1, "SUBACK reason code 0x%x" % reason_code)
-
-            if pid in self.rcv_pids:
-                self.rcv_pids.discard(pid)
-            else:
-                raise OSError(-1, "Invalid pid in SUBACK packet")
+            if suback or mqttv5:
+                reason_code = await self._as_read(sz)
+                reason_code = reason_code[0]
+                if reason_code >= 0x80:
+                    raise OSError(-1, f"{un}SUBACK reason code 0x{reason_code:x}")
+            self.kill_pid(pid, f"{un}SUBACK")
 
         if op == 0xE0:  # DISCONNECT
             if mqttv5:
@@ -680,7 +665,8 @@ class MQTT_base:
         topic = await self._as_read(topic_len)
         topic = bytes(topic)  # Copy before re-using the read buffer
         sz -= topic_len + 2
-        if op & 6:
+        # MQTT V3.1.1 section 2.3.1 non-normative comment. Get server PID.
+        if op & 6:  # This is distinct from client PIDs.
             pid = await self._as_read(2)
             pid = pid[0] << 8 | pid[1]
             sz -= 2
@@ -766,7 +752,7 @@ class MQTTClient(MQTT_base):
                     await asyncio.sleep(1)
         else:
             s.active(True)
-            if RP2:  # Disable auto-sleep.
+            if RP2 and not NINA:  # Disable auto-sleep.
                 # https://datasheets.raspberrypi.com/picow/connecting-to-the-internet-with-pico-w.pdf
                 # para 3.6.3
                 s.config(pm=0xA11140)
@@ -788,7 +774,9 @@ class MQTTClient(MQTT_base):
                 elif PYBOARD:  # No symbolic constants in network
                     if not 1 <= s.status() <= 2:
                         break
-                elif RP2:  # 1 is STAT_CONNECTING. 2 reported by user (No IP?)
+                elif (
+                    RP2 and not NINA
+                ):  # 1 is STAT_CONNECTING. 2 reported by user (No IP?)
                     if not 1 <= s.status() <= 2:
                         break
             else:  # Timeout: still in connecting state
@@ -866,7 +854,9 @@ class MQTTClient(MQTT_base):
             while self.isconnected():
                 async with self.lock:
                     await self.wait_msg()  # Immediate return if no message
-                await asyncio.sleep_ms(0)  # Let other tasks get lock
+                # https://github.com/peterhinch/micropython-mqtt/issues/166
+                # A delay > 0 is necessary for webrepl compatibility.
+                await asyncio.sleep_ms(5)  # Let other tasks get lock
 
         except OSError:
             pass

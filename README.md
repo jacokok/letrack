@@ -64,6 +64,36 @@ This is a micropython project that needs the below components:
 4. Install packages using mip
 5. Create config.py based on example-config.py
 
+### Sensor
+
+```bash
+# Setup stubs
+uv pip install micropython-rp2-rpi_pico_w-stubs --target ./typings
+
+mpremote ls
+mpremote version
+# Insall mip module
+mpremote mip install umqtt.simple
+
+
+mpremote repl
+
+# Copy single file
+mpremote cp sensor/config.py :config.py
+
+# Copy all files in sensor folder
+mpremote cp -r sensor/. :
+
+# Remove all files
+mpremote rm -r :/
+```
+
+### Latest
+
+```bash
+
+```
+
 ### Setup Virtual Environment
 
 ```bash
