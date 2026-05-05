@@ -1,7 +1,16 @@
+# pyright: reportImplicitRelativeImport=false
 try:
     import uasyncio as asyncio
 except ImportError:
     import asyncio
+
+try:
+    from . import config as conf
+except ImportError:
+    try:
+        import config as conf
+    except ImportError:
+        conf = None
 
 from machine import Pin
 
@@ -10,17 +19,24 @@ class Buzzer:
     def __init__(self):
         self.buzzer = Pin(11, Pin.OUT)
 
+    def _muted(self):
+        return bool(getattr(conf, "MUTE_SPEAKER", False))
+
     def error(self):
-        asyncio.create_task(self.__error())
+        if not self._muted():
+            asyncio.create_task(self.__error())
 
     def ready(self):
-        asyncio.create_task(self.__ready())
+        if not self._muted():
+            asyncio.create_task(self.__ready())
 
     def wifi(self):
-        asyncio.create_task(self.__wifi())
+        if not self._muted():
+            asyncio.create_task(self.__wifi())
 
     def lap(self):
-        asyncio.create_task(self.__lap())
+        if not self._muted():
+            asyncio.create_task(self.__lap())
 
     async def __lap(self):
         self.buzzer.on()

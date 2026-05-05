@@ -1,3 +1,4 @@
+# pyright: reportImplicitRelativeImport=false
 try:
     import uasyncio as asyncio
 except ImportError:
@@ -5,20 +6,40 @@ except ImportError:
 
 import json
 
-from buzzer import Buzzer
-from event import Event
+try:
+    from .buzzer import Buzzer
+    from .event import Event
+except ImportError:
+    from buzzer import Buzzer
+    from event import Event
+
 from machine import Pin
 from utime import gmtime, ticks_diff, ticks_ms, time_ns
 
+DEBOUNCE_MS = 500
+
 
 class BreakBeam:
-    def __init__(self, beam, trackId):
+    last_any_trigger_ms = None
+    last_any_track_id = None
+
+    def __init__(
+        self,
+        beam,
+        trackId,
+        same_lane_cooldown_ms,
+        cross_lane_suppression_ms,
+    ):
         self.beam = beam
         self.time = ticks_ms()
         event = Event(trackId)
         self.event = event
         self.prev_event = event
         self.trackId = trackId
+        self.same_lane_cooldown_ms = same_lane_cooldown_ms
+        self.cross_lane_suppression_ms = cross_lane_suppression_ms
+        self.last_event_ms = None
+        self.pending_trigger_ms = None
         self.led = Pin("LED", Pin.OUT)
         self.buzzer = Buzzer()
         self._irq = self.beam.irq(
@@ -27,12 +48,54 @@ class BreakBeam:
         )
 
     def break_handler(self, _pin):
-        diff = ticks_diff(ticks_ms(), self.time)
-        if diff > 500:
-            self.time = ticks_ms()
-            self.event = Event(self.trackId)
+        now_ms = ticks_ms()
+        debounce_elapsed = ticks_diff(now_ms, self.time)
+        if debounce_elapsed <= DEBOUNCE_MS:
+            return
+
+        last_event_ms = self.last_event_ms
+        if last_event_ms is not None:
+            cooldown_elapsed = ticks_diff(now_ms, last_event_ms)
+            if cooldown_elapsed < self.same_lane_cooldown_ms:
+                return
+
+        last_any_trigger_ms = BreakBeam.last_any_trigger_ms
+        last_any_track_id = BreakBeam.last_any_track_id
+        BreakBeam.last_any_trigger_ms = now_ms
+        BreakBeam.last_any_track_id = self.trackId
+
+        self.time = now_ms
+        if (
+            last_any_trigger_ms is not None
+            and last_any_track_id != self.trackId
+            and ticks_diff(now_ms, last_any_trigger_ms) < self.cross_lane_suppression_ms
+        ):
+            self.pending_trigger_ms = now_ms
+            return
+
+        self.last_event_ms = now_ms
+        self.event = Event(self.trackId)
+
+    def _confirm_pending_trigger(self):
+        if self.pending_trigger_ms is None:
+            return
+
+        now_ms = ticks_ms()
+        elapsed = ticks_diff(now_ms, self.pending_trigger_ms)
+        if elapsed < self.cross_lane_suppression_ms:
+            return
+
+        self.pending_trigger_ms = None
+
+        # Pull-up input means 0 while the beam is actually broken.
+        if self.beam.value() != 0:
+            return
+
+        self.last_event_ms = now_ms
+        self.event = Event(self.trackId)
 
     async def check(self, mqtt):
+        self._confirm_pending_trigger()
         if self.event.id != self.prev_event.id:
             self.prev_event = self.event
             asyncio.create_task(self.publish_event(self.event, mqtt))

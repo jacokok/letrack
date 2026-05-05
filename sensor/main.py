@@ -21,7 +21,7 @@ async def beam_handler(beam1, beam2, mqtt):
     while True:
         await beam1.check(mqtt)
         await beam2.check(mqtt)
-        await asyncio.sleep(0.05)
+        await asyncio.sleep(0.01)
 
 
 async def down(client):
@@ -83,8 +83,18 @@ async def main(client):
 
     beam1 = Pin(10, Pin.IN, Pin.PULL_UP)
     beam2 = Pin(12, Pin.IN, Pin.PULL_UP)
-    bb1 = BreakBeam(beam1, config.BEAM1)
-    bb2 = BreakBeam(beam2, config.BEAM2)
+    bb1 = BreakBeam(
+        beam1,
+        config.BEAM1,
+        config.SAME_LANE_COOLDOWN_MS,
+        config.CROSS_LANE_SUPPRESSION_MS,
+    )
+    bb2 = BreakBeam(
+        beam2,
+        config.BEAM2,
+        config.SAME_LANE_COOLDOWN_MS,
+        config.CROSS_LANE_SUPPRESSION_MS,
+    )
 
     await beam_handler(bb1, bb2, client)
 
