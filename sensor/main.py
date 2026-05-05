@@ -87,12 +87,14 @@ async def main(client):
         beam1,
         config.BEAM1,
         config.SAME_LANE_COOLDOWN_MS,
+        config.BEAM_STABLE_CONFIRMATION_MS,
         config.CROSS_LANE_SUPPRESSION_MS,
     )
     bb2 = BreakBeam(
         beam2,
         config.BEAM2,
         config.SAME_LANE_COOLDOWN_MS,
+        config.BEAM_STABLE_CONFIRMATION_MS,
         config.CROSS_LANE_SUPPRESSION_MS,
     )
 

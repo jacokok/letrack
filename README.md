@@ -141,7 +141,7 @@ mqttui publish "event" '{ "Id": "'$(uuidgen)'", "TrackId": '$((RANDOM % 2 + 1))'
 
 - [ ] Do not split race between tracks. Make race all 4 tracks at the same time.
 - [ ] Fix the generate schedule to generate it that all players does track twice and in 25min intervals.
-- [ ] Make micro python delay for 3 seconds and limit the number of events.
+- [x] Make micro python delay for 3 seconds and limit the number of events.
 - [ ] Make cover around infrared light to try and limit false positives.
 - [ ] Do not display all the laps
 - [ ] Display the 4 players with their amount af laps and time with fastest time

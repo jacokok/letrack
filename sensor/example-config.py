@@ -12,14 +12,13 @@ NTP_HOST = "192.168.0.100"
 BEAM1 = 1
 BEAM2 = 2
 HOSTNAME = "letrack1"
-
 # Do not allow another event on the same lane for this long.
-SAME_LANE_COOLDOWN_MS = 5000
-
-# Short block to suppress false cross-triggering between lanes.
+SAME_LANE_COOLDOWN_MS = 4000
+# Require the beam to stay broken for this long before counting it.
+BEAM_STABLE_CONFIRMATION_MS = 10
+# Very short delay to ignore cross-lane false triggers.
 # Keep this small so two cars passing at nearly the same time can still count.
-CROSS_LANE_SUPPRESSION_MS = 20
-
+CROSS_LANE_SUPPRESSION_MS = 5
 # Set to True to mute all buzzer sounds while testing.
 MUTE_SPEAKER = False
 
