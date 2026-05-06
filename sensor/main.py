@@ -17,14 +17,14 @@ light = Pin(6, Pin.OUT)
 buzzer = Buzzer()
 
 
-async def beam_handler(beam1, beam2, mqtt):
+async def beam_handler(beam1: BreakBeam, beam2: BreakBeam, mqtt: MQTTClient):
     while True:
         await beam1.check(mqtt)
         await beam2.check(mqtt)
         await asyncio.sleep(0.01)
 
 
-async def down(client):
+async def down(client: MQTTClient):
     while True:
         await client.down.wait()
         client.down.clear()
@@ -32,7 +32,7 @@ async def down(client):
         light.off()
 
 
-async def up(client):
+async def up(client: MQTTClient):
     while True:
         await client.up.wait()
         client.up.clear()
@@ -62,7 +62,7 @@ async def connect_wifi(buzzer):
     buzzer.wifi()
 
 
-async def main(client):
+async def main(client: MQTTClient):
     led = Pin("LED", Pin.OUT)
     led.on()
     light.off()
@@ -101,7 +101,7 @@ async def main(client):
     await beam_handler(bb1, bb2, client)
 
 
-client = None
+client: MQTTClient | None = None
 
 try:
     asyncio.run(connect_wifi(buzzer))

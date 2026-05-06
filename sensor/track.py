@@ -6,6 +6,8 @@ except ImportError:
 
 import json
 
+from mqtt_as import MQTTClient
+
 try:
     from .buzzer import Buzzer
     from .event import Event
@@ -110,7 +112,7 @@ class BreakBeam:
         self.last_event_ms = now_ms
         self.event = Event(self.trackId)
 
-    async def check(self, mqtt):
+    async def check(self, mqtt: MQTTClient):
         if not self.armed and self.beam.value() != 0:
             self.armed = True
 

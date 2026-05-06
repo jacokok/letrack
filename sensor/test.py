@@ -1,3 +1,5 @@
+# pyright: reportImplicitRelativeImport=false
+
 try:
     import uasyncio as asyncio
 except ImportError:
