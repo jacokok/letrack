@@ -40,6 +40,12 @@
 	--sidebar-accent-foreground: oklch(0.205 0 0);
 	--sidebar-border: oklch(0.922 0 0);
 	--sidebar-ring: oklch(0.708 0 0);
+
+	--color-secondary: 217 91.86992049217224% 75.88235139846802%;
+	--color-info: 217 91.86992049217224% 75.88235139846802%;
+	--color-success: 170 57.35294222831726% 73.33333492279053%;
+	--color-warning: 23 92% 75%;
+	--color-danger: 343 81.25% 74.90196228027344%;
 }
 
 .dark {
