@@ -75,7 +75,6 @@ mpremote version
 # Insall mip module
 mpremote mip install umqtt.simple
 
-
 mpremote repl
 
 # Copy single file
@@ -86,49 +85,9 @@ mpremote cp -r sensor/. :
 
 # Remove all files
 mpremote rm -r :/
-```
-
-### Latest
-
-```bash
-
-```
-
-### Setup Virtual Environment
-
-```bash
-# Setup venv
-python3 -m venv venv
-source venv/bin/activate
-# Install requirements
-pip install -r requirements.txt
-```
-
-### shell
-
-```bash
-rshell
-rshell ls
-rshell
-# ctrl-x seems to close repl
-ls /pyboard
-
-rshell repl
-# sync src with pyboard
-rshell rsync sensor /pyboard
 
 # run specific file in repl
 exec(open('test.py').read())
-```
-
-### Install Packages
-
-```bash
-# Install mip packages
-rshell
-repl
-import mip
-mip.install('umqtt.simple')
 ```
 
 ## Emulate Events From Bash

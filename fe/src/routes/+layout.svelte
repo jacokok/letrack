@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { hub } from "$lib/stores/hub.svelte";
 	import { QueryClient, QueryClientProvider } from "@tanstack/svelte-query";
-	import "../app.css";
+	import "../layout.css";
+	import favicon from "$lib/assets/favicon.svg";
 	import { browser } from "$app/environment";
 	import { Toaster } from "@kayord/ui/sonner";
 	import { onMount } from "svelte";
@@ -36,6 +37,7 @@
 	});
 </script>
 
+<svelte:head><link rel="icon" href={favicon} /></svelte:head>
 <QueryClientProvider client={queryClient}>
 	<Toaster />
 	{@render children()}

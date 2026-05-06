@@ -1,0 +1,8 @@
+[
+  {
+    "label": "Run",
+    "command": "dotnet run --project ./api/letrack-api.csproj",
+    "tags": ["run"],
+    "hide": "on_success",
+  },
+]
