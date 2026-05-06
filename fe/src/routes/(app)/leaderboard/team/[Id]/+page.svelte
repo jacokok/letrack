@@ -11,10 +11,10 @@
 	import { cubicInOut } from "svelte/easing";
 	import RefreshIcon from "@lucide/svelte/icons/refresh-cw";
 
-	const teamQuery = createTeamsGet(Number(page.params.Id));
+	const teamQuery = createTeamsGet(() => Number(page.params.Id));
 	const team = $derived(teamQuery.data);
 
-	const chartDataQuery = createLeaderboardTeam(Number(page.params.Id));
+	const chartDataQuery = createLeaderboardTeam(() => Number(page.params.Id));
 	const chartData = $derived(chartDataQuery.data ?? []);
 
 	const chartConfig = {} satisfies Chart.ChartConfig;

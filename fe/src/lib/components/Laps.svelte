@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { TrackSummaryResponseFastestLap } from "$lib/api";
+	import type { DTOLapDTO } from "$lib/api";
 	import type { Lap } from "$lib/types";
 	import { timeSpanToParts } from "$lib/util";
 	import { Alert, Badge, Card, Tooltip } from "@kayord/ui";
@@ -9,7 +9,7 @@
 
 	interface Props {
 		laps: Array<Lap>;
-		fastestLap?: TrackSummaryResponseFastestLap;
+		fastestLap?: DTOLapDTO;
 		children?: Snippet;
 	}
 

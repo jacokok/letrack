@@ -9,7 +9,8 @@
 	import { PUBLIC_API_URL } from "$env/static/public";
 	import PlayerAvatar from "$lib/components/PlayerAvatar.svelte";
 	import { FileDownIcon, TrophyIcon } from "@lucide/svelte";
-	const query = createLeaderboard({ query: { refetchInterval: 30000 } });
+	import { resolve } from "$app/paths";
+	const query = createLeaderboard(() => ({ query: { refetchInterval: 30000 } }));
 
 	const exportToCSV = () => {
 		window.location.assign(`${PUBLIC_API_URL}/export`);
@@ -36,7 +37,7 @@
 				<UsersIcon />
 			</div>
 			{#each query.data?.teamSummary ?? [] as team (team.id)}
-				<a href={`/leaderboard/team/${team.id}`}>
+				<a href={resolve(`/leaderboard/team/${team.id}`)}>
 					<Card.Root class="bg-background flex flex-row items-center justify-between gap-2 p-2">
 						<div class="flex items-center gap-2">
 							<div
@@ -59,7 +60,7 @@
 					<TimerIcon />
 				</div>
 				{#each query.data?.fastestLap ?? [] as lap (lap.trackId)}
-					<a href={`/leaderboard/laps/${lap.trackId}`}>
+					<a href={resolve(`/leaderboard/laps/${lap.trackId}`)}>
 						<Card.Root class="bg-background flex flex-row items-center justify-between gap-2 p-2">
 							<div class="flex items-center gap-2">
 								<Badge variant="outline">Track {lap.trackId}</Badge>
@@ -80,7 +81,7 @@
 				<UserIcon />
 			</div>
 			{#each query.data?.playerSummary ?? [] as player (player.id)}
-				<a href={`/leaderboard/player/${player.id}`}>
+				<a href={resolve(`/leaderboard/player/${player.id}`)}>
 					<Card.Root class="bg-mu flex flex-row items-center justify-between gap-2 p-2">
 						<div class="flex items-center gap-2">
 							<div

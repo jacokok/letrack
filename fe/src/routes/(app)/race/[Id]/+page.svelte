@@ -14,7 +14,7 @@
 	import { ChartNoAxesCombinedIcon, FlagIcon } from "@lucide/svelte";
 	import { Timer } from "$lib/stores/timer.svelte";
 
-	const query = createRaceSummary(Number(page.params.Id));
+	const query = createRaceSummary(() => Number(page.params.Id));
 
 	let timers: Record<number, Timer> = $state({
 		1: new Timer(),

@@ -78,9 +78,11 @@
 	};
 	const sorts = $derived(sorting.map((sort) => `${sort.desc ? "-" : ""}${sort.id}`).join(","));
 
-	const query = $derived(
-		createRaceList({ page: pagination.pageIndex + 1, pageSize: pagination.pageSize, sorts })
-	);
+	const query = createRaceList(() => ({
+		page: pagination.pageIndex + 1,
+		pageSize: pagination.pageSize,
+		sorts
+	}));
 	const data = $derived(query.data?.items ?? []);
 	let rowCount = $derived(query.data?.totalCount ?? 0);
 

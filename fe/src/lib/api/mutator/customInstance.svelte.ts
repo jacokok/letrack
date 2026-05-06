@@ -1,54 +1,36 @@
 import { PUBLIC_API_URL } from "$env/static/public";
 import { getError, isValidationError } from "$lib/types";
-import qs from "qs";
 
-export const customInstance = async <T>({
-	url,
-	method,
-	params,
-	headers,
-	data
-}: {
-	url: string;
-	method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	params?: Record<string, any>;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	headers?: Record<string, any>;
-	data?: BodyType<unknown>;
-}): Promise<T> => {
-	let fullUrl = `${PUBLIC_API_URL}${url}`;
-	if (params !== undefined) {
-		const urlParams = qs.stringify(params);
-		if (urlParams.length > 0) {
-			fullUrl = fullUrl + "?" + urlParams;
+const getUrl = (contextUrl: string): string => {
+	const url = new URL(PUBLIC_API_URL + contextUrl);
+	const pathname = url.pathname;
+	const search = url.search;
+	const requestUrl = new URL(`${PUBLIC_API_URL}${pathname}${search}`);
+	return requestUrl.toString();
+};
+
+const getBody = async <T>(resp: Response): Promise<T> => {
+	if (resp.ok) {
+		if (resp.status == 204) return null as unknown as Promise<T>;
+		const contentType = resp.headers.get("content-type");
+		if (contentType && contentType.includes("application/pdf")) {
+			return resp.blob() as Promise<T>;
 		}
-	}
-
-	const response = await fetch(fullUrl, {
-		method,
-		headers: {
-			...headers
-		},
-		...(data ? { body: JSON.stringify(data) } : {})
-	});
-
-	if (response.ok) {
-		if (response.status == 204) return null as unknown as T;
-		return response.json();
+		return resp.json() as T;
 	} else {
-		if (response.status == 401) {
+		if (resp.status == 401) {
 			// TODO: Possibly refresh token from lib/firebase
 			throw new Error("Unauthorized", { cause: "401" });
 		}
-		if (response.status == 403) {
+		if (resp.status == 403) {
 			throw new Error("Forbidden", { cause: "403" });
 		}
-		if (response.status == 404) {
+		if (resp.status == 404) {
 			throw new Error("Not found", { cause: "404" });
 		}
+
 		// Error response
-		const errorResult = await response.json();
+		const errorResult = await resp.json();
 		if (isValidationError(errorResult)) {
 			const errorMessage = Object.values(errorResult.errors ?? []).map((e) => e.toString());
 			throw new Error(errorResult.message, {
@@ -58,6 +40,18 @@ export const customInstance = async <T>({
 			throw new Error(getError(errorResult).message);
 		}
 	}
+};
+
+export const customInstance = async <T>(url: string, options: RequestInit): Promise<T> => {
+	const requestUrl = getUrl(url);
+	const requestInit: RequestInit = {
+		...options
+	};
+	const request = new Request(requestUrl, requestInit);
+	const response = await fetch(request);
+
+	const data = await getBody<T>(response);
+	return data as T;
 };
 
 export default customInstance;

@@ -14,6 +14,7 @@
 
 	let { track, timer }: Props = $props();
 
+	// svelte-ignore state_referenced_locally
 	let fastestLapId: string = $state(track.fastestLap?.id ?? "0000000-0000-0000-0000-000000000000");
 	let confetti: MyConfetti;
 

@@ -37,7 +37,7 @@
 		} else pagination = updater;
 	};
 
-	const querySummary = createRaceSummary(Number(page.params.Id));
+	const querySummary = createRaceSummary(() => Number(page.params.Id));
 
 	const tracksDetail = $derived(querySummary.data?.tracks ?? []);
 	const tracks = $derived(tracksDetail.map((x) => x.trackId));
@@ -64,12 +64,10 @@
 			tab = tracks.length > 0 ? tracks[0] : 0;
 		}
 	});
-	const query = $derived(
-		createLaps({
-			raceId: Number(page.params.Id),
-			trackId: tab
-		})
-	);
+	const query = createLaps(() => ({
+		raceId: Number(page.params.Id),
+		trackId: tab
+	}));
 
 	const data = $derived.by(() => {
 		let data = query.data ?? [];

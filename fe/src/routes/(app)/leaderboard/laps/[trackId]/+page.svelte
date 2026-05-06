@@ -7,7 +7,7 @@
 	import { type ColumnDef } from "@tanstack/table-core";
 	import RefreshIcon from "@lucide/svelte/icons/refresh-cw";
 
-	const query = createLeaderboardLap(Number(page.params.trackId));
+	const query = createLeaderboardLap(() => Number(page.params.trackId));
 	const data = $derived(query.data ?? []);
 
 	const columns: ColumnDef<LeaderboardFastestLap>[] = [

@@ -10,7 +10,9 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
-		"api": "curl http://localhost:5021/swagger/v1/swagger.json > swagger.json && orval && pnpm format"
+		"api": "pnpm run api:swagger && pnpm run api:orval",
+		"api:swagger": "curl http://localhost:5021/swagger/v1/swagger.json > swagger.json",
+		"api:orval": "orval"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^2.0.5",
@@ -27,7 +29,6 @@
 		"@tanstack/table-core": "^8.21.3",
 		"@types/d3-scale": "^4.0.9",
 		"@types/d3-shape": "^3.1.8",
-		"@types/qs": "^6.15.0",
 		"@typescript-eslint/parser": "^8.59.2",
 		"d3-scale": "^4.0.2",
 		"d3-shape": "^3.2.0",
@@ -38,11 +39,10 @@
 		"globals": "^17.6.0",
 		"layerchart": "2.0.0-next.62",
 		"mode-watcher": "^1.1.0",
-		"orval": "^7.16.0",
+		"orval": "^8.9.1",
 		"prettier": "^3.8.3",
 		"prettier-plugin-svelte": "^3.5.1",
 		"prettier-plugin-tailwindcss": "^0.8.0",
-		"qs": "^6.15.1",
 		"runed": "^0.37.1",
 		"shadcn-svelte": "^1.2.7",
 		"svelte": "^5.55.5",

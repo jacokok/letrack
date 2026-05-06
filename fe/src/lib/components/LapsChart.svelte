@@ -15,7 +15,7 @@
 		y="time"
 		axis={false}
 		grid={false}
-		tooltip={false}
+		tooltip={undefined}
 		bandPadding={0.1}
 		props={{ bars: { radius: 2, strokeWidth: 0, tweened: true } }}
 	/>

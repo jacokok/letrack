@@ -8,10 +8,13 @@ export default defineConfig({
 			workspace: "./src/lib/api/generated",
 			target: "api.ts",
 			client: "svelte-query",
-			prettier: true,
 			headers: false,
 			clean: true,
 			override: {
+				useNullForOptional: false,
+				fetch: {
+					includeHttpResponseReturnType: false
+				},
 				mutator: {
 					path: "../mutator/customInstance.svelte.ts",
 					name: "customInstance"

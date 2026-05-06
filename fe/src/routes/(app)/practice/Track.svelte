@@ -29,7 +29,7 @@
 
 	let { trackId }: Props = $props();
 
-	const query = createTrackSummary(trackId);
+	const query = createTrackSummary(() => trackId);
 
 	let fastestLapId: string = $state(
 		query.data?.fastestLap?.id ?? "0000000-0000-0000-0000-000000000000"

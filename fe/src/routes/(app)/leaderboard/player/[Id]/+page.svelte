@@ -15,10 +15,10 @@
 	import { cubicInOut } from "svelte/easing";
 	import RefreshIcon from "@lucide/svelte/icons/refresh-cw";
 
-	const playerQuery = createPlayersGet(Number(page.params.Id));
+	const playerQuery = createPlayersGet(() => Number(page.params.Id));
 	const player = $derived(playerQuery.data);
 
-	const chartDataQuery = createLeaderboardPlayer(Number(page.params.Id));
+	const chartDataQuery = createLeaderboardPlayer(() => Number(page.params.Id));
 	const chartData = $derived(chartDataQuery.data ?? []);
 
 	const chartConfig = {} satisfies Chart.ChartConfig;

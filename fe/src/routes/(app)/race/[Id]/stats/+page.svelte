@@ -7,7 +7,7 @@
 	import { FlagIcon } from "@lucide/svelte";
 	import Laps from "./Laps.svelte";
 
-	const query = createRaceSummary(Number(page.params.Id));
+	const query = createRaceSummary(() => Number(page.params.Id));
 
 	const track1: RaceSummaryTrack | undefined = $derived(
 		(query.data?.tracks?.length ?? 0) > 1 && (query.data?.tracks.length ?? 0) > 1

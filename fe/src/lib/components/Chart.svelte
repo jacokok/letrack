@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { BarChart, type ChartContextValue } from "layerchart";
+	import { BarChart } from "layerchart";
 
 	import { chartData } from "$lib/stores/chart.svelte";
 	import { practice } from "$lib/stores/practice.svelte";
@@ -107,19 +107,16 @@
 		track3: { label: "Track 3", color: "hsl(var(--color-warning))" },
 		track4: { label: "Track 4", color: "hsl(var(--color-secondary))" }
 	} satisfies Chart.ChartConfig;
-
-	let context = $state<ChartContextValue>();
 </script>
 
-<Chart.Container config={chartConfig} class="mt-2 h-[200px] w-full rounded-lg border p-2">
+<Chart.Container config={chartConfig} class="mt-2 h-50 w-full rounded-lg border p-2">
 	<BarChart
-		bind:context
 		{data}
 		xScale={scaleBand().padding(0.25)}
 		x="lap"
 		axis={true}
 		grid={true}
-		tooltip={false}
+		tooltip={undefined}
 		seriesLayout="group"
 		x1Scale={scaleBand().paddingInner(0.2)}
 		rule={false}
@@ -129,8 +126,6 @@
 				stroke: "none",
 				strokeWidth: 0,
 				rounded: "all",
-				initialY: context?.height,
-				initialHeight: 0,
 				motion: {
 					y: { type: "tween", duration: 500, easing: cubicInOut },
 					height: { type: "tween", duration: 500, easing: cubicInOut }
