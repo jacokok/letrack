@@ -9,7 +9,7 @@
 
 	interface Props {
 		laps: Array<Lap>;
-		fastestLap?: DTOLapDTO;
+		fastestLap?: DTOLapDTO | null;
 		children?: Snippet;
 	}
 
@@ -26,7 +26,7 @@
 	{/if}
 	{#each laps as lap (lap.id)}
 		{@const diff = timeSpanToParts(lap.lapTimeDifference)}
-		<Card.Root class="flex items-center gap-2 p-2 flex-row">
+		<Card.Root class="flex flex-row items-center gap-2 p-2">
 			<Badge class="bg-muted text-muted-foreground">{lap.lapNumber}</Badge>
 			<h1>{timeSpanToParts(lap.lapTime).value}</h1>
 			<div class={`${diff.isMinus ? "text-destructive" : "text-green-300"}`}>

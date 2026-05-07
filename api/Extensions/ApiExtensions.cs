@@ -1,5 +1,7 @@
+using System.Text.Json.Serialization;
 using FastEndpoints.Swagger;
-using Kayord.Pos.Common.Extensions.Swagger;
+using LeTrack.Extensions.Swagger;
+using Namotion.Reflection;
 
 namespace LeTrack.Extensions;
 
@@ -11,16 +13,17 @@ public static class ApiExtensions
         {
             o.EnableForHttps = true;
         });
-        services.AddFastEndpoints()
-        .SwaggerDocument(o =>
+
+        services.AddFastEndpoints().SwaggerDocument(o =>
         {
+            o.EnableJWTBearerAuth = false;
             o.DocumentSettings = s =>
             {
                 s.Title = AppDomain.CurrentDomain.FriendlyName;
                 s.Version = "v1";
-                s.MarkNonNullablePropsAsRequired();
                 s.OperationProcessors.Add(new CustomOperationsProcessor());
                 s.SchemaSettings.SchemaNameGenerator = new CustomSchemaNameGenerator(false);
+                s.MarkNonNullablePropsAsRequired();
             };
         });
     }

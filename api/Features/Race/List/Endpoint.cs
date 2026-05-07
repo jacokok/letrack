@@ -1,18 +1,13 @@
-using Kayord.Pos.Common.Extensions;
 using LeTrack.Data;
+using LeTrack.Extensions;
 using LeTrack.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LeTrack.Features.Race.List;
 
-public class Endpoint : Endpoint<Request, PaginatedList<Entities.Race>>
+public class Endpoint(AppDbContext dbContext) : Endpoint<Request, PaginatedList<Entities.Race>>
 {
-    private readonly AppDbContext _dbContext;
-
-    public Endpoint(AppDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly AppDbContext _dbContext = dbContext;
 
     public override void Configure()
     {
@@ -29,6 +24,6 @@ public class Endpoint : Endpoint<Request, PaginatedList<Entities.Race>>
             .OrderByDescending(x => x.CreatedDateTime)
             .GetPagedAsync(req, ct);
 
-        await Send.OkAsync(results);
+        await Send.OkAsync(results, ct);
     }
 }

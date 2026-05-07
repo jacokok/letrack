@@ -11,7 +11,6 @@ export default defineConfig({
 			headers: false,
 			clean: true,
 			override: {
-				useNullForOptional: false,
 				fetch: {
 					includeHttpResponseReturnType: false
 				},

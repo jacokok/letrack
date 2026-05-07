@@ -1,16 +1,11 @@
 using System.Text;
 using NJsonSchema.Generation;
 
-namespace Kayord.Pos.Common.Extensions.Swagger;
+namespace LeTrack.Extensions.Swagger;
 
-internal class CustomSchemaNameGenerator : DefaultSchemaNameGenerator, ISchemaNameGenerator
+internal class CustomSchemaNameGenerator(bool shortSchemaNames) : DefaultSchemaNameGenerator, ISchemaNameGenerator
 {
-    private readonly bool _shortSchemaNames;
-
-    public CustomSchemaNameGenerator(bool shortSchemaNames)
-    {
-        _shortSchemaNames = shortSchemaNames;
-    }
+    private readonly bool _shortSchemaNames = shortSchemaNames;
 
     public override string Generate(Type type)
     {

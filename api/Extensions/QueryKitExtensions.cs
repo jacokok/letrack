@@ -2,7 +2,8 @@ using LeTrack.Models;
 using Microsoft.EntityFrameworkCore;
 using QueryKit;
 using QueryKit.Configuration;
-namespace Kayord.Pos.Common.Extensions;
+
+namespace LeTrack.Extensions;
 
 public static class QueryKitExtensions
 {
