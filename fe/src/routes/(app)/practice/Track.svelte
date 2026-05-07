@@ -82,7 +82,7 @@
 </script>
 
 <div class="flex w-full flex-col gap-1">
-	<div class="flex flex-col items-center justify-start w-full">
+	<div class="flex w-full flex-col items-center justify-start">
 		<StopWatch {timer} colorClass={practiceColor()} />
 		<MyConfetti bind:this={confetti} />
 	</div>

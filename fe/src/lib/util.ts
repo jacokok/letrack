@@ -42,3 +42,10 @@ const timeSpanToParts = (timeSpan: string | null | undefined) => {
 };
 
 export { timeSpanToParts };
+
+export const trackColors = {
+	track1: "var(--color-primary)",
+	track2: "hsl(var(--color-danger))",
+	track3: "hsl(var(--color-warning))",
+	track4: "hsl(var(--color-secondary))"
+};

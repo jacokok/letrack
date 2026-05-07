@@ -1,24 +1,19 @@
 <script lang="ts">
 	import { page } from "$app/state";
-	import { createRaceSummary, type RaceSummaryTrack } from "$lib/api";
-	import { Button } from "@kayord/ui";
+	import { createRaceSummary } from "$lib/api";
+	import { Badge, Button, Card, Item, Separator, StatusDot } from "@kayord/ui";
 	import Header from "$lib/components/Header.svelte";
-	import LineChart from "./LineChart.svelte";
+	import StatsChart from "./StatsChart.svelte";
 	import { FlagIcon } from "@lucide/svelte";
-	import Laps from "./Laps.svelte";
+	import PlayerAvatar from "$lib/components/PlayerAvatar.svelte";
+	import { trackColors } from "$lib/util";
 
 	const query = createRaceSummary(() => Number(page.params.Id));
 
-	const track1: RaceSummaryTrack | undefined = $derived(
-		(query.data?.tracks?.length ?? 0) > 1 && (query.data?.tracks.length ?? 0) > 1
-			? query.data?.tracks[0]
-			: undefined
-	);
-	const track2: RaceSummaryTrack | undefined = $derived(
-		(query.data?.tracks?.length ?? 0) && (query.data?.tracks.length ?? 0) > 1
-			? query.data?.tracks[1]
-			: undefined
-	);
+	const getColor = (trackId: number) => {
+		const key = `track${trackId}` as unknown as keyof typeof trackColors;
+		return trackColors[key];
+	};
 </script>
 
 {#snippet right()}
@@ -29,11 +24,37 @@
 
 <Header {right} />
 
-<div class="flex m-2">
-	<LineChart data={query.data?.tracks ?? []} />
-</div>
-
-<div class="flex items-start gap-2 m-2">
-	<Laps data={track1} />
-	<Laps data={track2} />
+<div class="m-2 flex flex-col gap-6">
+	{#if query.isPending}
+		<div>Loading...</div>
+	{:else if query.error}
+		<div>Error: {query.error.reason}</div>
+	{:else}
+		<Card.Root class="w-full">
+			<Item.Group>
+				{#each query.data?.tracks as track, index (track.trackId)}
+					<div class="flex w-full flex-col">
+						<Item.Root class="py-0">
+							<Item.Media>
+								<PlayerAvatar name={track.player.name} />
+							</Item.Media>
+							<Item.Content>
+								<Item.Title>{track.player.nickName || track.player.name}</Item.Title>
+								<Item.Description>Track {track.trackId}</Item.Description>
+							</Item.Content>
+							<Item.Actions class="flex gap-4">
+								{@const c = getColor(track.trackId)}
+								<Separator orientation="vertical" class="h-10!" style={`background-color: ${c};`} />
+								<h3>{track.totalLaps}</h3>
+							</Item.Actions>
+						</Item.Root>
+						{#if index !== (query.data?.tracks?.length ?? 0) - 1}
+							<Item.Separator />
+						{/if}
+					</div>
+				{/each}
+			</Item.Group>
+		</Card.Root>
+		<StatsChart data={query.data?.tracks ?? []} />
+	{/if}
 </div>
