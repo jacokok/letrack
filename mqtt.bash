@@ -7,8 +7,8 @@ set -euo pipefail
 # Example:
 #   ./stress-mqtt.sh 10000 60 10 event
 
-TOTAL="${1:-1000}"
-DURATION="${2:-60}"
+TOTAL="${1:-3000}"
+DURATION="${2:-300}"
 WORKERS="${3:-10}"
 TOPIC="${4:-event}"
 

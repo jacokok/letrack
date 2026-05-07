@@ -124,22 +124,46 @@ export interface RaceUpdateRequest {
   id: number;
   name: string;
   players: number[];
-  isFirstTracks: boolean;
+}
+
+export interface DTOPlayerDTO {
+  id: number;
+  name: string;
+  /** @nullable */
+  nickName?: string | null;
+  /** @nullable */
+  teamId?: number | null;
+  teamName: string;
 }
 
 export interface RaceSummaryTrack {
   trackId: number;
   laps: DTOLapDTO[];
-  player: EntitiesPlayer;
+  player: DTOPlayerDTO;
   fastestLap?: DTOLapDTO | null;
   totalLaps: number;
 }
 
+export interface DTORaceDTO {
+  id: number;
+  name: string;
+  isActive: boolean;
+  createdDateTime: string;
+  /** @nullable */
+  startDateTime?: string | null;
+  /** @nullable */
+  restartDateTime?: string | null;
+  /** @nullable */
+  endDateTime?: string | null;
+  /** @nullable */
+  endLapCount?: number | null;
+  /** @nullable */
+  timeRemaining?: string | null;
+}
+
 export interface RaceSummaryResponse {
   tracks: RaceSummaryTrack[];
-  fastestLap?: DTOLapDTO | null;
-  totalLaps: number;
-  race: EntitiesRace;
+  race: DTORaceDTO;
 }
 
 export interface RaceSummaryRequest { [key: string]: unknown }
@@ -170,7 +194,6 @@ export type RaceListRequest = ModelsQueryModel & { [key: string]: unknown };
 export interface RaceInsertRequest {
   name: string;
   players: number[];
-  isFirstTracks: boolean;
 }
 
 export interface RaceDeleteRequest { [key: string]: unknown }

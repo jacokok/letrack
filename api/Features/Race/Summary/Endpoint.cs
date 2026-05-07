@@ -4,14 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LeTrack.Features.Race.Summary;
 
-public class Endpoint : Endpoint<Request, Response>
+public class Endpoint(AppDbContext dbContext) : Endpoint<Request, Response>
 {
-    private readonly AppDbContext _dbContext;
-
-    public Endpoint(AppDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly AppDbContext _dbContext = dbContext;
 
     public override void Configure()
     {
@@ -24,40 +19,87 @@ public class Endpoint : Endpoint<Request, Response>
 
         var race = await _dbContext.Race
             .AsNoTracking()
-            .Include(x => x.RaceTracks)
-                .ThenInclude(x => x.Player)
-            .FirstOrDefaultAsync(x => x.Id == r.RaceId, ct);
+            .Where(x => x.Id == r.RaceId)
+            .Select(x => new RaceDTO
+            {
+                Id = x.Id,
+                Name = x.Name,
+                IsActive = x.IsActive,
+                CreatedDateTime = x.CreatedDateTime,
+                StartDateTime = x.StartDateTime,
+                RestartDateTime = x.RestartDateTime,
+                EndDateTime = x.EndDateTime,
+                EndLapCount = x.EndLapCount,
+                TimeRemaining = x.TimeRemaining,
+            })
+            .FirstOrDefaultAsync(ct) ?? throw new Exception("Race not found");
 
-        if (race == null)
-        {
-            throw new Exception("Race not found");
-        }
-
-        List<LapDTO>? laps = await _dbContext.Lap
+        var raceTracks = await _dbContext.RaceTrack
             .AsNoTracking()
-            .Where(x => x.RaceId == r.RaceId)
-            .OrderByDescending(x => x.Timestamp)
-            .ProjectToDto()
+            .Where(rt => rt.RaceId == r.RaceId)
+            .OrderBy(rt => rt.TrackId)
+            .Select(rt => new
+            {
+                rt.TrackId,
+                Player = new PlayerDTO
+                {
+                    Id = rt.Player.Id,
+                    Name = rt.Player.Name,
+                    NickName = rt.Player.NickName,
+                    TeamId = rt.Player.TeamId,
+                    TeamName = rt.Player.Team != null ? rt.Player.Team.Name : "",
+                },
+            })
             .ToListAsync(ct);
 
-        foreach (var track in race.RaceTracks)
-        {
-            var trackLapsRaw = laps.Where(x => x.TrackId == track.TrackId).ToList();
-            var trackLaps = trackLapsRaw.Select((x, index) => { x.LapNumber = trackLapsRaw.Count - index; return x; }).ToList();
-            response.Tracks.Add(new Track
+        var allLaps = await _dbContext.Lap
+            .AsNoTracking()
+            .Where(l => l.RaceId == r.RaceId)
+            .OrderBy(l => l.TrackId)
+            .ThenBy(l => l.Timestamp)
+            .ThenBy(l => l.Id)
+            .Select(l => new LapDTO
             {
-                TrackId = track.TrackId,
-                Laps = trackLaps,
-                TotalLaps = trackLaps.Count,
-                FastestLap = trackLaps.Where(x => !x.IsFlagged).OrderBy(x => x.LapTime).FirstOrDefault(),
-                Player = track.Player
-            });
-        }
+                Id = l.Id,
+                LastLapId = l.LastLapId,
+                TrackId = l.TrackId,
+                Timestamp = l.Timestamp,
+                LapTime = l.LapTime,
+                LapTimeDifference = l.LapTimeDifference,
+                IsFlagged = l.IsFlagged,
+                FlagReason = l.FlagReason,
+                RaceId = l.RaceId,
+                PlayerId = l.PlayerId,
+                TeamId = l.TeamId,
+                IsValid = l.IsValid,
+            })
+            .ToListAsync(ct);
 
-        response.TotalLaps = laps.Count;
-        response.FastestLap = laps.Where(x => !x.IsFlagged).OrderBy(x => x.LapTime).FirstOrDefault();
+        var lapsByTrack = allLaps
+            .GroupBy(l => l.TrackId)
+            .ToDictionary(g => g.Key, g => g.ToList());
+
+        response.Tracks = [.. raceTracks
+            .Select(rt =>
+            {
+                var laps = lapsByTrack.GetValueOrDefault(rt.TrackId, []);
+
+                for (var i = 0; i < laps.Count; i++)
+                    laps[i].LapNumber = i + 1;
+
+                return new Track
+                {
+                    TrackId = rt.TrackId,
+                    Player = rt.Player,
+                    TotalLaps = laps.Count,
+                    FastestLap = laps
+                        .Where(l => !l.IsFlagged && l.LapTime != null)
+                        .MinBy(l => l.LapTime),
+                    Laps = [.. laps.TakeLast(10).Reverse()],
+                };
+            })];
+
         response.Race = race;
-
-        await Send.OkAsync(response);
+        await Send.OkAsync(response, ct);
     }
 }

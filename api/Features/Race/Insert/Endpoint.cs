@@ -3,14 +3,9 @@ using LeTrack.Entities;
 
 namespace LeTrack.Features.Race.Insert;
 
-public class Endpoint : Endpoint<Request, Entities.Race>
+public class Endpoint(AppDbContext dbContext) : Endpoint<Request, Entities.Race>
 {
-    private readonly AppDbContext _dbContext;
-
-    public Endpoint(AppDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly AppDbContext _dbContext = dbContext;
 
     public override void Configure()
     {
@@ -24,12 +19,12 @@ public class Endpoint : Endpoint<Request, Entities.Race>
             throw new Exception("No players provided");
         }
 
-        if (req.Players.Count > 2)
+        if (req.Players.Count != 4)
         {
-            throw new Exception("Only two lanes supported for now");
+            throw new Exception("Only two 4 supported for now");
         }
 
-        List<RaceTrack> raceTracks = [.. req.Players.Select((x, i) => new RaceTrack { PlayerId = x, TrackId = i + 1 + (req.IsFirstTracks == true ? 0 : 2) })];
+        List<RaceTrack> raceTracks = [.. req.Players.Select((x, i) => new RaceTrack { PlayerId = x, TrackId = i + 1 })];
 
         Entities.Race race = new()
         {
@@ -37,8 +32,9 @@ public class Endpoint : Endpoint<Request, Entities.Race>
             CreatedDateTime = DateTime.UtcNow,
             RaceTracks = raceTracks
         };
-        await _dbContext.Race.AddAsync(race);
-        await _dbContext.SaveChangesAsync();
-        await Send.OkAsync(race);
+
+        await _dbContext.Race.AddAsync(race, ct);
+        await _dbContext.SaveChangesAsync(ct);
+        await Send.OkAsync(race, ct);
     }
 }

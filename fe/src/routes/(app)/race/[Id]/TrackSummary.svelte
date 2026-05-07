@@ -21,10 +21,10 @@
 		<PlayerAvatar name={track.player.name} isSmall />
 		<div class="flex flex-col">
 			<div class="leading-4">
-				{track.player.name}
+				{track.player.nickName || track.player.name}
 			</div>
 			<div class="text-muted-foreground text-xs leading-3">
-				{track.player.nickName ? ` ${track.player.nickName}` : ""}
+				{track.player.team?.name ? ` ${track.player.nickName}` : ""}
 			</div>
 		</div>
 	</h1>

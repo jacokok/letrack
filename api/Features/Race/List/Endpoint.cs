@@ -21,6 +21,7 @@ public class Endpoint(AppDbContext dbContext) : Endpoint<Request, PaginatedList<
             .AsNoTracking()
             .Include(x => x.RaceTracks)
                 .ThenInclude(x => x.Player)
+                .ThenInclude(x => x.Team)
             .OrderByDescending(x => x.CreatedDateTime)
             .GetPagedAsync(req, ct);
 

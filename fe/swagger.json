@@ -1749,8 +1749,7 @@
         "required": [
           "id",
           "name",
-          "players",
-          "isFirstTracks"
+          "players"
         ],
         "properties": {
           "id": {
@@ -1766,9 +1765,6 @@
               "type": "integer",
               "format": "int32"
             }
-          },
-          "isFirstTracks": {
-            "type": "boolean"
           }
         }
       },
@@ -1777,7 +1773,6 @@
         "additionalProperties": false,
         "required": [
           "tracks",
-          "totalLaps",
           "race"
         ],
         "properties": {
@@ -1787,20 +1782,8 @@
               "$ref": "#/components/schemas/RaceSummaryTrack"
             }
           },
-          "fastestLap": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/DTOLapDTO"
-              }
-            ]
-          },
-          "totalLaps": {
-            "type": "integer",
-            "format": "int32"
-          },
           "race": {
-            "$ref": "#/components/schemas/EntitiesRace"
+            "$ref": "#/components/schemas/DTORaceDTO"
           }
         }
       },
@@ -1825,7 +1808,7 @@
             }
           },
           "player": {
-            "$ref": "#/components/schemas/EntitiesPlayer"
+            "$ref": "#/components/schemas/DTOPlayerDTO"
           },
           "fastestLap": {
             "nullable": true,
@@ -1838,6 +1821,87 @@
           "totalLaps": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "DTOPlayerDTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "teamName"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "nickName": {
+            "type": "string",
+            "nullable": true
+          },
+          "teamId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "teamName": {
+            "type": "string"
+          }
+        }
+      },
+      "DTORaceDTO": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "isActive",
+          "createdDateTime"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "createdDateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "startDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "restartDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endLapCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "timeRemaining": {
+            "type": "string",
+            "format": "duration",
+            "nullable": true
           }
         }
       },
@@ -1939,8 +2003,7 @@
         "additionalProperties": false,
         "required": [
           "name",
-          "players",
-          "isFirstTracks"
+          "players"
         ],
         "properties": {
           "name": {
@@ -1952,9 +2015,6 @@
               "type": "integer",
               "format": "int32"
             }
-          },
-          "isFirstTracks": {
-            "type": "boolean"
           }
         }
       },

@@ -6,7 +6,7 @@
 		createPlayersList
 	} from "$lib/api";
 	import { getError } from "$lib/types";
-	import { Button, Dialog, Input, Select, Switch } from "@kayord/ui";
+	import { Button, Dialog, Input, Select } from "@kayord/ui";
 	import { toast } from "@kayord/ui/sonner";
 	import { Form } from "@kayord/ui/form";
 	import { defaults, superForm } from "sveltekit-superforms";
@@ -23,21 +23,31 @@
 
 	const isEdit = $derived(race != null);
 
-	const schema = z.object({
-		name: z.string().min(1, { message: "Name is Required" }),
-		isFirstTracks: z.boolean(),
-		players: z
-			.array(z.coerce.number().min(1, { message: "Please select player" }))
-			.min(2, { message: "Please add one player" })
-	});
-	type FormSchema = z.infer<typeof schema>;
+	function hasDuplicates<T>(arr: T[]): boolean {
+		return new Set(arr).size !== arr.length;
+	}
 
-	const isFirstTracks = $derived((race?.raceTracks.filter((c) => c.trackId > 2).length ?? 0) == 0);
+	const schema = z
+		.object({
+			name: z.string().min(1, { message: "Name is Required" }),
+			players: z
+				.array(z.coerce.number().min(1, { message: "Please select player" }))
+				.min(4, { message: "Please add one player" })
+		})
+		.superRefine((items, ctx) => {
+			const teams = items.players.map((x) => players.find((i) => i.id === x)?.teamId ?? 0);
+			if (hasDuplicates(teams))
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: "Invalid teams",
+					path: ["name"]
+				});
+		});
+	type FormSchema = z.infer<typeof schema>;
 
 	const defaultValues = $derived({
 		name: race?.name ?? "",
-		players: race?.raceTracks.map((t) => t.playerId) ?? [0, 0],
-		isFirstTracks
+		players: race?.raceTracks.map((t) => t.playerId) ?? [0, 0, 0, 0]
 	});
 
 	const editMutation = createRaceUpdate();
@@ -54,14 +64,13 @@
 					data: {
 						name: data.name,
 						players: data.players,
-						id: race?.id ?? 0,
-						isFirstTracks: data.isFirstTracks
+						id: race?.id ?? 0
 					}
 				});
 				toast.info("Edited race");
 			} else {
 				await createMutation.mutateAsync({
-					data: { name: data.name, players: data.players, isFirstTracks: data.isFirstTracks }
+					data: { name: data.name, players: data.players }
 				});
 				toast.info("Added race");
 			}
@@ -111,78 +120,40 @@
 					<Form.FieldErrors />
 				</Form.Field>
 
-				<Form.Field {form} name="isFirstTracks">
-					<Form.Control>
-						{#snippet children({ props })}
-							<div class="flex items-center justify-start gap-2">
-								<Switch {...props} bind:checked={$formData.isFirstTracks} />
-								<Form.Label>First Tracks</Form.Label>
-							</div>
-						{/snippet}
-					</Form.Control>
-					<Form.FieldErrors />
-				</Form.Field>
+				{#each [0, 1, 2, 3] as trackIndex (trackIndex)}
+					<Form.Field {form} name={`players[${trackIndex}]`}>
+						<Form.Control>
+							{#snippet children({ props })}
+								<Form.Label>Track {trackIndex + 1}</Form.Label>
+								<Select.Root
+									type="single"
+									bind:value={
+										() => $formData.players[trackIndex].toString(),
+										(v) => ($formData.players[trackIndex] = Number(v))
+									}
+									name={props.name}
+								>
+									<Select.Trigger {...props} class="w-full">
+										{players.find((i) => i.id === $formData.players[trackIndex])?.name ??
+											"Select a Player"}
+									</Select.Trigger>
+									<Select.Content class="max-h-60 overflow-y-auto">
+										{#each players as player (player.id)}
+											<Select.Item value={player.id.toString()} label={player.name}>
+												{player.name}
+											</Select.Item>
+										{/each}
+									</Select.Content>
+								</Select.Root>
+							{/snippet}
+						</Form.Control>
 
-				<Form.Field {form} name="players[0]">
-					<Form.Control>
-						{#snippet children({ props })}
-							<Form.Label>Track {$formData.isFirstTracks ? 1 : 3}</Form.Label>
-							<Select.Root
-								type="single"
-								bind:value={
-									() => $formData.players[0].toString(), (v) => ($formData.players[0] = Number(v))
-								}
-								name={props.name}
-							>
-								<Select.Trigger {...props}>
-									{players.find((i) => i.id === $formData.players[0])?.name ?? "Select a Player"}
-								</Select.Trigger>
-								<Select.Content>
-									{#each players as player (player.id)}
-										<Select.Item value={player.id.toString()} label={player.name}>
-											{player.name}
-										</Select.Item>
-									{/each}
-								</Select.Content>
-							</Select.Root>
-						{/snippet}
-					</Form.Control>
-
-					<Form.Legend>
-						{players.find((i) => i.id === $formData.players[0])?.team?.name}
-					</Form.Legend>
-					<Form.FieldErrors />
-				</Form.Field>
-
-				<Form.Field {form} name="players[1]">
-					<Form.Control>
-						{#snippet children({ props })}
-							<Form.Label>Track {$formData.isFirstTracks ? 2 : 4}</Form.Label>
-							<Select.Root
-								type="single"
-								bind:value={
-									() => $formData.players[1].toString(), (v) => ($formData.players[1] = Number(v))
-								}
-								name={props.name}
-							>
-								<Select.Trigger {...props}>
-									{players.find((i) => i.id === $formData.players[1])?.name ?? "Select a Player"}
-								</Select.Trigger>
-								<Select.Content>
-									{#each players as player (player.id)}
-										<Select.Item value={player.id.toString()} label={player.name}>
-											{player.name}
-										</Select.Item>
-									{/each}
-								</Select.Content>
-							</Select.Root>
-						{/snippet}
-					</Form.Control>
-					<Form.Legend>
-						{players.find((i) => i.id === $formData.players[1])?.team?.name}
-					</Form.Legend>
-					<Form.FieldErrors />
-				</Form.Field>
+						<Form.Legend class="text-muted-foreground">
+							{players.find((i) => i.id === $formData.players[trackIndex])?.team?.name}
+						</Form.Legend>
+						<Form.FieldErrors />
+					</Form.Field>
+				{/each}
 			</div>
 			<Dialog.Footer class="gap-2">
 				<Button type="submit">Submit</Button>
