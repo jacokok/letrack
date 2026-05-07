@@ -2044,13 +2044,6 @@
             "items": {
               "$ref": "#/components/schemas/LeaderboardTeamSummary"
             }
-          },
-          "fastestLap": {
-            "type": "array",
-            "nullable": true,
-            "items": {
-              "$ref": "#/components/schemas/LeaderboardFastestLap"
-            }
           }
         }
       },
@@ -2109,32 +2102,6 @@
           "rank": {
             "type": "integer",
             "format": "int32"
-          }
-        }
-      },
-      "LeaderboardFastestLap": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "trackId",
-          "lapTime",
-          "name"
-        ],
-        "properties": {
-          "trackId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "lapTime": {
-            "type": "string",
-            "format": "duration"
-          },
-          "name": {
-            "type": "string"
-          },
-          "nickName": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
@@ -2199,6 +2166,32 @@
       "LeaderboardPlayerRequest": {
         "type": "object",
         "additionalProperties": false
+      },
+      "LeaderboardFastestLap": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "trackId",
+          "lapTime",
+          "name"
+        ],
+        "properties": {
+          "trackId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lapTime": {
+            "type": "string",
+            "format": "duration"
+          },
+          "name": {
+            "type": "string"
+          },
+          "nickName": {
+            "type": "string",
+            "nullable": true
+          }
+        }
       },
       "LeaderboardLapRequest": {
         "type": "object",

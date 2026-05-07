@@ -3,14 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LeTrack.Features.Leaderboard;
 
-public class Endpoint : EndpointWithoutRequest<Response>
+public class Endpoint(AppDbContext dbContext) : EndpointWithoutRequest<Response>
 {
-    private readonly AppDbContext _dbContext;
-
-    public Endpoint(AppDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private readonly AppDbContext _dbContext = dbContext;
 
     public override void Configure()
     {
@@ -21,25 +16,25 @@ public class Endpoint : EndpointWithoutRequest<Response>
     {
         var players = await _dbContext.Database.SqlQuery<PlayerSummary>(
         $"""
-            SELECT 
-                p.id, 
-                p.name, 
-                p.nick_name, 
+            SELECT
+                p.id,
+                p.name,
+                p.nick_name,
                 sum(case when l.is_valid then 1 else 0 end) laps,
                 RANK() OVER (ORDER BY sum(case when l.is_valid then 1 else 0 end) DESC) rank
             FROM player p
             LEFT JOIN lap l
                 ON p.id = l.player_id
-            GROUP BY p.id 
+            GROUP BY p.id
             ORDER BY laps DESC;
         """
         ).ToListAsync(ct);
 
         var teams = await _dbContext.Database.SqlQuery<TeamSummary>(
         $"""
-            SELECT 
-                t.id, 
-                t.name, 
+            SELECT
+                t.id,
+                t.name,
                 sum(case when l.is_valid then 1 else 0 end) laps,
                 RANK() OVER (ORDER BY sum(case when l.is_valid then 1 else 0 end) DESC) rank
             FROM team t
@@ -50,24 +45,24 @@ public class Endpoint : EndpointWithoutRequest<Response>
         """
         ).ToListAsync(ct);
 
-        var fastestLap = await _dbContext.Database.SqlQuery<FastestLap>(
-        $"""
-            SELECT DISTINCT ON (l.track_id)
-              l.track_id,
-              l.lap_time,
-              p.name,
-              p.nick_name
-            FROM lap l
-            JOIN player p ON p.id = l.player_id
-            WHERE 
-              l.race_id IS NOT NULL
-              AND l.is_flagged = false
-              AND l.is_valid = true
-            ORDER BY l.track_id, l.lap_time ASC;
-        """
-        ).ToListAsync(ct);
+        // var fastestLap = await _dbContext.Database.SqlQuery<FastestLap>(
+        // $"""
+        //     SELECT DISTINCT ON (l.track_id)
+        //       l.track_id,
+        //       l.lap_time,
+        //       p.name,
+        //       p.nick_name
+        //     FROM lap l
+        //     JOIN player p ON p.id = l.player_id
+        //     WHERE
+        //       l.race_id IS NOT NULL
+        //       AND l.is_flagged = false
+        //       AND l.is_valid = true
+        //     ORDER BY l.track_id, l.lap_time ASC;
+        // """
+        // ).ToListAsync(ct);
 
-        Response response = new() { PlayerSummary = players, TeamSummary = teams, FastestLap = fastestLap };
+        Response response = new() { PlayerSummary = players, TeamSummary = teams };
 
         await Send.OkAsync(response);
     }

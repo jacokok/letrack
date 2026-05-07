@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Badge, Button, Tooltip } from "@kayord/ui";
+	import { Badge, Button, Label, Switch, Tooltip } from "@kayord/ui";
 	import {
 		DataTable,
 		createShadTable,
@@ -13,7 +13,6 @@
 	import Actions from "./Actions.svelte";
 	import PlayerAvatar from "$lib/components/PlayerAvatar.svelte";
 	import { cn } from "@kayord/ui/utils";
-	import type { id } from "zod/v4/locales";
 
 	let open = $state(false);
 
@@ -78,11 +77,16 @@
 	};
 	const sorts = $derived(sorting.map((sort) => `${sort.desc ? "-" : ""}${sort.id}`).join(","));
 
+	let hideEndedRaces = $state(false);
+	const filters = $derived(hideEndedRaces ? `EndDateTime == null` : undefined);
+
 	const query = createRaceList(() => ({
 		page: pagination.pageIndex + 1,
 		pageSize: pagination.pageSize,
-		sorts
+		sorts,
+		filters
 	}));
+
 	const data = $derived(query.data?.items ?? []);
 	let rowCount = $derived(query.data?.totalCount ?? 0);
 
@@ -165,9 +169,15 @@
 {#snippet header()}
 	<div class="flex items-center justify-between gap-2">
 		<h1 class="text-2xl">Races</h1>
-		<Button class="my-2" onclick={() => (open = true)}>
-			<PlusIcon />Add Race
-		</Button>
+		<div class="flex items-center space-x-2">
+			<div class="flex items-center space-x-2">
+				<Switch id="hideEnded" bind:checked={hideEndedRaces} />
+				<Label for="hideEnded">Hide Ended</Label>
+			</div>
+			<Button class="my-2" onclick={() => (open = true)}>
+				<PlusIcon />Add Race
+			</Button>
+		</div>
 	</div>
 {/snippet}
 

@@ -30,7 +30,7 @@
 
 <Header right={refreshSnippet} />
 <div class="m-2">
-	<div class="flex justify-between gap-4 sm:flex-row flex-col">
+	<div class="flex flex-col justify-between gap-4 sm:flex-row">
 		<div class="flex w-full flex-col gap-2">
 			<div class="mb-2 flex items-center justify-start gap-2">
 				<h1 class="font-bold">Dream Team</h1>
@@ -54,26 +54,6 @@
 					</Card.Root>
 				</a>
 			{/each}
-			<div class="flex w-full flex-col gap-2">
-				<div class="mb-2 mt-4 flex items-center justify-start gap-2">
-					<h1 class="font-bold">Fastest Lap</h1>
-					<TimerIcon />
-				</div>
-				{#each query.data?.fastestLap ?? [] as lap (lap.trackId)}
-					<a href={resolve(`/leaderboard/laps/${lap.trackId}`)}>
-						<Card.Root class="bg-background flex flex-row items-center justify-between gap-2 p-2">
-							<div class="flex items-center gap-2">
-								<Badge variant="outline">Track {lap.trackId}</Badge>
-								<div class="flex flex-row items-center gap-2">
-									<div class="text-xl">{lap.name}</div>
-									<div class="text-xs">{lap.nickName}</div>
-								</div>
-							</div>
-							<Badge variant="default">{lap.lapTime.substring(3, 12)}</Badge>
-						</Card.Root>
-					</a>
-				{/each}
-			</div>
 		</div>
 		<div class="flex w-full flex-col gap-2">
 			<div class="mb-2 flex items-center justify-start gap-2">

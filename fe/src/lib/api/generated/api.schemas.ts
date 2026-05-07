@@ -212,21 +212,11 @@ export interface LeaderboardTeamSummary {
   rank: number;
 }
 
-export interface LeaderboardFastestLap {
-  trackId: number;
-  lapTime: string;
-  name: string;
-  /** @nullable */
-  nickName?: string | null;
-}
-
 export interface LeaderboardResponse {
   /** @nullable */
   playerSummary?: LeaderboardPlayerSummary[] | null;
   /** @nullable */
   teamSummary?: LeaderboardTeamSummary[] | null;
-  /** @nullable */
-  fastestLap?: LeaderboardFastestLap[] | null;
 }
 
 export interface LeaderboardTeamResponse {
@@ -246,6 +236,14 @@ export interface LeaderboardPlayerResponse {
 }
 
 export interface LeaderboardPlayerRequest { [key: string]: unknown }
+
+export interface LeaderboardFastestLap {
+  trackId: number;
+  lapTime: string;
+  name: string;
+  /** @nullable */
+  nickName?: string | null;
+}
 
 export interface LeaderboardLapRequest { [key: string]: unknown }
 
