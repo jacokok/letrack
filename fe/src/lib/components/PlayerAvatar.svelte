@@ -5,9 +5,10 @@
 		name: string;
 		url?: string;
 		isSmall?: boolean;
+		class?: string;
 	}
 
-	let { name, url, isSmall = false }: Props = $props();
+	let { name, url, isSmall = false, class: className = "" }: Props = $props();
 
 	const getInitials = (name: string) => {
 		const initials = name.match(/\b\w/g) || [];
@@ -43,7 +44,7 @@
 	const sizeClass = $derived(isSmall ? "text-xs size-8" : "");
 </script>
 
-<Avatar.Root class={sizeClass}>
+<Avatar.Root class={`${sizeClass} ${className}`.trim()}>
 	{#if url}
 		<Avatar.Image src={url} alt={name} />
 	{/if}

@@ -16,7 +16,7 @@
 	let { laps, fastestLap, children }: Props = $props();
 </script>
 
-<Card.Root class="bg-muted/50 flex w-full flex-col gap-2 p-1">
+<Card.Root class="bg-muted/50 flex w-full flex-col gap-2 p-0">
 	{@render children?.()}
 	{#if laps.length <= 0}
 		<Alert.Root>
@@ -24,33 +24,37 @@
 			<Alert.Description>Current track have not received any events</Alert.Description>
 		</Alert.Root>
 	{/if}
-	{#each laps as lap (lap.id)}
-		{@const diff = timeSpanToParts(lap.lapTimeDifference)}
-		<Card.Root class="flex flex-row items-center gap-2 p-1">
-			<Badge class="bg-muted text-muted-foreground">{lap.lapNumber}</Badge>
-			<h1>{timeSpanToParts(lap.lapTime).value}</h1>
-			<div class={`${diff.isMinus ? "text-destructive" : "text-green-300"}`}>
-				{diff.isMinus ? "-" : "+"}{diff.value}
-			</div>
-			{#if lap.id == fastestLap?.id}
-				<Badge class="animate-caret-blink">
-					<FastestIcon class="size-4" />
-				</Badge>
-			{/if}
-			{#if lap.isFlagged}
-				<Tooltip.Provider>
-					<Tooltip.Root>
-						<Tooltip.Trigger>
-							<Badge variant="destructive" class=" animate-pulse">
-								<FlagIcon class="size-4" />
-							</Badge>
-						</Tooltip.Trigger>
-						<Tooltip.Content>
-							<p>{lap.flagReason}</p>
-						</Tooltip.Content>
-					</Tooltip.Root>
-				</Tooltip.Provider>
-			{/if}
-		</Card.Root>
-	{/each}
+	<div class="flex w-full flex-col gap-2 p-1">
+		{#each laps as lap (lap.id)}
+			{@const diff = timeSpanToParts(lap.lapTimeDifference)}
+			<Card.Root class="flex flex-row items-center justify-between gap-2 p-1">
+				<div class="flex items-center gap-2">
+					<Badge class="bg-muted text-muted-foreground">{lap.lapNumber}</Badge>
+					<h1>{timeSpanToParts(lap.lapTime).value}</h1>
+					<div class={`text-xs ${diff.isMinus ? "text-destructive" : "text-green-300"}`}>
+						{diff.isMinus ? "-" : "+"}{diff.value}
+					</div>
+				</div>
+				{#if lap.id == fastestLap?.id}
+					<Badge class="animate-caret-blink">
+						<FastestIcon class="size-4" />
+					</Badge>
+				{/if}
+				{#if lap.isFlagged}
+					<Tooltip.Provider>
+						<Tooltip.Root>
+							<Tooltip.Trigger>
+								<Badge variant="destructive" class=" animate-pulse">
+									<FlagIcon class="size-4" />
+								</Badge>
+							</Tooltip.Trigger>
+							<Tooltip.Content>
+								<p>{lap.flagReason}</p>
+							</Tooltip.Content>
+						</Tooltip.Root>
+					</Tooltip.Provider>
+				{/if}
+			</Card.Root>
+		{/each}
+	</div>
 </Card.Root>

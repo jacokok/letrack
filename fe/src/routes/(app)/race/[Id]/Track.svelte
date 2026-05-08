@@ -33,7 +33,7 @@
 	});
 </script>
 
-<div class="flex w-full shrink flex-col gap-1">
+<div class="flex w-full min-w-0 shrink flex-col gap-1">
 	<Laps laps={track.laps} fastestLap={track.fastestLap}>
 		<TrackSummary {track} />
 		<div class="flex flex-col items-center justify-center">

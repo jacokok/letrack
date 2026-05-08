@@ -109,7 +109,7 @@ mqttui publish "event" '{ "Id": "'$(uuidgen)'", "TrackId": '$((RANDOM % 2 + 1))'
 - [x] After the race show summary of race like totals to all players
 - [x] The valid and adjustment can remain but it should not be required
 - [ ] Get simpler and shorter intro sound
-- [ ] Make sure the race end sound always plays
+- [x] Make sure the race end sound always plays
 - [ ] Make sure to add the ip of main machine to cors settings by default so it can work from other laptops.
 - [x] Update FE to latest shadcn
 - [x] On races add filter on race status

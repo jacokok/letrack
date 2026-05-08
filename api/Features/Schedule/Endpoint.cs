@@ -4,14 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LeTrack.Features.Schedule;
 
-public class Endpoint : Endpoint<Request, List<Response>>
+public class Endpoint(AppDbContext dbContext) : Endpoint<Request, List<Response>>
 {
-    private readonly AppDbContext _dbContext;
+    private const int NumberOfTracks = 4;
+    private readonly AppDbContext _dbContext = dbContext;
 
-    public Endpoint(AppDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    private sealed record TeamPair(Player FirstRacer, Player SecondRacer);
+    private sealed record SessionAssignment(int CurrentTrackId, int NextTrackId, Player FirstRacer, Player SecondRacer);
 
     public override void Configure()
     {
@@ -21,7 +20,6 @@ public class Endpoint : Endpoint<Request, List<Response>>
 
     public override async Task HandleAsync(Request req, CancellationToken ct)
     {
-        // Get teams ordered by Order column
         var teams = await _dbContext.Team
             .AsNoTracking()
             .OrderBy(t => t.Order)
@@ -29,172 +27,151 @@ public class Endpoint : Endpoint<Request, List<Response>>
 
         if (teams.Count == 0)
         {
-            await Send.OkAsync(new List<Response>(), ct);
+            await Send.OkAsync([], ct);
             return;
         }
 
-        // Get players ordered by Order column, grouped by team
         var players = await _dbContext.Player
             .AsNoTracking()
             .Where(p => p.TeamId != null)
-            .OrderBy(p => p.Order)
+            .OrderBy(p => p.TeamId)
+            .ThenBy(p => p.Order)
             .ToListAsync(ct);
 
-        var playersByTeam = players
+        var teamPairsByTeamId = players
             .GroupBy(p => p.TeamId!.Value)
-            .ToDictionary(g => g.Key, g => g.ToList());
+            .ToDictionary(
+                g => g.Key,
+                g => BuildPairs(g.OrderBy(p => p.Order).ToList()));
 
-        // Number of tracks (assuming 4 tracks)
-        const int numberOfTracks = 4;
+        var eligibleTeams = teams
+            .Where(team => teamPairsByTeamId.TryGetValue(team.Id, out var pairs) && pairs.Count > 0)
+            .ToList();
 
-        // Calculate the number of sessions
-        var totalMinutes = req.DurationHours * 60;
-        var numberOfSessions = totalMinutes / req.IntervalMinutes;
+        if (eligibleTeams.Count == 0)
+        {
+            await Send.OkAsync([], ct);
+            return;
+        }
+
+        var interval = TimeSpan.FromMinutes(req.IntervalMinutes);
+        var padding = TimeSpan.FromMinutes(req.PaddingMinutes);
+        var scheduleEnd = req.StartTime.Add(TimeSpan.FromHours(req.DurationHours));
+        var sessionDuration = TimeSpan.FromTicks((interval.Ticks * 4) + (padding.Ticks * 3));
+        var activeTeamCount = Math.Min(NumberOfTracks, eligibleTeams.Count);
 
         var schedule = new List<Response>();
-        var currentTime = req.StartTime;
+        var teamSessionCounts = new Dictionary<int, int>();
+        var currentSessionStart = req.StartTime;
+        var sessionNumber = 1;
 
-        // Track how many times each player has raced (to determine their track rotation)
-        var playerRaceCount = new Dictionary<int, int>();
-
-        for (int session = 0; session < numberOfSessions; session++)
+        while (currentSessionStart + sessionDuration <= scheduleEnd)
         {
-            var endTime = currentTime.Add(TimeSpan.FromMinutes(req.IntervalMinutes));
+            var sessionAssignments = new List<SessionAssignment>(activeTeamCount);
 
-            var raceName = $"{currentTime:hh\\:mm} - {endTime:hh\\:mm}";
-
-            // Build assignments for this session
-            var sessionAssignments = new List<(int preferredTrack, int playerId, Player player)>();
-
-            // Determine which teams and players race in this session
-            for (int track = 1; track <= numberOfTracks; track++)
+            for (var slot = 0; slot < activeTeamCount; slot++)
             {
-                // Calculate which team goes on this track for this session
-                var teamIndex = (session + track - 1) % teams.Count;
-                var team = teams[teamIndex];
+                var team = eligibleTeams[(sessionNumber - 1 + slot) % eligibleTeams.Count];
+                var pairs = teamPairsByTeamId[team.Id];
+                var teamSessionCount = teamSessionCounts.GetValueOrDefault(team.Id, 0);
+                var pair = pairs[teamSessionCount % pairs.Count];
+                var currentTrackId = slot + 1;
+                var nextTrackId = (currentTrackId % NumberOfTracks) + 1;
 
-                // Get players for this team
-                if (playersByTeam.TryGetValue(team.Id, out var teamPlayers) && teamPlayers.Count > 0)
-                {
-                    // Calculate which player from the team races in this session
-                    var playerIndex = session % teamPlayers.Count;
-                    var player = teamPlayers[playerIndex];
-
-                    // Calculate preferred track based on how many times this player has raced
-                    // This ensures each player rotates through all tracks
-                    int raceCount = playerRaceCount.GetValueOrDefault(player.Id, 0);
-                    int preferredTrack = (raceCount % numberOfTracks) + 1;
-
-                    sessionAssignments.Add((preferredTrack, player.Id, player));
-
-                    // Increment race count for this player
-                    playerRaceCount[player.Id] = raceCount + 1;
-                }
+                sessionAssignments.Add(new SessionAssignment(currentTrackId, nextTrackId, pair.FirstRacer, pair.SecondRacer));
+                teamSessionCounts[team.Id] = teamSessionCount + 1;
             }
 
-            // Resolve conflicts: ensure no two players get the same track
-            var raceTracks = new List<RaceTrack>();
-            var usedTracks = new HashSet<int>();
-
-            foreach (var (preferredTrack, playerId, player) in sessionAssignments)
-            {
-                int assignedTrack = preferredTrack;
-
-                // If preferred track is taken, find next available
-                if (usedTracks.Contains(assignedTrack))
-                {
-                    // Find the next available track
-                    for (int offset = 1; offset < numberOfTracks; offset++)
-                    {
-                        int candidateTrack = ((assignedTrack - 1 + offset) % numberOfTracks) + 1;
-                        if (!usedTracks.Contains(candidateTrack))
-                        {
-                            assignedTrack = candidateTrack;
-                            break;
-                        }
-                    }
-                }
-
-                usedTracks.Add(assignedTrack);
-                raceTracks.Add(new RaceTrack
-                {
-                    TrackId = assignedTrack,
-                    PlayerId = playerId,
-                    Player = player
-                });
-            }
+            var race1Start = currentSessionStart;
+            var race1End = race1Start + interval;
+            var race2Start = race1End + padding;
+            var race2End = race2Start + interval;
+            var race3Start = race2End + padding;
+            var race3End = race3Start + interval;
+            var race4Start = race3End + padding;
+            var race4End = race4Start + interval;
 
             schedule.Add(new Response
             {
-                Name = raceName,
-                RaceTracks = raceTracks
+                Name = FormatRaceName(sessionNumber, 1, race1Start, race1End),
+                RaceTracks = sessionAssignments
+                    .Select(a => CreateRaceTrack(a.CurrentTrackId, a.FirstRacer))
+                    .ToList()
             });
 
-            currentTime = endTime;
-        }        // Save to database if requested
-        if (req.Save)
-        {
-            var startDateTime = DateTime.UtcNow.Date.Add(req.StartTime);
-            var sessionNumber = 1;
-
-            foreach (var session in schedule)
+            schedule.Add(new Response
             {
-                // Parse the time range from the session name
-                var times = session.Name.Split(" - ");
-                var sessionStart = TimeSpan.Parse(times[0]);
-                var sessionEnd = TimeSpan.Parse(times[1]);
+                Name = FormatRaceName(sessionNumber, 2, race2Start, race2End),
+                RaceTracks = sessionAssignments
+                    .Select(a => CreateRaceTrack(a.CurrentTrackId, a.SecondRacer))
+                    .ToList()
+            });
 
-                // Create first race for tracks 1 and 2
-                var race1 = new Entities.Race
-                {
-                    Name = $"Session {sessionNumber:D2}: {times[0]} - {times[1]}",
-                    CreatedDateTime = DateTime.UtcNow,
-                    IsActive = false
-                };
+            schedule.Add(new Response
+            {
+                Name = FormatRaceName(sessionNumber, 3, race3Start, race3End),
+                RaceTracks = sessionAssignments
+                    .Select(a => CreateRaceTrack(a.NextTrackId, a.FirstRacer))
+                    .ToList()
+            });
 
-                _dbContext.Race.Add(race1);
-                await _dbContext.SaveChangesAsync(ct);
+            schedule.Add(new Response
+            {
+                Name = FormatRaceName(sessionNumber, 4, race4Start, race4End),
+                RaceTracks = sessionAssignments
+                    .Select(a => CreateRaceTrack(a.NextTrackId, a.SecondRacer))
+                    .ToList()
+            });
 
-                // Add race tracks for tracks 1 and 2
-                var tracks12 = session.RaceTracks.Where(rt => rt.TrackId <= 2).ToList();
-                foreach (var raceTrack in tracks12)
-                {
-                    _dbContext.RaceTrack.Add(new RaceTrack
+            currentSessionStart = race4End + padding;
+            sessionNumber++;
+        }
+
+        if (req.Save && schedule.Count > 0)
+        {
+            var createdDateTime = DateTime.UtcNow;
+
+            var races = schedule.Select(race => new Entities.Race
+            {
+                Name = race.Name,
+                CreatedDateTime = createdDateTime,
+                IsActive = false,
+                RaceTracks = race.RaceTracks
+                    .OrderBy(rt => rt.TrackId)
+                    .Select(rt => new RaceTrack
                     {
-                        RaceId = race1.Id,
-                        TrackId = raceTrack.TrackId,
-                        PlayerId = raceTrack.PlayerId
-                    });
-                }
+                        TrackId = rt.TrackId,
+                        PlayerId = rt.PlayerId
+                    })
+                    .ToList()
+            });
 
-                // Create second race for tracks 3 and 4
-                var race2 = new Entities.Race
-                {
-                    Name = $"Session {sessionNumber:D2}: {times[0]} - {times[1]}",
-                    CreatedDateTime = DateTime.UtcNow,
-                    IsActive = false
-                };
-
-                _dbContext.Race.Add(race2);
-                await _dbContext.SaveChangesAsync(ct);
-
-                // Add race tracks for tracks 3 and 4
-                var tracks34 = session.RaceTracks.Where(rt => rt.TrackId > 2).ToList();
-                foreach (var raceTrack in tracks34)
-                {
-                    _dbContext.RaceTrack.Add(new RaceTrack
-                    {
-                        RaceId = race2.Id,
-                        TrackId = raceTrack.TrackId,
-                        PlayerId = raceTrack.PlayerId
-                    });
-                }
-
-                await _dbContext.SaveChangesAsync(ct);
-                sessionNumber++;
-            }
+            _dbContext.Race.AddRange(races);
+            await _dbContext.SaveChangesAsync(ct);
         }
 
         await Send.OkAsync(schedule, ct);
     }
+
+    private static List<TeamPair> BuildPairs(List<Player> teamPlayers)
+    {
+        var pairs = new List<TeamPair>();
+
+        for (var index = 0; index + 1 < teamPlayers.Count; index += 2)
+        {
+            pairs.Add(new TeamPair(teamPlayers[index], teamPlayers[index + 1]));
+        }
+
+        return pairs;
+    }
+
+    private static RaceTrack CreateRaceTrack(int trackId, Player player) => new()
+    {
+        TrackId = trackId,
+        PlayerId = player.Id,
+        Player = player
+    };
+
+    private static string FormatRaceName(int sessionNumber, int raceNumber, TimeSpan start, TimeSpan end) =>
+        $"Session {sessionNumber} - Race {raceNumber}: {start:hh\\:mm} - {end:hh\\:mm}";
 }

@@ -99,6 +99,8 @@
 	{/if}
 
 	{#if query.data}
-		<Laps laps={query.data.last10Laps ?? []} fastestLap={query.data.fastestLap} />
+		<div class="mt-1">
+			<Laps laps={query.data.last10Laps ?? []} fastestLap={query.data.fastestLap} />
+		</div>
 	{/if}
 </div>

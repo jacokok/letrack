@@ -10,10 +10,10 @@
 	let { data }: Props = $props();
 </script>
 
-<div class="m-2 p-2">
+<div class="m-0 p-2">
 	<div class="flex items-center justify-between gap-2">
 		<div class="flex flex-col items-start gap-1">
-			<h1>{data.race.name}</h1>
+			<Badge variant="outline">Test</Badge>
 		</div>
 
 		<div class="flex items-center justify-center">

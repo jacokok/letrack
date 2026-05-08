@@ -117,6 +117,7 @@ export interface ScheduleRequest {
   startTime: string;
   intervalMinutes: number;
   durationHours: number;
+  paddingMinutes: number;
   save: boolean;
 }
 

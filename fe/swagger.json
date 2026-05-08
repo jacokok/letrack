@@ -1723,6 +1723,7 @@
           "startTime",
           "intervalMinutes",
           "durationHours",
+          "paddingMinutes",
           "save"
         ],
         "properties": {
@@ -1735,6 +1736,10 @@
             "format": "int32"
           },
           "durationHours": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "paddingMinutes": {
             "type": "integer",
             "format": "int32"
           },

@@ -1,12 +1,20 @@
 <script lang="ts">
 	import { Button, Card, Input, Label } from "@kayord/ui";
 	import { toast } from "@kayord/ui/sonner";
-	import { CalendarIcon, ClockIcon, TimerIcon, SaveIcon, XIcon } from "@lucide/svelte";
+	import {
+		CalendarIcon,
+		ClockIcon,
+		TimerIcon,
+		SaveIcon,
+		XIcon,
+		RulerDimensionLineIcon
+	} from "@lucide/svelte";
 	import { createSchedule, type ScheduleResponse, type EntitiesRaceTrack } from "$lib/api";
 
 	let startTime = $state("11:00");
-	let intervalMinutes = $state(60);
+	let intervalMinutes = $state(25);
 	let durationHours = $state(24);
+	let paddingMinutes = $state(5);
 	let generatedSchedule = $state<ScheduleResponse[]>([]);
 	let isGenerating = $state(false);
 	let showPreview = $state(false);
@@ -27,15 +35,19 @@
 					startTime: timeSpan,
 					intervalMinutes: intervalMinutes,
 					durationHours: durationHours,
-					save: false
+					save: false,
+					paddingMinutes: paddingMinutes
 				}
 			});
 
 			generatedSchedule = response;
 			showPreview = true;
 
-			const totalRaces = response.reduce((sum, session) => sum + session.raceTracks.length, 0);
-			toast.success(`Generated ${response.length} sessions with ${totalRaces} races`);
+			const totalAssignments = response.reduce((sum, race) => sum + race.raceTracks.length, 0);
+			const totalSessions = Math.floor(response.length / 4);
+			toast.success(
+				`Generated ${totalSessions} sessions with ${response.length} races and ${totalAssignments} track assignments`
+			);
 		} catch (error) {
 			toast.error("Failed to generate schedule");
 			console.error(error);
@@ -55,7 +67,8 @@
 					startTime: timeSpan,
 					intervalMinutes: intervalMinutes,
 					durationHours: durationHours,
-					save: true
+					save: true,
+					paddingMinutes: paddingMinutes
 				}
 			});
 
@@ -82,11 +95,9 @@
 	<div class="mb-4">
 		<h1 class="text-2xl font-bold">Race Schedule Generator</h1>
 		<p class="text-muted-foreground">
-			Create a race schedule by specifying start time, interval, and duration
+			Create a race schedule by specifying start time, race length, padding, and duration
 		</p>
 	</div>
-
-	{showPreview}
 
 	<Card.Root class="mb-4">
 		<Card.Header>
@@ -94,7 +105,7 @@
 			<Card.Description>Configure the race schedule settings</Card.Description>
 		</Card.Header>
 		<Card.Content>
-			<div class="grid gap-4 md:grid-cols-3">
+			<div class="flex flex-col gap-4">
 				<div class="space-y-2">
 					<Label for="start-time" class="flex items-center gap-2">
 						<ClockIcon class="h-4 w-4" />
@@ -138,6 +149,21 @@
 						disabled={isGenerating}
 					/>
 				</div>
+
+				<div class="space-y-2">
+					<Label for="paddingMinutes" class="flex items-center gap-2">
+						<RulerDimensionLineIcon class="h-4 w-4" />
+						Padding (minutes)
+					</Label>
+					<Input
+						id="paddingMinutes"
+						type="number"
+						bind:value={paddingMinutes}
+						min="1"
+						max="12"
+						disabled={isGenerating}
+					/>
+				</div>
 			</div>
 		</Card.Content>
 		<Card.Footer>
@@ -153,10 +179,10 @@
 				<div>
 					<Card.Title>Schedule Preview</Card.Title>
 					<Card.Description>
-						{generatedSchedule.length} sessions • {generatedSchedule.reduce(
-							(sum, s) => sum + s.raceTracks.length,
+						{Math.floor(generatedSchedule.length / 4)} sessions • {generatedSchedule.length} races • {generatedSchedule.reduce(
+							(sum, race) => sum + race.raceTracks.length,
 							0
-						)} total races
+						)} total track assignments
 					</Card.Description>
 				</div>
 				<div class="flex gap-2">
@@ -172,19 +198,19 @@
 			</Card.Header>
 			<Card.Content>
 				<div class="space-y-4">
-					{#each generatedSchedule as session, index (session.name)}
+					{#each generatedSchedule as race, index (race.name)}
 						<div class="rounded-lg border p-4">
 							<div class="mb-3 flex items-center justify-between">
-								<h3 class="font-semibold">Session {index + 1}</h3>
-								<span class="text-sm text-muted-foreground">
-									{session.name}
+								<h3 class="font-semibold">Race {index + 1}</h3>
+								<span class="text-muted-foreground text-sm">
+									{race.name}
 								</span>
 							</div>
 							<div class="grid gap-2 md:grid-cols-2 lg:grid-cols-4">
-								{#each groupByTrack(session.raceTracks) as raceTrack (raceTrack.trackId)}
-									<div class="rounded-md border bg-card p-3">
+								{#each groupByTrack(race.raceTracks) as raceTrack (raceTrack.trackId)}
+									<div class="bg-card rounded-md border p-3">
 										<div class="text-sm font-medium">Track {raceTrack.trackId}</div>
-										<div class="text-sm text-muted-foreground">
+										<div class="text-muted-foreground text-sm">
 											{raceTrack.player.name}
 										</div>
 									</div>
