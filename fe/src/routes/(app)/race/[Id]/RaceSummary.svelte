@@ -13,7 +13,7 @@
 <div class="m-0 p-2">
 	<div class="flex items-center justify-between gap-2">
 		<div class="flex flex-col items-start gap-1">
-			<Badge variant="outline">Test</Badge>
+			<Badge variant="outline">{data.race.name}</Badge>
 		</div>
 
 		<div class="flex items-center justify-center">

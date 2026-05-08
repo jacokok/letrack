@@ -93,34 +93,26 @@ public class Endpoint(AppDbContext dbContext) : Endpoint<Request, List<Response>
 
             schedule.Add(new Response
             {
-                Name = FormatRaceName(sessionNumber, 1, race1Start, race1End),
-                RaceTracks = sessionAssignments
-                    .Select(a => CreateRaceTrack(a.CurrentTrackId, a.FirstRacer))
-                    .ToList()
+                Name = FormatRaceName(sessionNumber, 1, race1Start),
+                RaceTracks = [.. sessionAssignments.Select(a => CreateRaceTrack(a.CurrentTrackId, a.FirstRacer))]
             });
 
             schedule.Add(new Response
             {
-                Name = FormatRaceName(sessionNumber, 2, race2Start, race2End),
-                RaceTracks = sessionAssignments
-                    .Select(a => CreateRaceTrack(a.CurrentTrackId, a.SecondRacer))
-                    .ToList()
+                Name = FormatRaceName(sessionNumber, 2, race2Start),
+                RaceTracks = [.. sessionAssignments.Select(a => CreateRaceTrack(a.CurrentTrackId, a.SecondRacer))]
             });
 
             schedule.Add(new Response
             {
-                Name = FormatRaceName(sessionNumber, 3, race3Start, race3End),
-                RaceTracks = sessionAssignments
-                    .Select(a => CreateRaceTrack(a.NextTrackId, a.FirstRacer))
-                    .ToList()
+                Name = FormatRaceName(sessionNumber, 3, race3Start),
+                RaceTracks = [.. sessionAssignments.Select(a => CreateRaceTrack(a.NextTrackId, a.FirstRacer))]
             });
 
             schedule.Add(new Response
             {
-                Name = FormatRaceName(sessionNumber, 4, race4Start, race4End),
-                RaceTracks = sessionAssignments
-                    .Select(a => CreateRaceTrack(a.NextTrackId, a.SecondRacer))
-                    .ToList()
+                Name = FormatRaceName(sessionNumber, 4, race4Start),
+                RaceTracks = [.. sessionAssignments.Select(a => CreateRaceTrack(a.NextTrackId, a.SecondRacer))]
             });
 
             currentSessionStart = race4End + padding;
@@ -136,14 +128,13 @@ public class Endpoint(AppDbContext dbContext) : Endpoint<Request, List<Response>
                 Name = race.Name,
                 CreatedDateTime = createdDateTime,
                 IsActive = false,
-                RaceTracks = race.RaceTracks
+                RaceTracks = [.. race.RaceTracks
                     .OrderBy(rt => rt.TrackId)
                     .Select(rt => new RaceTrack
                     {
                         TrackId = rt.TrackId,
                         PlayerId = rt.PlayerId
-                    })
-                    .ToList()
+                    })]
             });
 
             _dbContext.Race.AddRange(races);
@@ -172,6 +163,6 @@ public class Endpoint(AppDbContext dbContext) : Endpoint<Request, List<Response>
         Player = player
     };
 
-    private static string FormatRaceName(int sessionNumber, int raceNumber, TimeSpan start, TimeSpan end) =>
-        $"Session {sessionNumber} - Race {raceNumber}: {start:hh\\:mm} - {end:hh\\:mm}";
+    private static string FormatRaceName(int sessionNumber, int raceNumber, TimeSpan start) =>
+        $"Session {sessionNumber:00} | Race {raceNumber} | {start:hh\\:mm}";
 }
