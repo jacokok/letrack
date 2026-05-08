@@ -16,7 +16,7 @@
 	let { laps, fastestLap, children }: Props = $props();
 </script>
 
-<Card.Root class="bg-muted/50 flex w-full flex-col gap-2 p-2">
+<Card.Root class="bg-muted/50 flex w-full flex-col gap-2 p-1">
 	{@render children?.()}
 	{#if laps.length <= 0}
 		<Alert.Root>
@@ -26,7 +26,7 @@
 	{/if}
 	{#each laps as lap (lap.id)}
 		{@const diff = timeSpanToParts(lap.lapTimeDifference)}
-		<Card.Root class="flex flex-row items-center gap-2 p-2">
+		<Card.Root class="flex flex-row items-center gap-2 p-1">
 			<Badge class="bg-muted text-muted-foreground">{lap.lapNumber}</Badge>
 			<h1>{timeSpanToParts(lap.lapTime).value}</h1>
 			<div class={`${diff.isMinus ? "text-destructive" : "text-green-300"}`}>

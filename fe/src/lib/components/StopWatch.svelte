@@ -11,7 +11,7 @@
 	let { timer, colorClass }: Props = $props();
 </script>
 
-<Card.Root class="flex flex-row w-72 items-center gap-2 p-2">
+<Card.Root class="flex w-72 flex-row items-center gap-1 p-1">
 	<TimerIcon class={cn("size-10", colorClass)} />
 	<h1 class="flex gap-2 text-5xl font-bold tabular-nums">
 		{timer.minutesFmt}:{timer.secondsFmt}:{timer.msFmt}

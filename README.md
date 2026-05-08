@@ -98,7 +98,7 @@ mqttui publish "event" '{ "Id": "'$(uuidgen)'", "TrackId": '$((RANDOM % 2 + 1))'
 
 ### Post Race Todo
 
-- [ ] Do not split race between tracks. Make race all 4 tracks at the same time.
+- [x] Do not split race between tracks. Make race all 4 tracks at the same time.
 - [ ] Fix the generate schedule to generate it that all players does track twice and in 25min intervals.
 - [x] Make micro python delay for 3 seconds and limit the number of events.
 - [x] Latest micro python
