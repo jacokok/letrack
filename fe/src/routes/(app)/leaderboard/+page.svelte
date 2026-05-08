@@ -75,7 +75,7 @@
 									{player.name}
 								</div>
 								<div class="text-muted-foreground text-xs leading-3">
-									{player.nickName ? ` ${player.nickName}` : ""}
+									{player.nickName}
 								</div>
 							</div>
 							{#if player.rank == 1}

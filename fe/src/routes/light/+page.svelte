@@ -10,8 +10,8 @@
 		isActive = !isActive;
 	};
 
-	const audio = new Audio("/sounds/light.mp3");
-	const audio2 = new Audio("/sounds/voice.mp3");
+	const audio = new Audio("/sounds/beep.mp3");
+	const audio2 = new Audio("/sounds/start.mp3");
 	const playSound = () => {
 		audio.play();
 	};

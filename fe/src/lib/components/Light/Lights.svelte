@@ -22,8 +22,8 @@
 
 	let showConfetti = $state(false);
 
-	const lightAudio = new Audio("/sounds/light.mp3");
-	const voiceAudio = new Audio("/sounds/voice.mp3");
+	const lightAudio = new Audio("/sounds/beep.mp3");
+	const voiceAudio = new Audio("/sounds/start.mp3");
 
 	const playLightSound = () => {
 		lightAudio.play();
@@ -85,17 +85,19 @@
 
 <div class="flex w-full flex-col items-center">
 	<div class="flex w-full items-center">
-		<div class="h-4 w-full bg-black/70"></div>
-		<div class="flex h-52 min-w-[680px] items-center justify-center rounded-xl bg-black/70">
+		<div class="border-y-muted h-4 w-full border-2 bg-black"></div>
+		<div
+			class="border-muted flex h-52 min-w-170 items-center justify-center rounded-xl border-2 bg-black"
+		>
 			<img src="/favicon.svg" alt="LeTrack" class="h-32" />
 			{#if showConfetti}
 				<Confetti y={[0.25, 0.5]} x={[-4, 4]} />
 			{/if}
 			<h1 class="ml-2 text-7xl tracking-tighter">
-				<span class="text-secondary">Le</span><span class="font-bold text-primary">Track</span>
+				<span class="text-secondary">Le</span><span class="text-primary font-bold">Track</span>
 			</h1>
 		</div>
-		<div class="h-4 w-full bg-black/70"></div>
+		<div class="border-y-muted h-4 w-full border-2 bg-black"></div>
 	</div>
 
 	<div class="flex w-fit items-center gap-4 rounded-md">
