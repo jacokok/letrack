@@ -199,6 +199,10 @@ export interface RaceInsertRequest {
 
 export interface RaceDeleteRequest { [key: string]: unknown }
 
+export interface RaceClearRequest {
+  id: number;
+}
+
 export interface PlayersUpdateRequest {
   id: number;
   name: string;

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from "$app/state";
 	import { createRaceStart, createRaceStop, createRaceSummary } from "$lib/api";
-	import { Alert, Button, Loader, Sheet } from "@kayord/ui";
+	import { Alert, Button, Loader, Sheet, Tooltip } from "@kayord/ui";
 	import RaceSummary from "./RaceSummary.svelte";
 	import type { DoneEvent, SaveEvent } from "$lib/types";
 	import Track from "./Track.svelte";
@@ -13,6 +13,7 @@
 	import Lights from "$lib/components/Light/Lights.svelte";
 	import { ChartNoAxesCombinedIcon, FlagIcon } from "@lucide/svelte";
 	import { Timer } from "$lib/stores/timer.svelte";
+	import ClearRace from "./ClearRace.svelte";
 
 	const query = createRaceSummary(() => Number(page.params.Id));
 
@@ -139,19 +140,52 @@
 	};
 
 	const hideOptions = $derived(query.data?.race.timeRemaining != undefined);
+
+	const hasLaps = $derived(query.data?.tracks?.some((track) => track.totalLaps > 0) ?? false);
 </script>
 
 {#snippet right()}
 	{#if query.data}
 		<div class="flex items-center gap-2">
-			<Button variant="ghost" href="/race/{page.params.Id}/stats">
-				<ChartNoAxesCombinedIcon /> Stats
-			</Button>
+			<Tooltip.Provider>
+				<Tooltip.Root>
+					<Tooltip.Trigger>
+						<Button variant="outline" href="/race/{page.params.Id}/stats">
+							<ChartNoAxesCombinedIcon />
+						</Button>
+					</Tooltip.Trigger>
+					<Tooltip.Content>
+						<p>Stats</p>
+					</Tooltip.Content>
+				</Tooltip.Root>
+			</Tooltip.Provider>
 
 			{#if !query.data?.race.isActive}
-				<Button variant="secondary" href="/race/post/{page.params.Id}"
-					><FlagIcon /> Post Race</Button
-				>
+				<Tooltip.Provider>
+					<Tooltip.Root>
+						<Tooltip.Trigger>
+							<Button variant="secondary" href="/race/post/{page.params.Id}">
+								<FlagIcon />
+							</Button>
+						</Tooltip.Trigger>
+						<Tooltip.Content>
+							<p>Post Race</p>
+						</Tooltip.Content>
+					</Tooltip.Root>
+				</Tooltip.Provider>
+			{/if}
+
+			{#if !query.data?.race.isActive && hasLaps}
+				<Tooltip.Provider>
+					<Tooltip.Root>
+						<Tooltip.Trigger>
+							<ClearRace raceId={query.data?.race.id} refetch={query.refetch} />
+						</Tooltip.Trigger>
+						<Tooltip.Content>
+							<p>Clear Race</p>
+						</Tooltip.Content>
+					</Tooltip.Root>
+				</Tooltip.Provider>
 			{/if}
 			<Button size="icon" onclick={stopStart}>
 				{#if query.data?.race.isActive}

@@ -24,6 +24,7 @@ import type {
   EntitiesRace,
   InternalErrorResponse,
   ModelsPaginatedListOfRace,
+  RaceClearRequest,
   RaceInsertRequest,
   RaceListParams,
   RaceStartRequest,
@@ -506,4 +507,68 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
         TContext
       > => {
       return createMutation(() => ({ ...getRaceDeleteMutationOptions(options?.()) }), queryClient);
+    }
+    export const getRaceClearUrl = () => {
+
+
+
+
+  return `/race/clear`
+}
+
+export const raceClear = async (raceClearRequest: RaceClearRequest, options?: RequestInit): Promise<void> => {
+
+  return customInstance<void>(getRaceClearUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      raceClearRequest,)
+  }
+);}
+
+
+
+
+export const getRaceClearMutationOptions = <TError = ErrorType<InternalErrorResponse>,
+    TContext = unknown>(options?: { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof raceClear>>, TError,{data: BodyType<RaceClearRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): CreateMutationOptions<Awaited<ReturnType<typeof raceClear>>, TError,{data: BodyType<RaceClearRequest>}, TContext> => {
+
+const mutationKey = ['raceClear'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof raceClear>>, {data: BodyType<RaceClearRequest>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  raceClear(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RaceClearMutationResult = NonNullable<Awaited<ReturnType<typeof raceClear>>>
+    export type RaceClearMutationBody = BodyType<RaceClearRequest>
+    export type RaceClearMutationError = ErrorType<InternalErrorResponse>
+
+    export const createRaceClear = <TError = ErrorType<InternalErrorResponse>,
+    TContext = unknown>(options?: () => { mutation?:CreateMutationOptions<Awaited<ReturnType<typeof raceClear>>, TError,{data: BodyType<RaceClearRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: () => QueryClient): CreateMutationResult<
+        Awaited<ReturnType<typeof raceClear>>,
+        TError,
+        {data: BodyType<RaceClearRequest>},
+        TContext
+      > => {
+      return createMutation(() => ({ ...getRaceClearMutationOptions(options?.()) }), queryClient);
     }

@@ -1,21 +1,13 @@
 using LeTrack.Data;
-using LeTrack.Entities;
-using LeTrack.Jobs;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
 
 namespace LeTrack.Features.Race.Start;
 
-public class Endpoint : Endpoint<Request, Entities.Race>
+public class Endpoint(AppDbContext dbContext, ISchedulerFactory schedulerFactory) : Endpoint<Request, Entities.Race>
 {
-    private readonly AppDbContext _dbContext;
-    private readonly ISchedulerFactory _schedulerFactory;
-
-    public Endpoint(AppDbContext dbContext, ISchedulerFactory schedulerFactory)
-    {
-        _dbContext = dbContext;
-        _schedulerFactory = schedulerFactory;
-    }
+    private readonly AppDbContext _dbContext = dbContext;
+    private readonly ISchedulerFactory _schedulerFactory = schedulerFactory;
 
     public override void Configure()
     {
@@ -25,12 +17,7 @@ public class Endpoint : Endpoint<Request, Entities.Race>
     public override async Task HandleAsync(Request req, CancellationToken ct)
     {
 
-        Entities.Race? race = await _dbContext.Race.FirstOrDefaultAsync(x => x.Id == req.Id, ct);
-        if (race == null)
-        {
-            throw new Exception("Race not found");
-        }
-
+        Entities.Race? race = await _dbContext.Race.FirstOrDefaultAsync(x => x.Id == req.Id, ct) ?? throw new Exception("Race not found");
         var now = DateTime.UtcNow;
 
         race.IsActive = true;
@@ -64,7 +51,7 @@ public class Endpoint : Endpoint<Request, Entities.Race>
         }
         race.RestartDateTime = now;
 
-        await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync(ct);
 
         // TriggerJob
         IScheduler? scheduler = await _schedulerFactory.GetScheduler(ct);
@@ -74,6 +61,6 @@ public class Endpoint : Endpoint<Request, Entities.Race>
             await scheduler.TriggerJob(jobKey, ct);
         }
 
-        await Send.OkAsync(race);
+        await Send.OkAsync(race, ct);
     }
 }

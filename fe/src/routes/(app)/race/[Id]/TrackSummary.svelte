@@ -2,7 +2,7 @@
 	import type { RaceSummaryTrack } from "$lib/api";
 	import PlayerAvatar from "$lib/components/PlayerAvatar.svelte";
 	import { timeSpanToParts } from "$lib/util";
-	import { Badge, Card } from "@kayord/ui";
+	import { Badge } from "@kayord/ui";
 	import { CarIcon } from "@lucide/svelte";
 	import FastestIcon from "@lucide/svelte/icons/zap";
 
