@@ -83,7 +83,7 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof laps>>> = () => laps(params, requestOptions);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof laps>>> = ({ signal }) => laps(params, { signal, ...requestOptions });
 
 
 

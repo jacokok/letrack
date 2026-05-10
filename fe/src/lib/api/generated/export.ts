@@ -69,7 +69,7 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof _export>>> = () => _export(requestOptions);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof _export>>> = ({ signal }) => _export({ signal, ...requestOptions });
 
 
 

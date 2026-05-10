@@ -72,7 +72,7 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof leaderboard>>> = () => leaderboard(requestOptions);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof leaderboard>>> = ({ signal }) => leaderboard({ signal, ...requestOptions });
 
 
 
@@ -142,7 +142,7 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof leaderboardTeam>>> = () => leaderboardTeam(id, requestOptions);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof leaderboardTeam>>> = ({ signal }) => leaderboardTeam(id, { signal, ...requestOptions });
 
 
 
@@ -212,7 +212,7 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof leaderboardPlayer>>> = () => leaderboardPlayer(id, requestOptions);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof leaderboardPlayer>>> = ({ signal }) => leaderboardPlayer(id, { signal, ...requestOptions });
 
 
 
@@ -282,7 +282,7 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof leaderboardLap>>> = () => leaderboardLap(trackId, requestOptions);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof leaderboardLap>>> = ({ signal }) => leaderboardLap(trackId, { signal, ...requestOptions });
 
 
 

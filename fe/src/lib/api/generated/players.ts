@@ -139,7 +139,7 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof playersList>>> = () => playersList(requestOptions);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof playersList>>> = ({ signal }) => playersList({ signal, ...requestOptions });
 
 
 
@@ -273,7 +273,7 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof playersGet>>> = () => playersGet(id, requestOptions);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof playersGet>>> = ({ signal }) => playersGet(id, { signal, ...requestOptions });
 
 
 

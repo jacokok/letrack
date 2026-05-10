@@ -152,7 +152,7 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof raceList>>> = () => raceList(params, requestOptions);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof raceList>>> = ({ signal }) => raceList(params, { signal, ...requestOptions });
 
 
 
@@ -286,7 +286,7 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof raceSummary>>> = () => raceSummary(raceId, requestOptions);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof raceSummary>>> = ({ signal }) => raceSummary(raceId, { signal, ...requestOptions });
 
 
 

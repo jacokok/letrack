@@ -68,7 +68,7 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof testSignal>>> = () => testSignal(requestOptions);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof testSignal>>> = ({ signal }) => testSignal({ signal, ...requestOptions });
 
 
 
@@ -138,7 +138,7 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof test>>> = () => test(requestOptions);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof test>>> = ({ signal }) => test({ signal, ...requestOptions });
 
 
 

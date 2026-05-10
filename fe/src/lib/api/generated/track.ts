@@ -69,7 +69,7 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof trackSummary>>> = () => trackSummary(trackId, requestOptions);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof trackSummary>>> = ({ signal }) => trackSummary(trackId, { signal, ...requestOptions });
 
 
 

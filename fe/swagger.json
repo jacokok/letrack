@@ -1391,7 +1391,6 @@
     "schemas": {
       "InternalErrorResponse": {
         "type": "object",
-        "description": "the dto used to send an error response to the client when an unhandled exception occurs on the server",
         "additionalProperties": false,
         "required": [
           "status",
@@ -1402,23 +1401,19 @@
         "properties": {
           "status": {
             "type": "string",
-            "description": "error status",
             "default": "Internal Server Error!"
           },
           "code": {
             "type": "integer",
-            "description": "http status code of the error response",
             "format": "int32",
             "default": 500
           },
           "reason": {
             "type": "string",
-            "description": "the reason for the error",
             "default": "Something unexpected has happened"
           },
           "note": {
             "type": "string",
-            "description": "additional information or instructions",
             "default": "See application log for stack trace."
           }
         }

@@ -4,17 +4,10 @@
  * letrack-api
  * OpenAPI spec version: v1
  */
-/**
- * the dto used to send an error response to the client when an unhandled exception occurs on the server
- */
 export interface InternalErrorResponse {
-  /** error status */
   status: string;
-  /** http status code of the error response */
   code: number;
-  /** the reason for the error */
   reason: string;
-  /** additional information or instructions */
   note: string;
 }
 

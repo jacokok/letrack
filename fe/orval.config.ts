@@ -17,9 +17,6 @@ export default defineConfig({
 				mutator: {
 					path: "../mutator/customInstance.svelte.ts",
 					name: "customInstance"
-				},
-				query: {
-					signal: false
 				}
 			}
 		}
