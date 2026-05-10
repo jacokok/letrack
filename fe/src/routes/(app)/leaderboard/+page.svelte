@@ -30,62 +30,66 @@
 
 <Header right={refreshSnippet} />
 <div class="m-2">
-	<div class="flex flex-col justify-between gap-4 sm:flex-row">
+	<div class="flex flex-col justify-between gap-4">
 		<div class="flex w-full flex-col gap-2">
 			<div class="mb-2 flex items-center justify-start gap-2">
 				<h1 class="font-bold">Dream Team</h1>
 				<UsersIcon />
 			</div>
-			{#each query.data?.teamSummary ?? [] as team (team.id)}
-				<a href={resolve(`/leaderboard/team/${team.id}`)}>
-					<Card.Root class="bg-background flex flex-row items-center justify-between gap-2 p-2">
-						<div class="flex items-center gap-2">
-							<div
-								class="bg-muted text-muted-foreground flex h-8 w-8 items-center justify-center rounded-lg text-xl font-bold"
-							>
-								{team.rank}
+			<div class="grid gap-2 sm:grid-cols-2">
+				{#each query.data?.teamSummary ?? [] as team (team.id)}
+					<a href={resolve(`/leaderboard/team/${team.id}`)}>
+						<Card.Root class="bg-background flex flex-row items-center justify-between gap-2 p-2">
+							<div class="flex items-center gap-2">
+								<div
+									class="bg-muted text-muted-foreground flex h-8 w-8 items-center justify-center rounded-lg text-xl font-bold"
+								>
+									{team.rank}
+								</div>
+								<div class="text-xl">{team.name}</div>
+								{#if team.rank == 1}
+									<TrophyIcon class="text-secondary size-5 animate-pulse" />
+								{/if}
 							</div>
-							<div class="text-xl">{team.name}</div>
-							{#if team.rank == 1}
-								<TrophyIcon class="text-secondary size-5 animate-pulse" />
-							{/if}
-						</div>
-						<Badge variant={team.rank == 1 ? "secondary" : "default"}>{team.laps}</Badge>
-					</Card.Root>
-				</a>
-			{/each}
+							<Badge variant={team.rank == 1 ? "secondary" : "default"}>{team.laps}</Badge>
+						</Card.Root>
+					</a>
+				{/each}
+			</div>
 		</div>
 		<div class="flex w-full flex-col gap-2">
 			<div class="mb-2 flex items-center justify-start gap-2">
 				<h1 class="font-bold">Dream Racer</h1>
 				<UserIcon />
 			</div>
-			{#each query.data?.playerSummary ?? [] as player (player.id)}
-				<a href={resolve(`/leaderboard/player/${player.id}`)}>
-					<Card.Root class="bg-mu flex flex-row items-center justify-between gap-2 p-2">
-						<div class="flex items-center gap-2">
-							<div
-								class="bg-muted text-muted-foreground flex h-8 w-8 items-center justify-center rounded-lg text-xl font-bold"
-							>
-								{player.rank}
-							</div>
-							<PlayerAvatar name={player.name} isSmall />
-							<div class="flex flex-col">
-								<div class="leading-4">
-									{player.name}
+			<div class="grid gap-2 sm:grid-cols-2">
+				{#each query.data?.playerSummary ?? [] as player (player.id)}
+					<a href={resolve(`/leaderboard/player/${player.id}`)}>
+						<Card.Root class="bg-mu flex flex-row items-center justify-between gap-2 p-2">
+							<div class="flex items-center gap-2">
+								<div
+									class="bg-muted text-muted-foreground flex h-8 w-8 items-center justify-center rounded-lg text-xl font-bold"
+								>
+									{player.rank}
 								</div>
-								<div class="text-muted-foreground text-xs leading-3">
-									{player.nickName}
+								<PlayerAvatar name={player.name} isSmall />
+								<div class="flex flex-col">
+									<div class="leading-4">
+										{player.name}
+									</div>
+									<div class="text-muted-foreground text-xs leading-3">
+										{player.nickName}
+									</div>
 								</div>
+								{#if player.rank == 1}
+									<TrophyIcon class="text-secondary size-5 animate-pulse" />
+								{/if}
 							</div>
-							{#if player.rank == 1}
-								<TrophyIcon class="text-secondary size-5 animate-pulse" />
-							{/if}
-						</div>
-						<Badge variant={player.rank == 1 ? "secondary" : "default"}>{player.laps}</Badge>
-					</Card.Root>
-				</a>
-			{/each}
+							<Badge variant={player.rank == 1 ? "secondary" : "default"}>{player.laps}</Badge>
+						</Card.Root>
+					</a>
+				{/each}
+			</div>
 		</div>
 	</div>
 </div>
