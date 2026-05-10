@@ -10,7 +10,7 @@ public class Endpoint(AppDbContext dbContext) : Endpoint<Request, List<Response>
     private readonly AppDbContext _dbContext = dbContext;
 
     private sealed record TeamPair(Player FirstRacer, Player SecondRacer);
-    private sealed record SessionAssignment(int CurrentTrackId, int NextTrackId, Player FirstRacer, Player SecondRacer);
+    private sealed record SessionAssignment(int TrackId, Player FirstRacer, Player SecondRacer);
 
     public override void Configure()
     {
@@ -71,14 +71,14 @@ public class Endpoint(AppDbContext dbContext) : Endpoint<Request, List<Response>
 
             for (var slot = 0; slot < activeTeamCount; slot++)
             {
-                var team = eligibleTeams[(sessionNumber - 1 + slot) % eligibleTeams.Count];
+                var teamIndex = (sessionNumber - 1 + slot) % eligibleTeams.Count;
+                var team = eligibleTeams[teamIndex];
                 var pairs = teamPairsByTeamId[team.Id];
                 var teamSessionCount = teamSessionCounts.GetValueOrDefault(team.Id, 0);
                 var pair = pairs[teamSessionCount % pairs.Count];
-                var currentTrackId = slot + 1;
-                var nextTrackId = (currentTrackId % NumberOfTracks) + 1;
+                var trackId = (teamIndex + sessionNumber - 1) % NumberOfTracks + 1;
 
-                sessionAssignments.Add(new SessionAssignment(currentTrackId, nextTrackId, pair.FirstRacer, pair.SecondRacer));
+                sessionAssignments.Add(new SessionAssignment(trackId, pair.FirstRacer, pair.SecondRacer));
                 teamSessionCounts[team.Id] = teamSessionCount + 1;
             }
 
@@ -94,25 +94,25 @@ public class Endpoint(AppDbContext dbContext) : Endpoint<Request, List<Response>
             schedule.Add(new Response
             {
                 Name = FormatRaceName(sessionNumber, 1, race1Start),
-                RaceTracks = [.. sessionAssignments.Select(a => CreateRaceTrack(a.CurrentTrackId, a.FirstRacer))]
+                RaceTracks = [.. sessionAssignments.Select(a => CreateRaceTrack(a.TrackId, a.FirstRacer))]
             });
 
             schedule.Add(new Response
             {
                 Name = FormatRaceName(sessionNumber, 2, race2Start),
-                RaceTracks = [.. sessionAssignments.Select(a => CreateRaceTrack(a.CurrentTrackId, a.SecondRacer))]
+                RaceTracks = [.. sessionAssignments.Select(a => CreateRaceTrack(a.TrackId, a.SecondRacer))]
             });
 
             schedule.Add(new Response
             {
                 Name = FormatRaceName(sessionNumber, 3, race3Start),
-                RaceTracks = [.. sessionAssignments.Select(a => CreateRaceTrack(a.NextTrackId, a.FirstRacer))]
+                RaceTracks = [.. sessionAssignments.Select(a => CreateRaceTrack(a.TrackId, a.FirstRacer))]
             });
 
             schedule.Add(new Response
             {
                 Name = FormatRaceName(sessionNumber, 4, race4Start),
-                RaceTracks = [.. sessionAssignments.Select(a => CreateRaceTrack(a.NextTrackId, a.SecondRacer))]
+                RaceTracks = [.. sessionAssignments.Select(a => CreateRaceTrack(a.TrackId, a.SecondRacer))]
             });
 
             currentSessionStart = race4End + padding;
