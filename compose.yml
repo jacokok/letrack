@@ -8,6 +8,8 @@ services:
       Config__MqttBroker: mqtt
       Config__MinLapTime: 3
       ConnectionStrings__DefaultConnection: host=db;database=letrack;username=letrack;password=letrack
+      Cors__0: http://localhost:5173
+      Cors__1: http://192.168.0.100:5173
     depends_on:
       - db
       - mqtt
