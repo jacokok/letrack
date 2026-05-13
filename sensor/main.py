@@ -15,13 +15,14 @@ from track import BreakBeam
 
 light = Pin(6, Pin.OUT)
 buzzer = Buzzer()
+BEAM_POLL_INTERVAL_MS = max(1, int(getattr(config, "BEAM_POLL_INTERVAL_MS", 2)))
 
 
 async def beam_handler(beam1: BreakBeam, beam2: BreakBeam, mqtt: MQTTClient):
     while True:
         await beam1.check(mqtt)
         await beam2.check(mqtt)
-        await asyncio.sleep(0.01)
+        await asyncio.sleep(BEAM_POLL_INTERVAL_MS / 1000)
 
 
 async def down(client: MQTTClient):

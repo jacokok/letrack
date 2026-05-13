@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Label, Popover, Switch } from "@kayord/ui";
+	import { Badge, Button, Card, Label, Popover, Switch } from "@kayord/ui";
 	import SettingsIcon from "@lucide/svelte/icons/settings";
 	import Track from "./Track.svelte";
 	import { practice } from "$lib/stores/practice.svelte";
@@ -69,19 +69,35 @@
 
 <div class="m-2 flex flex-row gap-2">
 	{#if practice.value.track1 == true}
-		<Track trackId={1} bind:this={tracks[1]} />
+		<Card.Root class="flex w-full flex-col gap-1 p-1">
+			<div class="flex justify-center">
+				<Badge variant="ghost">Track 1</Badge>
+			</div>
+			<Track trackId={1} bind:this={tracks[1]} />
+		</Card.Root>
 	{/if}
 	{#if practice.value.track2 == true}
-		<Track trackId={2} bind:this={tracks[2]} />
+		<Card.Root class="flex w-full flex-col gap-1 p-1">
+			<div class="flex justify-center">
+				<Badge variant="ghost">Track 2</Badge>
+			</div>
+			<Track trackId={2} bind:this={tracks[2]} />
+		</Card.Root>
 	{/if}
 	{#if practice.value.track3 == true}
-		<Track trackId={3} bind:this={tracks[3]} />
+		<Card.Root class="flex w-full flex-col gap-1 p-1">
+			<div class="flex justify-center">
+				<Badge variant="ghost">Track 3</Badge>
+			</div>
+			<Track trackId={3} bind:this={tracks[3]} />
+		</Card.Root>
 	{/if}
 	{#if practice.value.track4 == true}
-		<Track trackId={4} bind:this={tracks[4]} />
+		<Card.Root class="flex w-full flex-col gap-1 p-1">
+			<div class="flex justify-center">
+				<Badge variant="ghost">Track 4</Badge>
+			</div>
+			<Track trackId={4} bind:this={tracks[4]} />
+		</Card.Root>
 	{/if}
-</div>
-
-<div class="m-2">
-	<Chart />
 </div>
