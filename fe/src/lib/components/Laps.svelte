@@ -27,7 +27,7 @@
 	<div class="flex w-full flex-col gap-2 p-1">
 		{#each laps as lap (lap.id)}
 			{@const diff = timeSpanToParts(lap.lapTimeDifference)}
-			<Card.Root class="flex flex-row items-center justify-between gap-2 p-1">
+			<Card.Root class="flex min-h-8 flex-row items-center justify-between gap-2 p-1">
 				<div class="flex items-center gap-2">
 					<Badge class="bg-muted text-muted-foreground">{lap.lapNumber}</Badge>
 					<h1>{timeSpanToParts(lap.lapTime).value}</h1>
